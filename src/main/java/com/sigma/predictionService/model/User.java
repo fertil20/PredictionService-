@@ -2,40 +2,59 @@ package com.sigma.predictionService.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Set;
 
 
 @Entity
-@Table(name = "usr")
+@Table(name = "usr", uniqueConstraints = {
+@UniqueConstraint(columnNames = {
+        "username"
+}),
+@UniqueConstraint(columnNames = {
+        "email"
+})
+})
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class User {
+
     @Id
-    @Column(name = "id")
-    private String id;
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "userpic")
-    private String userpic;
+    @Column(name = "username", nullable=false)
+    private String username;
 
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "gender")
-    private String gender;
+    @Column(name = "password", nullable=false)
+    private String password;
 
-    @Column(name = "locale")
-    private String locale;
+    @Column(name = "start_at", nullable=false)
+    private LocalTime startAt;
 
-    @Column(name = "lastVisit", nullable = false)
-    private LocalDateTime lastVisit;
+    @Column(name = "end_at", nullable=false)
+    private LocalTime endAt;
+
+    @ManyToMany
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_name"))
+    @EqualsAndHashCode.Exclude
+    private Set<Role> roles;
+
+
+
 }
