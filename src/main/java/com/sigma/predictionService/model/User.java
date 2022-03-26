@@ -6,8 +6,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Set;
 
@@ -55,6 +53,8 @@ public class User {
     @EqualsAndHashCode.Exclude
     private Set<Role> roles;
 
-
+    @OneToMany (mappedBy = "user")
+    @EqualsAndHashCode.Exclude
+    private Set<File> file;
 
 }
