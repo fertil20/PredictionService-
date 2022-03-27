@@ -11,7 +11,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "usr", uniqueConstraints = {
+@Table(name = "users", uniqueConstraints = {
 @UniqueConstraint(columnNames = {
         "username"
 }),
@@ -39,13 +39,6 @@ public class User {
 
     @Column(name = "password", nullable=false)
     private String password;
-
-    @Column(name = "start_at", nullable=false)
-    private LocalTime startAt;
-
-    @Column(name = "end_at", nullable=false)
-    private LocalTime endAt;
-
     @ManyToMany
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
