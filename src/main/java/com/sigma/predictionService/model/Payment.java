@@ -26,7 +26,10 @@ public class Payment {
     @Column(name = "date", nullable = false)
     private LocalDateTime date;
 
+    /*
     @ManyToOne
     @EqualsAndHashCode.Exclude
     private File files;
+     */
+
 }

@@ -3,9 +3,12 @@ package com.sigma.predictionService.controller;
 
 import com.sigma.predictionService.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/file")
@@ -13,11 +16,21 @@ public class FilesController {
 
     final FileService fileService;
 
+
     public FilesController(FileService fileService) {
         this.fileService = fileService;
     }
 
-    @GetMapping("/success")
+    @PostMapping("/upload")
+    public String uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+        if (file!= null && !Objects.requireNonNull(file.getOriginalFilename()).isEmpty()){
+            fileService.uploadFile(file);
+        }
+
+        return "done";
+    }
+
+    @GetMapping("/success")//NOT USE
     public String loadFile() {
         fileService.readScv("D:\\PredictionService\\pay2021-11-24.csv");
 

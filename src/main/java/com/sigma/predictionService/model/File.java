@@ -9,7 +9,11 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-@Table(name = "file")
+@Table(name = "files", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {
+                "fileName"
+        })
+})
 @Data
 @NoArgsConstructor
 public class File {
@@ -18,19 +22,14 @@ public class File {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fileId;
 
-    @Column(name = "pay", nullable = false)
-    private String pay;
+    @Column(name = "fileName", nullable = false)
+    private String fileName;
 
-    @Column(name = "count", nullable=false)
-    private String count;
-
-    @Column(name = "date", nullable = false)
-    private LocalDateTime date;
-
+    /*
     @OneToMany (mappedBy = "files")
     @EqualsAndHashCode.Exclude
     private Set<Payment> payments;
-
+     */
 
     @ManyToOne
     @EqualsAndHashCode.Exclude

@@ -78,7 +78,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                         "/*", "/users/**", "/meeting/**", "/news/**",
                         "/login/**", "/forgotPassword/**", "/resetPassword/**",
                         "/newUser/**", "/roleManager/**", "/manageUsers/**",
-                        "/about/**", "/api/news/see/*/image"
+                        "/about/**", "/api/news/see/*/image","/api/file/upload"
                 )
                 .permitAll()
                 .antMatchers("/",
