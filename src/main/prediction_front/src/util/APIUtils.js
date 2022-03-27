@@ -21,6 +21,30 @@ const request = (options) => {
         .then((text) => text.length ? JSON.parse(text) : {})
 };
 
+const requestFile = async (options) => {
+    const headers = new Headers({})
+
+    if (localStorage.getItem(ACCESS_TOKEN)) {
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
+    }
+
+    const defaults = {headers: headers};
+    options = Object.assign({}, defaults, options);
+
+    return await fetch(options.url, options)
+};
+
+export function uploadFile(file) {
+
+    let fd = new FormData()
+    fd.append('multipartFile',file)
+    return requestFile({
+        url: API_BASE_URL + "/file/upload",
+        method: 'POST',
+        body: fd,
+        headers:  new Headers({"Authorization": `Bearer ` + localStorage.getItem(ACCESS_TOKEN)})
+    });
+}
 
 export function login(loginRequest) {
     return request({
