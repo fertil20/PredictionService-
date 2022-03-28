@@ -22,12 +22,17 @@ public class FilesController {
     }
 
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+    public void uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         if (file!= null && !Objects.requireNonNull(file.getOriginalFilename()).isEmpty()){
             fileService.uploadFile(file);
         }
+    }
 
-        return "done";
+    @PostMapping("/parse")
+    public void parseFile(@RequestParam("fileName") String fileName){
+        if (fileName!=null){
+
+        }
     }
 
     @GetMapping("/success")//NOT USE
