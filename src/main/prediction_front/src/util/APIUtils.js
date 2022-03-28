@@ -37,7 +37,7 @@ const requestFile = async (options) => {
 export function uploadFile(file) {
 
     let fd = new FormData()
-    fd.append('multipartFile',file)
+    fd.append('file',file)
     return requestFile({
         url: API_BASE_URL + "/file/upload",
         method: 'POST',
