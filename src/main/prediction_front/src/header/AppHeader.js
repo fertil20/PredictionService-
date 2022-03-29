@@ -38,7 +38,7 @@ const NavBarNotLogged = () => {
                     <Col>
                     </Col>
                     <Col>
-                        <a href="/" style={{textDecoration: "none"}}><div className='main-title'>Workspace</div></a>
+                        <a href="/" style={{textDecoration: "none"}}><div className='main-title'>Sigma Prediction</div></a>
                     </Col>
                     <Col>
                     </Col>
@@ -55,7 +55,7 @@ function NavBarLogged(props){
                 <Col>
                 </Col>
                 <Col>
-            <a href="/" style={{textDecoration: "none"}}><div className='main-title'>Workspace</div></a>
+            <a href="/" style={{textDecoration: "none"}}><div className='main-title'>Sigma Prediction</div></a>
                 </Col>
                 <Col>
             <div className='caret-css'>
