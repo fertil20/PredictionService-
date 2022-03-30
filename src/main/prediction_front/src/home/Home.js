@@ -60,10 +60,10 @@ export default class Home extends Component {
                             <img src={hello3} id="hello" alt='Hello!' className="home"/>}
                             {randomImg === 4 &&
                             <img src={hello4} id="hello" alt='Hello!' className="home"/>}*/}
-                            {randomImg === 5 &&
+{/*                            {randomImg === 5 &&
                             <img src="https://sun9-55.userapi.com/impg/cLkK91t6yMAcKLX2iCDkEB4mB4GmbXhASX0OFg/C8_gBhYMhAY.jpg?size=1080x867&quality=96&sign=a0ee44bb0407c0e7ecd8e11ff7f86ed6&type=album" alt='Hello!' className="home"/>}
                             {randomImg === 6 &&
-                            <img src="https://sun9-30.userapi.com/impg/JI5Obz-cKWItsQEzj4uY4VhlqlfLs7Hmu2KkLw/IVf6VOJGAxg.jpg?size=1600x1374&quality=96&sign=50c4c0bebc35af815d0be0b582b1ae63&type=album" alt='Hello!' className="home"/>}
+                            <img src="https://sun9-30.userapi.com/impg/JI5Obz-cKWItsQEzj4uY4VhlqlfLs7Hmu2KkLw/IVf6VOJGAxg.jpg?size=1600x1374&quality=96&sign=50c4c0bebc35af815d0be0b582b1ae63&type=album" alt='Hello!' className="home"/>}*/}
                         </div>
                     </Col>
                 </Row>
