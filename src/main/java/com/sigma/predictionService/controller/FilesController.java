@@ -31,7 +31,7 @@ public class FilesController {
     @PostMapping("/parse")
     public void parseFile(@RequestParam("fileName") String fileName){
         if (fileName!=null){
-
+            fileService.readScv(fileName);
         }
     }
 
