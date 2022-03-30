@@ -1,12 +1,10 @@
 package com.sigma.predictionService.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalTime;
 import java.util.Set;
 
 
@@ -48,6 +46,6 @@ public class User {
 
     @OneToMany (mappedBy = "user")
     @EqualsAndHashCode.Exclude
-    private Set<File> file;
+    private Set<Files> files;
 
 }

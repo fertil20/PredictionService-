@@ -5,31 +5,26 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-@Table(name = "files", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {
-                "fileName"
-        })
-})
+@Table(name = "files")
 @Data
 @NoArgsConstructor
-public class File {
+public class Files {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long fileId;
+    private Long Id;
 
     @Column(name = "fileName", nullable = false)
     private String fileName;
 
-    /*
-    @OneToMany (mappedBy = "files")
-    @EqualsAndHashCode.Exclude
-    private Set<Payment> payments;
-     */
+    @Column(name = "file")
+    @Lob
+    byte[] file = "Нет файла".getBytes(StandardCharsets.UTF_8);
 
     @ManyToOne
     @EqualsAndHashCode.Exclude
