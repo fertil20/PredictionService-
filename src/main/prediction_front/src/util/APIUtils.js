@@ -44,7 +44,7 @@ export function loadFilesByUser(userId) {
 
 export function parseFile(fileName) {
     return request({
-        url: API_BASE_URL + "/parse/" + fileName,
+        url: API_BASE_URL + "/file/parse/" + fileName,
         method: 'GET',
     });
 }

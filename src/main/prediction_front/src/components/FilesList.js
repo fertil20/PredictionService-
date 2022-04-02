@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import {Button, Col, Row} from 'reactstrap';
-import {loadFilesByUser} from "../util/APIUtils";
+import {loadFilesByUser, parseFile} from "../util/APIUtils";
 import {Link} from "react-router-dom";
+import ".//Files.css"
 
 export default class FilesList extends Component {
 
@@ -77,8 +78,10 @@ export default class FilesList extends Component {
                                         this.state.files.map(
                                             (files, index) =>(
                                                 <div style={{width:570, marginBottom:30}}>
-                                                    <div className='news-title'>{files.id}</div>
-                                                    <div className='news-date'>{files.file_name}</div>
+                                                    <Row>
+                                                    <Col className='news-title'>{files.id}</Col>
+                                                    <Col> <a className='parse-link' onClick={event => parseFile(files.fileName)}>{files.fileName}</a></Col>
+                                                    </Row>
                                                 </div>)
                                         ).reverse()
                                     }

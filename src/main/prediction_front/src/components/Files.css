@@ -1,0 +1,3 @@
+a.parse-link:link {color:#ff0000;text-decoration:none;cursor:pointer}
+a.parse-link:visited {color:#0000ff;text-decoration:none;cursor:pointer}
+a.parse-link:hover {text-decoration:underline;cursor:pointer}
