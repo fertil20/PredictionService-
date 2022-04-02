@@ -4,7 +4,8 @@ import hello2 from "../../media/hello2.jpg";
 import hello3 from "../../media/hello3.jpg";
 import hello4 from "../../media/hello4.jpg";*/
 import './Home.css';
-import {Col, Row} from 'reactstrap';
+import {Button, Col, Row} from 'reactstrap';
+import {Link, Redirect} from "react-router-dom";
 
 const randomImg = (Math.floor(Math.random() * 6 + 1));
 
@@ -52,6 +53,9 @@ export default class Home extends Component {
                         width: '53%'
                     }}>
                         <div style={{width: '100%', maxHeight: '80%'}}>
+                            <Link to="/file/add">
+                                <div className='row-navigation'>Загрузить файлы</div>
+                            </Link>
 {/*                            {randomImg === 1 &&
                             <img src={hello1} id="hello" alt='Hello!' className="home"/>}
                             {randomImg === 2 &&

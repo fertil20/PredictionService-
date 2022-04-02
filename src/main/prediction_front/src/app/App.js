@@ -14,6 +14,7 @@ import {PersistentState} from "../util/PersistentState";
 import AppHeader from "../header/AppHeader";
 import Home from "../home/Home";
 import FilesAdd from "../components/FilesAdd";
+import FilesList from "../components/FilesList";
 
 
 const { Content } = Layout;
@@ -113,6 +114,7 @@ class App extends Component {
                             <PrivateRoute exact path="/" authenticated={this.persistentState.getState().isAuthenticated} component={Home}/>
                             <Route path="/login"
                                    render={(props) => <Login onLogin={this.handleLogin} {...props} />}/>
+                            <PrivateRoute exact path="/:user/files" authenticated={this.persistentState.getState().isAuthenticated} component={FilesList} handleLogout={this.handleLogout}/>
                             <PrivateRoute exact path="/file/add" authenticated={this.persistentState.getState().isAuthenticated} component={FilesAdd} handleLogout={this.handleLogout}/>
                             <Route component={NotFound} />
                         </Switch>

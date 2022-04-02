@@ -29,8 +29,8 @@ public class FilesController {
         }
     }
 
-    @PostMapping("/parse")
-    public void parseFile(@RequestParam("fileName") String fileName){
+    @GetMapping("/parse/{fileName}")
+    public void parseFile(@PathVariable String fileName){
         if (fileName!=null){
             fileService.readScv(fileName);
         }

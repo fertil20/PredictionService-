@@ -34,6 +34,21 @@ const requestFile = async (options) => {
     return await fetch(options.url, options)
 };
 
+
+export function loadFilesByUser(userId) {
+    return request({
+        url: API_BASE_URL + "/users/" +  userId + "/files",
+        method: 'GET',
+    });
+}
+
+export function parseFile(fileName) {
+    return request({
+        url: API_BASE_URL + "/parse/" + fileName,
+        method: 'GET',
+    });
+}
+
 export function uploadFile(file, userId) {
 
     let fd = new FormData()

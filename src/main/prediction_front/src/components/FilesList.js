@@ -1,28 +1,25 @@
 import React, {Component} from "react";
-import './News.css';
 import {Button, Col, Row} from 'reactstrap';
-import {deleteNews, loadImageByID, loadNews} from "../util/APIUtils";
+import {loadFilesByUser} from "../util/APIUtils";
 import {Link} from "react-router-dom";
 
-export default class News extends Component {
+export default class FilesList extends Component {
 
     constructor(props) {
         super(props);
         this._isMounted = false;
         this.state ={
             CurUser: JSON.parse(localStorage.getItem('app')),
-            news: null,
+            files: null,
             image: [],
             isLoading: false
         }
-        this.loadAllNews = this.loadAllNews.bind(this)
-        this.getNewsImage = this.getNewsImage.bind(this)
-        this.ImgLoaded = this.ImgLoaded.bind(this)
+        this.loadAllFiles = this.loadAllFiles.bind(this)
     }
 
 
     componentDidMount() {
-        this.loadAllNews()
+        this.loadAllFiles()
         this._isMounted = true;
     }
 
@@ -35,7 +32,7 @@ export default class News extends Component {
     /*    componentDidUpdate(prevProps, prevState, snapshot) {
             if(!this.state.isLoading){
             let idVar = setInterval(() => {
-                this.loadAllNews()
+                this.loadAllFiles()
                 if(this.state.isLoading)clearInterval(idVar)
             }, 2000);}
         }*/
@@ -45,15 +42,11 @@ export default class News extends Component {
     }
 
 
-    loadAllNews(){
-        loadNews()
+    loadAllFiles(){
+        loadFilesByUser(this.state.CurUser.currentUser.id)
             .then(response => {
-                this.setState({news: response})
+                this.setState({files: response})
                 if(response){
-                    this.state.news.map(
-                        news=>{
-                            this.getNewsImage(news.id)
-                        })
                     this.setState({isLoading:true})
                 }
             })
@@ -61,54 +54,31 @@ export default class News extends Component {
             });
     }
 
-    getNewsImage(id){
-        if(id){
-            loadImageByID(id)
-                .then(response => {
-                })
-                .catch(error => {
-                    alert('Что-то пошло не так2.');
-                });}
-    }
-
-
-    deleteNewsByID(NewsId){
-        deleteNews(NewsId)
+/*    deleteFilesByID(filesId){
+        deleteFiles(filesId)
             .then(response => {
                 alert('Новость удалена.');
-                this.props.history.go(`/news`);
+                this.props.history.go(`/files`);
             })
             .catch(error => {
                 alert('Что-то пошло не так.');
             });
-    }
+    }*/
 
     render () {
         if (this.state.isLoading) {
             return(
                 <Row>
-                    <NavigationPanel/>
                     <Col sm={{size:1.5}} style={{backgroundColor: 'white', borderRadius: 10,overflow: 'auto', height:'100%', paddingBottom: 20, marginRight: '2%', width: '53%'}}>
                         {
-                            this.state.news ? (
+                            this.state.files ? (
                                 <div>
                                     {
-                                        this.state.news.map(
-                                            (news, index) =>(
+                                        this.state.files.map(
+                                            (files, index) =>(
                                                 <div style={{width:570, marginBottom:30}}>
-                                                    <div className='news-title'>{news.title}</div>
-                                                    <div className='news-date'>{news.date}</div>
-                                                    <Row>
-                                                        <Col>
-                                                            <div style={{width:200,paddingLeft:20}}><img src={process.env.REACT_APP_API_BASE_URL+'/news/see/'+news.id+'/image'} onLoad={()=>this.ImgLoaded()} alt={news.id} className='news-image'/></div>
-                                                        </Col>
-                                                        <Col >
-                                                            <div style={{width:330}} className='news-text'>{news.topText}</div>
-                                                        </Col>
-                                                    </Row>
-                                                    <div style={{width:560,paddingLeft:20,height:'auto',paddingTop:5,paddingBottom:25}} className='news-text'>{news.bottomText}</div>
-                                                    {this.state.CurUser.currentUser.privileges.includes('Manage_News') && <div><Link to={'/news/edit/'+news.id}><Button size='sm' className='news-edit-button'>Редактировать</Button></Link>
-                                                        <Button size='sm' color='danger' className='news-delete-button' onClick={()=>this.deleteNewsByID(news.id)}>Удалить</Button></div>}
+                                                    <div className='news-title'>{files.id}</div>
+                                                    <div className='news-date'>{files.file_name}</div>
                                                 </div>)
                                         ).reverse()
                                     }
@@ -116,7 +86,6 @@ export default class News extends Component {
                             ) : null
                         }
                     </Col>
-                    <ShortNews/>
                 </Row>
             )
         }else{

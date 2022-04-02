@@ -71,6 +71,10 @@ function NavBarLogged(props){
                             Профиль
                         </DropdownItem>
                         <DropdownItem divider />
+                        <DropdownItem href={`/${props.currentUser.username}/files`}>
+                            Мои файлы
+                        </DropdownItem>
+                        <DropdownItem divider />
                         <DropdownItem href={`/changePassword`}>
                             Сменить пароль
                         </DropdownItem>
