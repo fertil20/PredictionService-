@@ -5,6 +5,7 @@ import com.sigma.predictionService.dto.UserFilesResponse;
 import com.sigma.predictionService.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +17,7 @@ import java.util.Objects;
 @RequestMapping("/api/file")
 public class FilesController {
 
-    final FileService fileService;
+    private final FileService fileService;
 
     public FilesController(FileService fileService) {
         this.fileService = fileService;
@@ -29,9 +30,10 @@ public class FilesController {
         }
     }
 
+    @Transactional
     @GetMapping("/parse/{id}")
     public void parseFile(@PathVariable Long id){
-            fileService.readScv(id);
+        fileService.readScv(id);
     }
 
 }
