@@ -53,10 +53,9 @@ export function uploadFile(file, userId) {
 
     let fd = new FormData()
     fd.append('file', file)
-    fd.append('userId', userId)
 
     return requestFile({
-        url: API_BASE_URL + "/file/upload",
+        url: API_BASE_URL + "/file/upload/" + userId,
         method: 'POST',
         body: fd,
         headers:  new Headers({"Authorization": `Bearer ` + localStorage.getItem(ACCESS_TOKEN)})
