@@ -7,7 +7,7 @@ import {formatDate} from "../util/Helpers";
 let fileToUpload = ''
 
 
-export default class AddFiles extends Component {
+export default class FilesAdd extends Component {
 
     constructor(props) {
         super(props);
@@ -34,7 +34,7 @@ export default class AddFiles extends Component {
     }
 
     addNewFile(){
-        uploadFile(this.state.file)
+        uploadFile(this.state.file, this.state.CurUser.currentUser.id)
             .then(response => {
                 alert('Файл добавлен')
                 //this.props.history.push(`/news`);

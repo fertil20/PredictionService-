@@ -13,7 +13,7 @@ import {Layout, notification} from 'antd';
 import {PersistentState} from "../util/PersistentState";
 import AppHeader from "../header/AppHeader";
 import Home from "../home/Home";
-import AddFiles from "../components/AddFiles";
+import FilesAdd from "../components/FilesAdd";
 
 
 const { Content } = Layout;
@@ -113,7 +113,7 @@ class App extends Component {
                             <PrivateRoute exact path="/" authenticated={this.persistentState.getState().isAuthenticated} component={Home}/>
                             <Route path="/login"
                                    render={(props) => <Login onLogin={this.handleLogin} {...props} />}/>
-                            <PrivateRoute exact path="/file/add" authenticated={this.persistentState.getState().isAuthenticated} component={AddFiles} handleLogout={this.handleLogout}/>
+                            <PrivateRoute exact path="/file/add" authenticated={this.persistentState.getState().isAuthenticated} component={FilesAdd} handleLogout={this.handleLogout}/>
                             <Route component={NotFound} />
                         </Switch>
                     </div>

@@ -34,10 +34,12 @@ const requestFile = async (options) => {
     return await fetch(options.url, options)
 };
 
-export function uploadFile(file) {
+export function uploadFile(file, userId) {
 
     let fd = new FormData()
-    fd.append('file',file)
+    fd.append('file', file)
+    fd.append('userId', userId)
+
     return requestFile({
         url: API_BASE_URL + "/file/upload",
         method: 'POST',

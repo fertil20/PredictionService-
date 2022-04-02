@@ -23,9 +23,9 @@ public class FilesController {
     }
 
     @PostMapping("/upload")
-    public void uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("userId") Long id) throws IOException {
+    public void uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("userId") String id) throws IOException {
         if (file!= null && id!=null){
-            fileService.uploadFile(file, id);
+            fileService.uploadFile(file, Long.valueOf(id));
         }
     }
 
