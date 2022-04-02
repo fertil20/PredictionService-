@@ -22,10 +22,10 @@ public class FilesController {
         this.fileService = fileService;
     }
 
-    @PostMapping("/upload")
-    public void uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("userId") String id) throws IOException {
+    @PostMapping("/upload/{id}")
+    public void uploadFile(@RequestParam("file") MultipartFile file, @PathVariable Long id) throws IOException {
         if (file!= null && id!=null){
-            fileService.uploadFile(file, Long.valueOf(id));
+            fileService.uploadFile(file, id);
         }
     }
 
