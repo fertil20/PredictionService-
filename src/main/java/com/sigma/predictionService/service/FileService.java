@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
+import java.io.ByteArrayInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,8 +48,11 @@ public class FileService {
     }
 
 
-    public void readScv(String fileName){
-        try (CSVReader reader = new CSVReader(new FileReader(fileName))) {
+    public void readScv(Long fileId){
+        Files file = filesRepo.getById(fileId);
+        try(CSVReader reader = new CSVReader(
+                                new InputStreamReader(
+                                    new ByteArrayInputStream(file.getFile())))){
             List<String[]> r = reader.readAll();
             r.forEach(x -> System.out.println(Arrays.toString(x)));
         } catch (IOException | CsvException e) {

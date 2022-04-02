@@ -29,18 +29,9 @@ public class FilesController {
         }
     }
 
-    @GetMapping("/parse/{fileName}")
-    public void parseFile(@PathVariable String fileName){
-        if (fileName!=null){
-            fileService.readScv(fileName);
-        }
-    }
-
-    @GetMapping("/success")//NOT USE
-    public String loadFile() {
-        fileService.readScv("D:\\PredictionService\\pay2021-11-24.csv");
-
-        return "done";
+    @GetMapping("/parse/{id}")
+    public void parseFile(@PathVariable Long id){
+            fileService.readScv(id);
     }
 
 }
