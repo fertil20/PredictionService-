@@ -80,7 +80,7 @@ export default class FilesList extends Component {
                                                 <div style={{width:570, marginBottom:30}}>
                                                     <Row>
                                                     <Col className='news-title'>{files.id}</Col>
-                                                    <Col> <a className='parse-link' onClick={event => parseFile(files.fileName)}>{files.fileName}</a></Col>
+                                                    <Col> <a className='parse-link' onClick={event => parseFile(files.id)}>{files.fileName}</a></Col>
                                                     </Row>
                                                 </div>)
                                         ).reverse()

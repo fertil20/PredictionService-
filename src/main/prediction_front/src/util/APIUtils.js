@@ -42,9 +42,9 @@ export function loadFilesByUser(userId) {
     });
 }
 
-export function parseFile(fileName) {
+export function parseFile(fileId) {
     return request({
-        url: API_BASE_URL + "/file/parse/" + fileName,
+        url: API_BASE_URL + "/file/parse/" + fileId,
         method: 'GET',
     });
 }
