@@ -30,6 +30,20 @@ public class FilesController {
         }
     }
 
+    @PostMapping("/changeName/{id]")
+    public void changeFileName(@PathVariable Long id, @RequestParam("name") String name){
+        if (id!=null){
+            fileService.changeFileName(id, name);
+        }
+    }
+
+    @DeleteMapping("/delete/{id]")
+    public void deleteFile(@PathVariable Long id){
+        if (id!=null){
+            fileService.deleteFile(id);
+        }
+    }
+
     @Transactional
     @GetMapping("/parse/{id}")
     public void parseFile(@PathVariable Long id){

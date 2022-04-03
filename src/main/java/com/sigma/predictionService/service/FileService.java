@@ -58,7 +58,16 @@ public class FileService {
         } catch (IOException | CsvException e) {
             e.printStackTrace();
         }
+    }
 
+    public void changeFileName(Long id, String name){
+        Files updatedFile = filesRepo.getById(id);
+        updatedFile.setFileName(name);
+        filesRepo.save(updatedFile);
+    }
+
+    public void deleteFile(Long id){
+        filesRepo.deleteById(id);
     }
 
 }
