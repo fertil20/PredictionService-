@@ -75,18 +75,10 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,
-                        "/*", "/users/**", "/meeting/**", "/news/**",
-                        "/login/**", "/forgotPassword/**", "/resetPassword/**",
-                        "/newUser/**", "/roleManager/**", "/manageUsers/**",
-                        "/about/**", "/api/news/see/*/image"
+                        "/*", "/login/**", "/forgotPassword/**", "/resetPassword/**"
                 )
                 .permitAll()
                 .antMatchers("/",
-                        "/_ah/health",
-                        "/_ah/start",
-                        "/_ah/stop",
-                        "/health",
-                        "/ready",
                         "/favicon.ico",
                         "/**/*.png",
                         "/**/*.gif",
