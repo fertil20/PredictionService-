@@ -1,17 +1,16 @@
 package com.sigma.predictionService.controller;
 
 
-import com.sigma.predictionService.dto.UserFilesResponse;
+import com.sigma.predictionService.dto.FileDownloadResponse;
 import com.sigma.predictionService.service.FileService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/file")
@@ -48,6 +47,20 @@ public class FilesController {
     @GetMapping("/parse/{id}")
     public void parseFile(@PathVariable Long id){
         fileService.readScv(id);
+    }
+
+
+    @GetMapping("/download/{id}")
+    public ResponseEntity<byte[]> downloadFine(@PathVariable Long id, @RequestParam Long userId){
+        if (id!=null){
+            FileDownloadResponse fileDownloadResponse = fileService.getDownloadFile(id, userId);
+
+            HttpHeaders header = new HttpHeaders();
+            header.setContentType(MediaType.valueOf(fileDownloadResponse.getContentType()));
+            header.setContentLength(fileDownloadResponse.getFile().length);
+            header.set("Content-Disposition", "attachment; filename=" + fileDownloadResponse.getFileName());
+        }
+        return null;
     }
 
 }

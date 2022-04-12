@@ -2,20 +2,21 @@ package com.sigma.predictionService.service;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
+import com.sigma.predictionService.dto.FileDownloadResponse;
 import com.sigma.predictionService.dto.UserFilesResponse;
 import com.sigma.predictionService.model.Files;
 import com.sigma.predictionService.repository.FilesRepo;
 import com.sigma.predictionService.repository.UserDetailsRepo;
+import org.apache.commons.io.FileUtils;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
-import java.io.ByteArrayInputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -35,6 +36,7 @@ public class FileService {
         Files newFiles = new Files();
         newFiles.setFileName(file.getOriginalFilename());
         newFiles.setFile(file.getBytes());
+        newFiles.setContentType(file.getContentType());
         newFiles.setUser(userDetailsRepo.getById(id));
         filesRepo.save(newFiles);
     }
@@ -64,6 +66,26 @@ public class FileService {
         Files updatedFile = filesRepo.getById(id);
         updatedFile.setFileName(name);
         filesRepo.save(updatedFile);
+    }
+
+    public byte[] getFile(Long id, Long userId){
+        Files file = filesRepo.getById(id);
+        if (Objects.equals(file.getUser().getId(), userId)){
+            return file.getFile();
+        }
+        return null;
+    }
+
+    public FileDownloadResponse getDownloadFile(Long id, Long userId){
+        FileDownloadResponse response = new FileDownloadResponse();
+        Files file = filesRepo.getById(id);
+        if (Objects.equals(file.getUser().getId(), userId)){
+            response.setFile(file.getFile());
+            response.setFileName(file.getFileName());
+            response.setContentType(file.getContentType());
+            return response;
+        }
+        return null;
     }
 
     public void deleteFile(Long id){

@@ -22,9 +22,12 @@ public class Files {
     @Column(name = "fileName", nullable = false)
     private String fileName;
 
+    @Column(name = "contentType", nullable = false)
+    private String contentType;
+
     @Column(name = "file")
     @Lob
-    byte[] file = "Нет файла".getBytes(StandardCharsets.UTF_8);
+    private byte[] file = "Нет файла".getBytes(StandardCharsets.UTF_8);
 
     @ManyToOne
     @EqualsAndHashCode.Exclude

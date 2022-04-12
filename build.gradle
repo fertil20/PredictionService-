@@ -19,14 +19,9 @@ repositories {
 }
 
 dependencies {
-	//implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.6.2'
-	//implementation group: 'org.springframework.security', name: 'spring-security-oauth2-jose', version: '5.6.2'
-	//implementation group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.6.3'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.4'
-	//implementation 'org.springframework.boot:spring-boot-starter-jdbc:2.6.4'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.6.4'
 	implementation 'org.springframework.boot:spring-boot-starter-web:2.6.4'
-	//implementation group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.5.1.RELEASE'
 	compileOnly 'org.projectlombok:lombok:1.18.22'
 	runtimeOnly 'com.h2database:h2:2.1.210'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
@@ -38,8 +33,11 @@ dependencies {
 	implementation 'javax.validation:validation-api:2.0.1.Final'
 	implementation 'org.postgresql:postgresql:42.3.3'
 	implementation 'org.hibernate:hibernate-core:5.6.5.Final'
-	//implementation 'com.auth0:java-jwt:3.19.0'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	// для файлов
+	implementation 'commons-io:commons-io:2.11.0'
+	// отправка емаил
+	implementation 'org.springframework.boot:spring-boot-starter-mail:2.6.6'
 }
 
 tasks.named('test') {
