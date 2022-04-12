@@ -1,8 +1,9 @@
 import React, {Component} from "react";
-import {Button, Col, Row} from 'reactstrap';
-import {loadFilesByUser, parseFile} from "../util/APIUtils";
-import {Link} from "react-router-dom";
+import {Col, Row} from 'reactstrap';
+import {loadFilesByUser, parseFile, downloadFile} from "../util/APIUtils";
 import ".//Files.css"
+import { Button} from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
 
 export default class FilesList extends Component {
 
@@ -16,6 +17,7 @@ export default class FilesList extends Component {
             isLoading: false
         }
         this.loadAllFiles = this.loadAllFiles.bind(this)
+        this.downloadThisFile = this.downloadThisFile.bind(this)
     }
 
 
@@ -55,6 +57,16 @@ export default class FilesList extends Component {
             });
     }
 
+    downloadThisFile(fileId){
+        downloadFile(fileId)
+            .then(response => {
+                alert('Ну скачал и скачал')
+            })
+            .catch(error => {
+                alert('Что-то пошло не так')
+            });
+    }
+
 /*    deleteFilesByID(filesId){
         deleteFiles(filesId)
             .then(response => {
@@ -80,7 +92,14 @@ export default class FilesList extends Component {
                                                 <div style={{width:570, marginBottom:30}}>
                                                     <Row>
                                                     <Col className='news-title'>{files.id}</Col>
-                                                    <Col> <a className='parse-link' onClick={event => parseFile(files.id)}>{files.fileName}</a></Col>
+                                                    <Col>
+                                                        <a className='parse-link' onClick={event => parseFile(files.id)}>{files.fileName}</a>
+                                                    </Col>
+                                                    <Col>
+                                                        <Button>
+                                                            <DownloadOutlined onClick={()=>this.downloadThisFile(files.id)}/>
+                                                        </Button>
+                                                    </Col>
                                                     </Row>
                                                 </div>)
                                         ).reverse()

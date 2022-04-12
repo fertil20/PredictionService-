@@ -21,7 +21,7 @@ const request = (options) => {
         .then((text) => text.length ? JSON.parse(text) : {})
 };
 
-const requestFile = async (options) => {
+const setFile = async (options) => {
     const headers = new Headers({})
 
     if (localStorage.getItem(ACCESS_TOKEN)) {
@@ -34,18 +34,48 @@ const requestFile = async (options) => {
     return await fetch(options.url, options)
 };
 
+const getFile = (options) => {
+    const headers = new Headers({})
+
+    if (localStorage.getItem(ACCESS_TOKEN)) {
+        headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
+    }
+
+    const defaults = {headers: headers};
+    options = Object.assign({}, defaults, options);
+
+    return fetch(options.url, options)
+        .then(response => {
+            const filename =  response.headers.get('Content-Disposition').split('filename=')[1];
+            response.blob().then(blob => {
+                let url = window.URL.createObjectURL(blob);
+                let a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.click();
+            });
+        });
+}
+
+
+export function downloadFile(fileId) {
+    return getFile({
+        url: API_BASE_URL + "/file/download/" + fileId,
+        method: 'GET'
+    });
+}
 
 export function loadFilesByUser(userId) {
     return request({
         url: API_BASE_URL + "/users/" +  userId + "/files",
-        method: 'GET',
+        method: 'GET'
     });
 }
 
 export function parseFile(fileId) {
     return request({
         url: API_BASE_URL + "/file/parse/" + fileId,
-        method: 'GET',
+        method: 'GET'
     });
 }
 
@@ -54,7 +84,7 @@ export function uploadFile(file, userId) {
     let fd = new FormData()
     fd.append('file', file)
 
-    return requestFile({
+    return setFile({
         url: API_BASE_URL + "/file/upload/" + userId,
         method: 'POST',
         body: fd,
