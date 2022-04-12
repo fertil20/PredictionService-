@@ -51,7 +51,7 @@ public class FilesController {
 
 
     @GetMapping("/download/{id}")
-    public ResponseEntity<byte[]> downloadFine(@PathVariable Long id, @RequestParam Long userId){
+    public ResponseEntity<byte[]> downloadFile(@PathVariable Long id, @RequestParam Long userId){
         if (id!=null){
             FileDownloadResponse fileDownloadResponse = fileService.getDownloadFile(id, userId);
 
