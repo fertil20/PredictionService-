@@ -4,6 +4,7 @@ package com.sigma.predictionService.controller;
 import com.sigma.predictionService.dto.FileDownloadResponse;
 import com.sigma.predictionService.service.FileService;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,6 +60,8 @@ public class FilesController {
             header.setContentType(MediaType.valueOf(fileDownloadResponse.getContentType()));
             header.setContentLength(fileDownloadResponse.getFile().length);
             header.set("Content-Disposition", "attachment; filename=" + fileDownloadResponse.getFileName());
+
+            return new ResponseEntity<>(fileDownloadResponse.getFile(), header, HttpStatus.OK);
         }
         return null;
     }

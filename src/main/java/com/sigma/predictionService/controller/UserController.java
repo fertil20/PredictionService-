@@ -5,6 +5,7 @@ import com.sigma.predictionService.model.User;
 import com.sigma.predictionService.repository.RoleRepo;
 import com.sigma.predictionService.service.CustomUserDetailsService;
 import com.sigma.predictionService.service.FileService;
+import com.sigma.predictionService.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +22,12 @@ public class UserController {
 
 
     private final FileService fileService;
-    private final CustomUserDetailsService customUserDetailsService;
+    private final UserService userService;
 
     public UserController(FileService fileService,
-                          RoleRepo roleRepo,
-                          CustomUserDetailsService customUserDetailsService) {
+                          UserService userService) {
         this.fileService = fileService;
-        this.customUserDetailsService = customUserDetailsService;
+        this.userService = userService;
     }
 
     @Transactional
@@ -40,6 +40,6 @@ public class UserController {
     @PostMapping("/new")
     @PreAuthorize("hasAuthority('Manage_Users')")
     public void createUserProfile(@RequestBody User request) throws MessagingException, UnsupportedEncodingException {
-        customUserDetailsService.createNewUser(request);
+        userService.createNewUser(request);
     }
 }
