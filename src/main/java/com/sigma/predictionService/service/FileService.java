@@ -2,6 +2,7 @@ package com.sigma.predictionService.service;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
+import com.sigma.predictionService.dto.FileDownloadResponse;
 import com.sigma.predictionService.dto.UserFilesResponse;
 import com.sigma.predictionService.model.Files;
 import com.sigma.predictionService.repository.FilesRepo;
@@ -35,6 +36,7 @@ public class FileService {
         Files newFiles = new Files();
         newFiles.setFileName(file.getOriginalFilename());
         newFiles.setFile(file.getBytes());
+        newFiles.setContentType(file.getContentType());
         newFiles.setUser(userDetailsRepo.getById(id));
         filesRepo.save(newFiles);
     }
@@ -70,6 +72,18 @@ public class FileService {
         Files file = filesRepo.getById(id);
         if (Objects.equals(file.getUser().getId(), userId)){
             return file.getFile();
+        }
+        return null;
+    }
+
+    public FileDownloadResponse getDownloadFile(Long id, Long userId){
+        FileDownloadResponse response = new FileDownloadResponse();
+        Files file = filesRepo.getById(id);
+        if (Objects.equals(file.getUser().getId(), userId)){
+            response.setFile(file.getFile());
+            response.setFileName(file.getFileName());
+            response.setContentType(file.getContentType());
+            return response;
         }
         return null;
     }
