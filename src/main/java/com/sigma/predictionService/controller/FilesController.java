@@ -2,6 +2,8 @@ package com.sigma.predictionService.controller;
 
 
 import com.sigma.predictionService.dto.FileDownloadResponse;
+import com.sigma.predictionService.security.CurrentUser;
+import com.sigma.predictionService.security.UserPrincipal;
 import com.sigma.predictionService.service.FileService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -51,10 +53,12 @@ public class FilesController {
     }
 
 
+    @Transactional
     @GetMapping("/download/{id}")
-    public ResponseEntity<byte[]> downloadFile(@PathVariable Long id, @RequestParam Long userId){
+    @CrossOrigin(value = {"*"}, exposedHeaders = {"Content-Disposition"})
+    public ResponseEntity<byte[]> downloadFile(@PathVariable Long id, @CurrentUser UserPrincipal currentUser){
         if (id!=null){
-            FileDownloadResponse fileDownloadResponse = fileService.getDownloadFile(id, userId);
+            FileDownloadResponse fileDownloadResponse = fileService.getDownloadFile(id, currentUser.getId());
 
             HttpHeaders header = new HttpHeaders();
             header.setContentType(MediaType.valueOf(fileDownloadResponse.getContentType()));
