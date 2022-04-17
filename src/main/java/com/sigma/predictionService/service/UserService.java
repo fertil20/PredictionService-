@@ -1,12 +1,17 @@
 package com.sigma.predictionService.service;
 
 
+import com.sigma.predictionService.dto.ProfileEditRequest;
+import com.sigma.predictionService.exception.ResourceNotFoundException;
 import com.sigma.predictionService.model.Role;
 import com.sigma.predictionService.model.User;
 import com.sigma.predictionService.repository.RoleRepo;
 import com.sigma.predictionService.repository.UserDetailsRepo;
+import com.sigma.predictionService.security.CurrentUser;
+import com.sigma.predictionService.security.UserPrincipal;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +21,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.util.Collections;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -85,6 +91,26 @@ public class UserService {
         helper.setText(content, true);
 
         mailSender.send(message);
+    }
+
+    @Transactional
+    public void editProfile(@CurrentUser UserPrincipal currentUser,
+                            String username,
+                            ProfileEditRequest request) {
+        User user = userDetailsRepo.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+
+        String currentUsername = currentUser.getUsername();
+        Set<String> currentUserPrivileges = currentUser.getPrivileges();
+
+        if (!currentUsername.equals(username) && !currentUserPrivileges.contains("Edit_Users")) {
+            throw new AccessDeniedException("У вас нет прав для редактирования других пользователей");
+        }
+        user.setEmail(request.getEmail());
+        if (currentUserPrivileges.contains("Edit_Users")) {
+            user.setName(request.getName());
+        }
+        userDetailsRepo.save(user);
     }
 
 }

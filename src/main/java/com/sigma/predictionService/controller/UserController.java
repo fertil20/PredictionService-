@@ -1,8 +1,11 @@
 package com.sigma.predictionService.controller;
 
+import com.sigma.predictionService.dto.ProfileEditRequest;
 import com.sigma.predictionService.dto.UserFilesResponse;
 import com.sigma.predictionService.model.User;
 import com.sigma.predictionService.repository.RoleRepo;
+import com.sigma.predictionService.security.CurrentUser;
+import com.sigma.predictionService.security.UserPrincipal;
 import com.sigma.predictionService.service.CustomUserDetailsService;
 import com.sigma.predictionService.service.FileService;
 import com.sigma.predictionService.service.UserService;
@@ -41,5 +44,12 @@ public class UserController {
     @PreAuthorize("hasAuthority('Manage_Users')")
     public void createUserProfile(@RequestBody User request) throws MessagingException, UnsupportedEncodingException {
         userService.createNewUser(request);
+    }
+
+    @PostMapping("/{username}/edit")
+    public void editUserProfile(@PathVariable(value = "username") String username,
+                                @CurrentUser UserPrincipal currentUser,
+                                @RequestBody ProfileEditRequest request) {
+        userService.editProfile(currentUser, username, request);
     }
 }
