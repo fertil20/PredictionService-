@@ -4,6 +4,7 @@ import {loadFilesByUser, parseFile, downloadFile, deleteFile} from "../util/APIU
 import ".//Files.css"
 import { Button} from 'antd';
 import { DownloadOutlined, DeleteOutlined } from '@ant-design/icons';
+import NavigationPanel from "../navigation/NavigationPanel";
 
 export default class FilesList extends Component {
 
@@ -83,7 +84,8 @@ export default class FilesList extends Component {
         if (this.state.isLoading) {
             return(
                 <Row>
-                    <Col sm={{size:1.5}} style={{backgroundColor: 'white', borderRadius: 10,overflow: 'auto', height:'100%', paddingBottom: 20, marginRight: '2%', width: '53%'}}>
+                    <NavigationPanel/>
+                    <Col sm={{size: 5.4}} style={{backgroundColor:'white', borderRadius:10,overflow: 'auto', height:'100%', paddingBottom:20, width: '75%'}}>
                         {
                             this.state.files ? (
                                 <div>

@@ -41,14 +41,7 @@ export default class Home extends Component {
             return (
                 <Row>
                     <NavigationPanel/>
-                    <Col sm={{size: 1.5}} style={{
-                        backgroundColor: 'white',
-                        borderRadius: 10,
-                        height: '100%',
-                        padding: 10,
-                        marginRight: '2%',
-                        width: '53%'
-                    }}>
+                    <Col sm={{size: 5.4}} style={{backgroundColor:'white', borderRadius:10,overflow: 'auto', height:'100%', paddingBottom:20, width: '75%'}}>
                         <div style={{width: '100%', maxHeight: '80%'}}>
                             <Link to="/file/add">
                                 <div className='row-navigation'>Загрузить файлы</div>
