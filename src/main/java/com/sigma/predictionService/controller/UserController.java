@@ -2,8 +2,10 @@ package com.sigma.predictionService.controller;
 
 import com.sigma.predictionService.dto.ProfileEditRequest;
 import com.sigma.predictionService.dto.UserFilesResponse;
+import com.sigma.predictionService.dto.UserForListResponse;
 import com.sigma.predictionService.model.User;
 import com.sigma.predictionService.repository.RoleRepo;
+import com.sigma.predictionService.repository.UserDetailsRepo;
 import com.sigma.predictionService.security.CurrentUser;
 import com.sigma.predictionService.security.UserPrincipal;
 import com.sigma.predictionService.service.CustomUserDetailsService;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -23,14 +26,23 @@ import java.util.List;
 public class UserController {
 
 
-
+    private final UserDetailsRepo userDetailsRepo;
     private final FileService fileService;
     private final UserService userService;
 
     public UserController(FileService fileService,
-                          UserService userService) {
+                          UserService userService,
+                          UserDetailsRepo userDetailsRepo) {
         this.fileService = fileService;
         this.userService = userService;
+        this.userDetailsRepo = userDetailsRepo;
+    }
+
+    @GetMapping
+    public List<UserForListResponse> getAllUsers() {
+        return userDetailsRepo.findAll().stream()
+                .map(user -> new UserForListResponse(user.getId(), user.getUsername(), user.getName(), user.getEmail()))
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -51,5 +63,13 @@ public class UserController {
                                 @CurrentUser UserPrincipal currentUser,
                                 @RequestBody ProfileEditRequest request) {
         userService.editProfile(currentUser, username, request);
+    }
+
+    @PostMapping("/{id}/deleteUser")
+    @Transactional
+    @PreAuthorize("hasAuthority('Manage_Users')")
+    public void deleteUser(@PathVariable(value = "id") Long id) {
+        userDetailsRepo.deleteFilesAssociations(id);
+        userDetailsRepo.deleteById(id);
     }
 }

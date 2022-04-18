@@ -58,6 +58,13 @@ const getFile = (options) => {
 }
 
 
+export function deleteFile(fileId) {
+    return request({
+        url: API_BASE_URL + "/file/delete/" + fileId,
+        method: 'DELETE'
+    });
+}
+
 export function downloadFile(fileId) {
     return getFile({
         url: API_BASE_URL + "/file/download/" + fileId,
@@ -92,19 +99,33 @@ export function uploadFile(file, userId) {
     });
 }
 
+export function deleteUser(deleteUserId) {
+    return request({
+        url: API_BASE_URL + "/deleteUser/" + deleteUserId,
+        method: 'POST'
+    });
+}
+
+export function newUser(newUserRequest) {
+    return request({
+        url: API_BASE_URL + "/users/new",
+        method: 'POST',
+        body: JSON.stringify(newUserRequest)
+    });
+}
+
+export function getAllUsers(){
+    return request({
+        url: API_BASE_URL + "/users",
+        method: 'GET'
+    })
+}
+
 export function login(loginRequest) {
     return request({
         url: API_BASE_URL + "/auth/signing",
         method: 'POST',
         body: JSON.stringify(loginRequest)
-    });
-}
-
-export function signup(signupRequest) {
-    return request({
-        url: API_BASE_URL + "/auth/signup",
-        method: 'POST',
-        body: JSON.stringify(signupRequest)
     });
 }
 

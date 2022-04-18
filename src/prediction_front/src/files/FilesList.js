@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import {Col, Row} from 'reactstrap';
-import {loadFilesByUser, parseFile, downloadFile} from "../util/APIUtils";
+import {loadFilesByUser, parseFile, downloadFile, deleteFile} from "../util/APIUtils";
 import ".//Files.css"
 import { Button} from 'antd';
-import { DownloadOutlined } from '@ant-design/icons';
+import { DownloadOutlined, DeleteOutlined } from '@ant-design/icons';
 
 export default class FilesList extends Component {
 
@@ -18,6 +18,7 @@ export default class FilesList extends Component {
         }
         this.loadAllFiles = this.loadAllFiles.bind(this)
         this.downloadThisFile = this.downloadThisFile.bind(this)
+        this.deleteThisFile = this.deleteThisFile.bind(this)
     }
 
 
@@ -28,7 +29,6 @@ export default class FilesList extends Component {
 
 
     componentWillUnmount() {
-
         this._isMounted = false;
     }
 
@@ -39,10 +39,6 @@ export default class FilesList extends Component {
                 if(this.state.isLoading)clearInterval(idVar)
             }, 2000);}
         }*/
-
-    ImgLoaded(){
-        this.setState({isLoading: true})
-    }
 
 
     loadAllFiles(){
@@ -58,9 +54,14 @@ export default class FilesList extends Component {
     }
 
     downloadThisFile(fileId){
-        downloadFile(fileId)
+        downloadFile(fileId).then(r => {})
+    }
+
+    deleteThisFile(fileId){
+        deleteFile(fileId)
             .then(response => {
-                alert('Ну скачал и скачал')
+                alert('Файл успешно удалён')
+                window.location.reload();
             })
             .catch(error => {
                 alert('Что-то пошло не так')
@@ -89,15 +90,22 @@ export default class FilesList extends Component {
                                     {
                                         this.state.files.map(
                                             (files, index) =>(
-                                                <div style={{width:570, marginBottom:30}}>
-                                                    <Row>
-                                                    <Col className='news-title'>{files.id}</Col>
-                                                    <Col>
+                                                <div style={{width:"auto", marginBottom:30}}>
+                                                    <Row >
+                                                    <Col style={{minWidth: '10%'}} className='news-title'>
+                                                        {files.id}
+                                                    </Col>
+                                                    <Col style={{minWidth: '70%'}}>
                                                         <a className='parse-link' onClick={event => parseFile(files.id)}>{files.fileName}</a>
                                                     </Col>
-                                                    <Col>
+                                                    <Col style={{minWidth: '10%'}}>
                                                         <Button>
                                                             <DownloadOutlined onClick={()=>this.downloadThisFile(files.id)}/>
+                                                        </Button>
+                                                    </Col>
+                                                    <Col style={{minWidth: '10%'}}>
+                                                        <Button>
+                                                            <DeleteOutlined onClick={()=>this.deleteThisFile(files.id)}/>
                                                         </Button>
                                                     </Col>
                                                     </Row>

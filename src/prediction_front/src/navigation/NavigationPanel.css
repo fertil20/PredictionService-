@@ -1,0 +1,73 @@
+.row-navigation {
+    padding-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.col-navigation {
+    background-color: white;
+    border-radius: 10px;
+}
+
+.col-left{
+    position: sticky;
+    top: 80px;
+    z-index: 100;
+    height: 100%;
+    margin-right: 2%;
+    width: 23%;
+}
+
+.calendar{
+    background-color: white;
+    border-radius: 5px;
+}
+
+.fc .fc-toolbar-title {
+    font-size: 1em !important;
+}
+
+.fc .fc-button {
+    font-weight: 400 !important;
+    line-height: 0.75 !important;
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 0.5em !important;
+}
+
+.fc-icon-chevron-left:before {
+    font-size: 0.75em;
+    margin-left: -15px !important;
+}
+
+.fc-icon-chevron-right:before {
+    font-size: 0.75em;
+    margin-left: -15px !important;
+}
+
+.fc .fc-button .fc-icon {
+    vertical-align: middle;
+    font-size: 1em !important;
+}
+
+.fc-direction-ltr .fc-button-group > .fc-button:not(:last-child) {
+    width: 1em !important;
+}
+
+.fc-direction-ltr .fc-button-group > .fc-button:not(:first-child) {
+    width: 1em !important;
+}
+
+.fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
+    position: relative;
+    min-height: 0.5em !important;
+    margin-bottom: 0 !important;
+    cursor: pointer !important;
+}
+
+.fc .fc-daygrid-day-frame {
+    cursor: pointer !important;
+}
+
+.fc-day:hover{background:lightblue;}

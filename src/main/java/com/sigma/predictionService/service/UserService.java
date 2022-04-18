@@ -77,13 +77,13 @@ public class UserService {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom("", "PredictionSigma Support");//TODO СДЕЛАТЬ МЫЛО
+        helper.setFrom("workspace.app.8371@gmail.com", "PredictionSigma Support");//TODO СДЕЛАТЬ МЫЛО
         helper.setTo(recipientEmail);
 
         String subject = "Добро пожаловать в систему!";
         String content = "<p>Добро пожаловать!</p>"
                 + "<p>Вы были зарегистрированы в системе и теперь можете перейти к ней по ссылке:</p>"
-                + "<p><a href=\"https://my-workspace.ml/\">Перейти к системе</a></p>"
+                + "<p><a href=\"https://localhost:3000/\">Перейти к системе</a></p>"
                 + "<p>Ваш логин: " + username + "</p>"
                 + "<p>Ваш пароль: " + password + "</p>";
 

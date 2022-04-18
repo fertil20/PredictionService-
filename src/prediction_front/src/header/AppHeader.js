@@ -63,7 +63,7 @@ function NavBarLogged(props){
                     <DropdownToggle nav caret>
                         {props.currentUser.name}
                     </DropdownToggle>
-                    <DropdownMenu right >
+                    <DropdownMenu end>
                         <div style={{textAlign:'center'}}>{props.currentUser.username}</div>
                         <div style={{textAlign:'center'}}> @{props.currentUser.username}</div>
                         <DropdownItem divider />
@@ -71,7 +71,7 @@ function NavBarLogged(props){
                             Профиль
                         </DropdownItem>
                         <DropdownItem divider />
-                        <DropdownItem href={`/${props.currentUser.username}/files`}>
+                        <DropdownItem href={`/users/${props.currentUser.username}/files`}>
                             Мои файлы
                         </DropdownItem>
                         <DropdownItem divider />
