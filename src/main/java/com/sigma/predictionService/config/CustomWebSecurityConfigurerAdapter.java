@@ -3,7 +3,6 @@ package com.sigma.predictionService.config;
 import com.sigma.predictionService.security.JwtAuthenticationEntryPoint;
 import com.sigma.predictionService.security.JwtAuthenticationFilter;
 import com.sigma.predictionService.service.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

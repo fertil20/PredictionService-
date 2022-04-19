@@ -7,8 +7,6 @@ import com.sigma.predictionService.dto.UserFilesResponse;
 import com.sigma.predictionService.model.Files;
 import com.sigma.predictionService.repository.FilesRepo;
 import com.sigma.predictionService.repository.UserDetailsRepo;
-import org.apache.commons.io.FileUtils;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

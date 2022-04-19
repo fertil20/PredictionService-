@@ -1,8 +1,10 @@
 import React, {Component} from "react";
-import {Button, Col, Row} from 'reactstrap';
-import {loadFilesByUser, parseFile} from "../util/APIUtils";
-import {Link} from "react-router-dom";
+import {Col, Row} from 'reactstrap';
+import {loadFilesByUser, parseFile, downloadFile, deleteFile} from "../util/APIUtils";
 import ".//Files.css"
+import { Button} from 'antd';
+import { DownloadOutlined, DeleteOutlined } from '@ant-design/icons';
+import NavigationPanel from "../navigation/NavigationPanel";
 
 export default class FilesList extends Component {
 
@@ -16,6 +18,8 @@ export default class FilesList extends Component {
             isLoading: false
         }
         this.loadAllFiles = this.loadAllFiles.bind(this)
+        this.downloadThisFile = this.downloadThisFile.bind(this)
+        this.deleteThisFile = this.deleteThisFile.bind(this)
     }
 
 
@@ -26,7 +30,6 @@ export default class FilesList extends Component {
 
 
     componentWillUnmount() {
-
         this._isMounted = false;
     }
 
@@ -38,10 +41,6 @@ export default class FilesList extends Component {
             }, 2000);}
         }*/
 
-    ImgLoaded(){
-        this.setState({isLoading: true})
-    }
-
 
     loadAllFiles(){
         loadFilesByUser(this.state.CurUser.currentUser.id)
@@ -52,6 +51,21 @@ export default class FilesList extends Component {
                 }
             })
             .catch(error => {
+            });
+    }
+
+    downloadThisFile(fileId){
+        downloadFile(fileId).then(r => {})
+    }
+
+    deleteThisFile(fileId){
+        deleteFile(fileId)
+            .then(response => {
+                alert('Файл успешно удалён')
+                window.location.reload();
+            })
+            .catch(error => {
+                alert('Что-то пошло не так')
             });
     }
 
@@ -70,17 +84,32 @@ export default class FilesList extends Component {
         if (this.state.isLoading) {
             return(
                 <Row>
-                    <Col sm={{size:1.5}} style={{backgroundColor: 'white', borderRadius: 10,overflow: 'auto', height:'100%', paddingBottom: 20, marginRight: '2%', width: '53%'}}>
+                    <NavigationPanel/>
+                    <Col sm={{size: 5.4}} style={{backgroundColor:'white', borderRadius:10,overflow: 'auto', height:'100%', paddingBottom:20, width: '75%'}}>
                         {
                             this.state.files ? (
                                 <div>
                                     {
                                         this.state.files.map(
                                             (files, index) =>(
-                                                <div style={{width:570, marginBottom:30}}>
-                                                    <Row>
-                                                    <Col className='news-title'>{files.id}</Col>
-                                                    <Col> <a className='parse-link' onClick={event => parseFile(files.id)}>{files.fileName}</a></Col>
+                                                <div style={{width:"auto", marginBottom:30}}>
+                                                    <Row >
+                                                    <Col style={{minWidth: '10%'}} className='news-title'>
+                                                        {files.id}
+                                                    </Col>
+                                                    <Col style={{minWidth: '70%'}}>
+                                                        <a className='parse-link' onClick={event => parseFile(files.id)}>{files.fileName}</a>
+                                                    </Col>
+                                                    <Col style={{minWidth: '10%'}}>
+                                                        <Button>
+                                                            <DownloadOutlined onClick={()=>this.downloadThisFile(files.id)}/>
+                                                        </Button>
+                                                    </Col>
+                                                    <Col style={{minWidth: '10%'}}>
+                                                        <Button>
+                                                            <DeleteOutlined onClick={()=>this.deleteThisFile(files.id)}/>
+                                                        </Button>
+                                                    </Col>
                                                     </Row>
                                                 </div>)
                                         ).reverse()
