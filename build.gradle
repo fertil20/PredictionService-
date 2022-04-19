@@ -38,6 +38,8 @@ dependencies {
 	implementation 'commons-io:commons-io:2.11.0'
 	// отправка емаил
 	implementation 'org.springframework.boot:spring-boot-starter-mail:2.6.6'
+	// для сервиса питона
+	implementation 'org.springframework.boot:spring-boot-starter-webflux:2.6.6'
 }
 
 tasks.named('test') {
