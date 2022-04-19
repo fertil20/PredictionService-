@@ -2,6 +2,7 @@ package com.sigma.predictionService.service;
 
 
 import com.sigma.predictionService.dto.ProfileEditRequest;
+import com.sigma.predictionService.dto.UserProfile;
 import com.sigma.predictionService.exception.ResourceNotFoundException;
 import com.sigma.predictionService.model.Role;
 import com.sigma.predictionService.model.User;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.validation.constraints.NotNull;
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.util.Collections;
@@ -47,12 +49,12 @@ public class UserService {
 
 
     @Transactional
-    public void createNewUser(User request){
+    public void createNewUser(User request) {
         User user = new User();
         String username = request.getUsername();
         String password = new SecureRandom()
                 .ints(8, '!', '{')
-                .mapToObj(i -> String.valueOf((char)i))
+                .mapToObj(i -> String.valueOf((char) i))
                 .collect(Collectors.joining());
 
         String email = request.getEmail();
@@ -111,6 +113,12 @@ public class UserService {
             user.setName(request.getName());
         }
         userDetailsRepo.save(user);
+    }
+
+    public UserProfile getUserProfile(@NotNull String username, @NotNull UserPrincipal currentUser) {
+        User user = userDetailsRepo.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+        return new UserProfile(user.getId(), user.getUsername(), user.getName(), user.getEmail());
     }
 
 }

@@ -3,6 +3,8 @@ package com.sigma.predictionService.controller;
 import com.sigma.predictionService.dto.ProfileEditRequest;
 import com.sigma.predictionService.dto.UserFilesResponse;
 import com.sigma.predictionService.dto.UserForListResponse;
+import com.sigma.predictionService.dto.UserProfile;
+import com.sigma.predictionService.exception.ResourceNotFoundException;
 import com.sigma.predictionService.model.User;
 import com.sigma.predictionService.repository.RoleRepo;
 import com.sigma.predictionService.repository.UserDetailsRepo;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -63,6 +67,14 @@ public class UserController {
                                 @CurrentUser UserPrincipal currentUser,
                                 @RequestBody ProfileEditRequest request) {
         userService.editProfile(currentUser, username, request);
+    }
+
+    @GetMapping("/{username}")
+    public UserProfile getUserProfile(@PathVariable(value = "username") String username, @CurrentUser UserPrincipal currentUser){
+        if (Objects.nonNull(username) && Objects.nonNull(currentUser)){
+            return userService.getUserProfile(username, currentUser);
+        }
+        else return null;
     }
 
     @PostMapping("/{id}/deleteUser")
