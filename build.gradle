@@ -40,6 +40,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mail:2.6.6'
 	// для сервиса питона
 	implementation 'org.springframework.boot:spring-boot-starter-webflux:2.6.6'
+	//json
+	implementation 'org.json:json:20220320'
 }
 
 tasks.named('test') {

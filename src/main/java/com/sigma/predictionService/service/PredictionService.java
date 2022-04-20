@@ -11,14 +11,16 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
 import javax.validation.constraints.NotNull;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Objects;
@@ -43,10 +45,11 @@ public class PredictionService {
                                 .addHandlerLast(new WriteTimeoutHandler(5000, TimeUnit.MILLISECONDS)));
 
         client = WebClient.builder()
-                .baseUrl("http://127.0.0.1:5000")
+                .clientConnector(new ReactorClientHttpConnector(httpClient))
+                .baseUrl("http://localhost:5000")
                 .defaultCookie("cookieKey", "cookieValue")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultUriVariables(Collections.singletonMap("url", "http://127.0.0.1:5000"))
+                .defaultUriVariables(Collections.singletonMap("url", "http://localhost:5000"))
                 .build();
 
     }
@@ -57,19 +60,24 @@ public class PredictionService {
         Files file = filesRepo.getById(id);
         if (Objects.equals(file.getUser().getId(), userId)) {
             MultipartBodyBuilder builder = new MultipartBodyBuilder();
-            builder.part("file", file.getFile());
+            builder.part("file", new InputStreamReader(
+                                        new ByteArrayInputStream(file.getFile())));
 
-            Mono<HttpStatus> httpStatusMono = client.post()
+            String httpStatusMono = client
+                    .post()
                     .uri("/getpred")
                     .contentType(MediaType.MULTIPART_FORM_DATA)
                     .body(BodyInserters.fromMultipartData(builder.build()))
                     .exchangeToMono(response -> {
                         if (response.statusCode().equals(HttpStatus.OK)) {
-                            return response.bodyToMono(HttpStatus.class).thenReturn(response.statusCode());
+                            return response.bodyToMono(String.class);
                         } else {
                             throw new ServiceException("Error uploading file");
                         }
-                    });
+                    })
+                    .block();
+                    ;
+            System.out.println(httpStatusMono);
         }
     }
 
