@@ -79,6 +79,13 @@ export function loadFilesByUser(userId) {
     });
 }
 
+export function predictFile(fileId) {
+    return request({
+        url: API_BASE_URL + "/prediction/predict/" + fileId,
+        method: 'GET'
+    });
+}
+
 export function parseFile(fileId) {
     return request({
         url: API_BASE_URL + "/file/parse/" + fileId,

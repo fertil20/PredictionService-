@@ -3,6 +3,7 @@ package com.sigma.predictionService.controller;
 import com.sigma.predictionService.security.CurrentUser;
 import com.sigma.predictionService.security.UserPrincipal;
 import com.sigma.predictionService.service.PredictionService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -18,8 +19,8 @@ public class PredictionController {
     }
 
 
-
-    @PostMapping("/predict/{id}")
+    @Transactional
+    @GetMapping("/predict/{id}")
     public void getPrediction(@PathVariable Long id,
                               @CurrentUser UserPrincipal currentUser) throws IOException {
         predictionService.getPrediction(id, currentUser.getId());

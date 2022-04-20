@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Col, Row} from 'reactstrap';
-import {loadFilesByUser, parseFile, downloadFile, deleteFile} from "../util/APIUtils";
+import {loadFilesByUser, parseFile, downloadFile, deleteFile, predictFile} from "../util/APIUtils";
 import ".//Files.css"
 import { Button} from 'antd';
 import { DownloadOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -98,7 +98,7 @@ export default class FilesList extends Component {
                                                         {files.id}
                                                     </Col>
                                                     <Col style={{minWidth: '70%'}}>
-                                                        <a className='parse-link' onClick={event => parseFile(files.id)}>{files.fileName}</a>
+                                                        <a className='parse-link' onClick={() => predictFile(files.id)}>{files.fileName}</a>
                                                     </Col>
                                                     <Col style={{minWidth: '10%'}}>
                                                         <Button>
