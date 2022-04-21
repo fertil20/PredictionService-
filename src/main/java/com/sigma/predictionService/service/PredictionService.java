@@ -7,6 +7,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import org.hibernate.service.spi.ServiceException;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -48,7 +49,7 @@ public class PredictionService {
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .baseUrl("http://localhost:5000")
                 .defaultCookie("cookieKey", "cookieValue")
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                //.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .defaultUriVariables(Collections.singletonMap("url", "http://localhost:5000"))
                 .build();
 
@@ -60,13 +61,11 @@ public class PredictionService {
         Files file = filesRepo.getById(id);
         if (Objects.equals(file.getUser().getId(), userId)) {
             MultipartBodyBuilder builder = new MultipartBodyBuilder();
-            builder.part("file", new InputStreamReader(
-                                        new ByteArrayInputStream(file.getFile())));
+            builder.part("file", new ByteArrayResource(file.getFile()));
 
             String httpStatusMono = client
                     .post()
                     .uri("/getpred")
-                    .contentType(MediaType.MULTIPART_FORM_DATA)
                     .body(BodyInserters.fromMultipartData(builder.build()))
                     .exchangeToMono(response -> {
                         if (response.statusCode().equals(HttpStatus.OK)) {
