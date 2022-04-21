@@ -57,7 +57,7 @@ public class PredictionService {
 
 
     public void getPrediction(@NotNull Long id,
-                              @NotNull Long userId) throws IOException {
+                              @NotNull Long userId){
         Files file = filesRepo.getById(id);
         if (Objects.equals(file.getUser().getId(), userId)) {
             String header1 = String.format("form-data; name=%s; filename=%s", "file", file.getFileName());
