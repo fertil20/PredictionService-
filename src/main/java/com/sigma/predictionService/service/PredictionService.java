@@ -42,14 +42,14 @@ public class PredictionService {
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
                 .responseTimeout(Duration.ofMillis(5000))
                 .doOnConnected(conn ->
-                        conn.addHandlerLast(new ReadTimeoutHandler(5000, TimeUnit.MILLISECONDS))
-                                .addHandlerLast(new WriteTimeoutHandler(5000, TimeUnit.MILLISECONDS)));
+                        conn.addHandlerLast(new ReadTimeoutHandler(15000, TimeUnit.MILLISECONDS))
+                                .addHandlerLast(new WriteTimeoutHandler(15000, TimeUnit.MILLISECONDS)));
 
         client = WebClient.builder()
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .baseUrl("http://localhost:5000")
                 .defaultCookie("cookieKey", "cookieValue")
-                //.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .defaultUriVariables(Collections.singletonMap("url", "http://localhost:5000"))
                 .build();
 
@@ -60,12 +60,13 @@ public class PredictionService {
                               @NotNull Long userId) throws IOException {
         Files file = filesRepo.getById(id);
         if (Objects.equals(file.getUser().getId(), userId)) {
+            String header1 = String.format("form-data; name=%s; filename=%s", "file", file.getFileName());
             MultipartBodyBuilder builder = new MultipartBodyBuilder();
-            builder.part("file", new ByteArrayResource(file.getFile()));
+            builder.part("file", new ByteArrayResource(file.getFile())).header("Content-Disposition", header1);
 
             String httpStatusMono = client
                     .post()
-                    .uri("/getpred")
+                    .uri("/prediction/payment")
                     .body(BodyInserters.fromMultipartData(builder.build()))
                     .exchangeToMono(response -> {
                         if (response.statusCode().equals(HttpStatus.OK)) {
