@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/prediction")
@@ -21,10 +22,9 @@ public class PredictionController {
 
     @Transactional
     @GetMapping("/predict/{id}")
-    public void getPrediction(@PathVariable Long id,
-                              @CurrentUser UserPrincipal currentUser) throws IOException {
-        predictionService.getPrediction(id, currentUser.getId());
-
+    public HashMap<String, Float> getPrediction(@PathVariable Long id,
+                                 @CurrentUser UserPrincipal currentUser){
+        return predictionService.getPrediction(id, currentUser.getId());
     }
 
 }

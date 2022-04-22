@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -56,29 +58,30 @@ public class PredictionService {
     }
 
 
-    public void getPrediction(@NotNull Long id,
+    public HashMap<String,Float> getPrediction(@NotNull Long id,
                               @NotNull Long userId){
+        HashMap<String,Float> predictionPesponce = new HashMap<>();
         Files file = filesRepo.getById(id);
         if (Objects.equals(file.getUser().getId(), userId)) {
             String header1 = String.format("form-data; name=%s; filename=%s", "file", file.getFileName());
             MultipartBodyBuilder builder = new MultipartBodyBuilder();
             builder.part("file", new ByteArrayResource(file.getFile())).header("Content-Disposition", header1);
 
-            String httpStatusMono = client
+            predictionPesponce = client
                     .post()
                     .uri("/prediction/payment")
                     .body(BodyInserters.fromMultipartData(builder.build()))
                     .exchangeToMono(response -> {
                         if (response.statusCode().equals(HttpStatus.OK)) {
-                            return response.bodyToMono(String.class);
+                            return response.bodyToMono(HashMap.class);
                         } else {
                             throw new ServiceException("Error uploading file");
                         }
                     })
                     .block();
-                    ;
-            System.out.println(httpStatusMono);
+            System.out.println(predictionPesponce);
         }
+        return predictionPesponce;
     }
 
 }
