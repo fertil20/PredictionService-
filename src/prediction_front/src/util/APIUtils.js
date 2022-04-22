@@ -86,13 +86,6 @@ export function predictFile(fileId) {
     });
 }
 
-export function parseFile(fileId) {
-    return request({
-        url: API_BASE_URL + "/file/parse/" + fileId,
-        method: 'GET'
-    });
-}
-
 export function uploadFile(file, userId) {
 
     let fd = new FormData()
@@ -126,6 +119,52 @@ export function getAllUsers(){
         url: API_BASE_URL + "/users",
         method: 'GET'
     })
+}
+
+export function getUserProfile(username) {
+    return request({
+        url: API_BASE_URL + "/users/" + username,
+        method: 'GET'
+    });
+}
+
+export function profileEdit(profileEditRequest, username) {
+    return request({
+        url: API_BASE_URL + "/users/" + username + "/edit",
+        method: 'POST',
+        body: JSON.stringify(profileEditRequest)
+    });
+}
+
+export function changePassword(password, username) {
+    return request({
+        url: API_BASE_URL + "/users/" + username + "/changePassword/",
+        method: 'POST',
+        body: password
+    });
+}
+
+export function forgotPassword(forgotPasswordRequest) {
+    return request({
+        url: API_BASE_URL + "/auth/forgotPassword",
+        method: 'POST',
+        body: JSON.stringify(forgotPasswordRequest)
+    });
+}
+
+export function forgotPasswordResetGet(token) { //GET token запрос
+    return request({
+        url: API_BASE_URL + "/auth/resetPassword?token=" + token,
+        method: 'GET'
+    });
+}
+
+export function forgotPasswordResetPost(password, token) { //Возвращает пароль и токен
+    return request({
+        url: API_BASE_URL + "/auth/resetPassword?token=" + token,
+        method: 'POST',
+        body: password
+    });
 }
 
 export function login(loginRequest) {

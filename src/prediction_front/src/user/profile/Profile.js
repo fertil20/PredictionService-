@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {getUserProfile} from '../../util/APIUtils';
 import {Avatar} from 'antd';
 import {getAvatarColor} from '../../util/Colors';
-import {formatDate, formatTime} from '../../util/Helpers';
 import './Profile.css';
 import NotFound from '../../common/NotFound';
 import ServerError from '../../common/ServerError';
@@ -88,65 +87,48 @@ class Profile extends Component {
             <div className="profile" >
                      {
                        this.state.user ? (
-                <Row >
+                <Row>
                     <NavigationPanel/>
-                    <Col sm={{ size: 4.4 }} style={{backgroundColor: 'white',borderRadius:10,height:500, width: '30%'}}>
+                    <Col sm={{ size: 4.4 }} style={{backgroundColor: 'white',borderRadius:10,height:500, width: '73%'}}>
                         <div style={{backgroundColor: 'white', margin: 20,borderRadius:10,height:300,width:"auto"}}>
                             <Avatar className="user-avatar-circle" style={{ backgroundColor: getAvatarColor(this.state.user.name)}}>
                                 {this.state.user.name.toUpperCase()}
                             </Avatar>
                         </div>
                         <Row>
-                            <Col>{/*todo заменить колонки на строки*/}
-                                <div className='profile-text1'>E-mail:</div>
-                                <div className='profile-text1'>Рабочий номер:</div>
-                                <div className='profile-text1'>Telegram:</div>
+                            <Col>
+                                <div className='profile-text1'>Ф.И.О:</div>
+                            </Col>
+                            <Col>
+                                <div className='profile-text2'>{this.state.user.name}</div>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <div className='profile-text1'>Логин</div>
+                            </Col>
+                            <Col>
+                                <div className='profile-text2'>{this.state.user.username}</div>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <div className='profile-text1'>Почта:</div>
                             </Col>
                             <Col>
                                 <div className='profile-text2'>{this.state.user.email}</div>
                             </Col>
                         </Row>
-                    </Col>
-                    <Col sm={{ size: 6.6}} style={{backgroundColor: 'white',borderRadius:10,height:500, marginLeft: '2%', width: '43%'}}>
-                        <Row>
-                            <Col sm={{ size: 'auto'}}>
-                                <div className='profile-text1' style={{marginTop:20,width:50}}>Ф.И.О:</div>
-                                <div className='profile-text1' style={{marginTop:20}}>О себе:</div>
-                                <div className='profile-text1'>Должность:</div>
-                                <div className='profile-text1'>Департамент:</div>
-                                <div className='profile-text1'>Офис:</div>
-                                <div className='profile-text1'>Рабочие часы:</div>
-                                <div className='profile-text1'>В компании с:</div>
-                                <div className='profile-text1'>Дата рождения:</div>
-                                {this.state.CurUser.currentUser.privileges.includes('View_Secret') && <div className='profile-text1'>Секретная заметка:</div>}
-                            </Col>
-                            <Col>
-                                <Row>
-                                    <Col style={{width: '100%'}}>
-                                    <div style={{marginTop:20,height:50,width:200}}>{this.state.user.name}</div>
-                                    </Col>
-                                </Row>
-                                <div style={{marginTop:20,height:50}}>{this.state.user.about}</div>
-                                <div style={{height:50}}>{this.state.user.position}</div>
-                                <div style={{height:50}}>{this.state.user.department}</div>
-                                <div style={{height:50}}>{this.state.user.office}</div>
-                                <div style={{height:50}}>{formatTime(this.state.user.startAt)}-{formatTime(this.state.user.endAt)}</div>
-                                <div style={{height:50}}>{formatDate(this.state.user.joinedAt)}</div>
-                                <div style={{height:50}}>{formatDate(this.state.user.birthday)}</div>
-                                {this.state.CurUser.currentUser.privileges.includes('View_Secret') && <div style={{height:50}}>{this.state.user.secretNote}</div>}
-                                <div style={{marginTop:15}}>
-                                    {(this.state.CurUser.currentUser.privileges.includes('Edit_Users') || this.state.user.username === this.state.CurUser.currentUser.username) &&
-                                    <Button color="primary" size="sm" href={`/users/${this.state.user.username}/edit`}>
-                                        Редактировать
-                                    </Button>}
-                                </div>
-                            </Col>
-                        </Row>
+                        <div style={{marginTop:15}}>
+                            {(this.state.CurUser.currentUser.privileges.includes('Edit_Users') || this.state.user.username === this.state.CurUser.currentUser.username) &&
+                                <Button color="primary" size="sm" href={`/users/${this.state.user.username}/edit`}>
+                                    Редактировать
+                                </Button>}
+                        </div>
                     </Col>
                 </Row>
-
                        ): null
-                                }
+                     }
             </div>
         );
     }
