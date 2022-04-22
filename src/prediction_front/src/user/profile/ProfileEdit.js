@@ -143,9 +143,8 @@ class ProfileEdit extends Component {
                                     </div>
                                     <Row>
                                         <Col sm={{size:'auto'}}>{/*todo переделать колонки в строки*/}
+                                            <div style={{height: 5}}/>
                                             <div className='profile-text1'>E-mail:</div>
-                                            <div className='profile-text1'>Рабочий номер:</div>
-                                            <div className='profile-text1'>Telegram:</div>
                                         </Col>
                                         <Col>
                                             <Input type="email" name="email" id="email" placeholder="sophie@example.com"
@@ -163,7 +162,7 @@ class ProfileEdit extends Component {
                                             <div style={{marginTop:20}} className='profile-text1'>Ф.И.О:</div>
                                         </Col>
                                         <Col sm={{ size: 7}}>
-                                            <div style={{height: 10}}/>
+                                            <div style={{height: 15}}/>
                                             <Row>
                                                 <Col >{this.state.CurUser.currentUser.privileges.includes('Edit_Users') &&
                                                 <Input type="text" name="name" id="editName" placeholder={"Попов Валерий Александрович"}
