@@ -17,6 +17,11 @@ import FilesAdd from "../files/FilesAdd";
 import FilesList from "../files/FilesList";
 import UsersList from "../usersList/UsersList";
 import NewUser from "../user/new/NewUser";
+import Profile from "../user/profile/Profile";
+import ForgotPassword from "../user/passwordReset/ForgotPassword";
+import ForgotPasswordReset from "../user/passwordReset/ForgotPasswordReset";
+import ChangePassword from "../user/passwordReset/ChangePassword";
+import ProfileEdit from "../user/profile/ProfileEdit";
 
 
 const { Content } = Layout;
@@ -116,10 +121,14 @@ class App extends Component {
                             <PrivateRoute exact path="/" authenticated={this.persistentState.getState().isAuthenticated} component={Home}/>
                             <Route path="/login"
                                    render={(props) => <Login onLogin={this.handleLogin} {...props} />}/>
+                            <Route path="/forgotPassword" component={ForgotPassword}/>
+                            <Route path="/resetPassword" component={ForgotPasswordReset}/>
+                            <PrivateRoute exact path="/changePassword" authenticated={this.persistentState.getState().isAuthenticated} component={ChangePassword} handleLogout={this.handleLogout}/>
                             <PrivateRoute exact path="/users" authenticated={this.persistentState.getState().isAuthenticated} component={UsersList} handleLogout={this.handleLogout}/>
-                            {/*<PrivateRoute exact path="/users/:user" authenticated={this.persistentState.getState().isAuthenticated} component={Profile} handleLogout={this.handleLogout}/>*/}
+                            <PrivateRoute exact path="/users/:username" authenticated={this.persistentState.getState().isAuthenticated} component={Profile} handleLogout={this.handleLogout}/>
+                            <PrivateRoute exact path="/users/:username/edit" authenticated={this.persistentState.getState().isAuthenticated} component={ProfileEdit} handleLogout={this.handleLogout}/>
                             <PrivateRoute exact path="/newUser" authenticated={this.persistentState.getState().isAuthenticated} component={NewUser} handleLogout={this.handleLogout}/>
-                            <PrivateRoute exact path="/users/:user/files" authenticated={this.persistentState.getState().isAuthenticated} component={FilesList} handleLogout={this.handleLogout}/>
+                            <PrivateRoute exact path="/users/:username/files" authenticated={this.persistentState.getState().isAuthenticated} component={FilesList} handleLogout={this.handleLogout}/>
                             <PrivateRoute exact path="/file/add" authenticated={this.persistentState.getState().isAuthenticated} component={FilesAdd} handleLogout={this.handleLogout}/>
                             <Route component={NotFound} />
                         </Switch>

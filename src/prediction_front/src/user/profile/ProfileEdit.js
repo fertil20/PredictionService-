@@ -4,15 +4,12 @@ import './Profile.css';
 import NotFound from '../../common/NotFound';
 import ServerError from '../../common/ServerError';
 import {Button, Col, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Form, Input, Row} from 'reactstrap';
-import {TooltipWidgetAtWork, TooltipWidgetHoliday, TooltipWidgetHome, TooltipWidgetIll} from './TooltipWidget'
 import {Avatar} from "antd";
 import React, {Component, useState} from "react";
 import {getUserProfile, profileEdit} from "../../util/APIUtils";
 import './ProfileEdit.css';
-import NavigationPanel from "../../files/navigation/NavigationPanel";
+import NavigationPanel from "../../navigation/NavigationPanel";
 import {Redirect} from "react-router-dom";
-import PhoneInput, {isPossiblePhoneNumber} from "react-phone-number-input";
-import './CustomPhoneStyle.css'
 
 class ProfileEdit extends Component {
 
@@ -25,20 +22,7 @@ class ProfileEdit extends Component {
             isLoading: false,
             username: {value: ''},
             email: {value: ''},
-            phone: {value: ''},
-            tg: {value: ''},
             name:{value:''},
-            about:{value:''},
-            position:{value:''},
-            department:{value:''},
-            office:{value:''},
-            startAt:{value:''},
-            endAt:{value:''},
-            birthday:{value:''},
-            secretNote:{value:''},
-            status:{value:''},
-            statusTimeStart:{value:''},
-            statusTimeFinish:{value:''}
         }
         this.loadUserProfile = this.loadUserProfile.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -58,20 +42,7 @@ class ProfileEdit extends Component {
                 });
                 this._isMounted && this.setState({
                     email: {value: this.state.user.email},
-                    phone: {value: this.state.user.phone},
-                    tg: {value: this.state.user.tg},
                     name: {value: this.state.user.name},
-                    about: {value: this.state.user.about},
-                    position: {value: this.state.user.position},
-                    department: {value: this.state.user.department},
-                    office: {value: this.state.user.office},
-                    startAt: {value: this.state.user.startAt},
-                    endAt: {value: this.state.user.endAt},
-                    birthday:{value: this.state.user.birthday},
-                    secretNote: {value: this.state.user.secretNote},
-                    status: {value: this.state.user.status},
-                    statusTimeStart: {value: this.state.statusTimeStart},
-                    statusTimeFinish: {value: this.state.statusTimeFinish}
                 })
             }).catch(error => {
             if(error.status === 404) {
@@ -120,20 +91,7 @@ class ProfileEdit extends Component {
 
         const profileEditRequest = {
             email: this.state.email.value,
-            phone: this.state.phone.value,
-            tg: this.state.tg.value,
             name: this.state.name.value,
-            about: this.state.about.value,
-            position: this.state.position.value,
-            department: this.state.department.value,
-            office: this.state.office.value,
-            startAt: this.state.startAt.value,
-            endAt: this.state.endAt.value,
-            birthday: this.state.birthday.value,
-            secretNote: this.state.secretNote.value,
-            status: this.state.status.value, // Статус работы (0,1,2,3)
-            statusTimeStart: this.state.statusTimeStart.value,
-            statusTimeFinish: this.state.statusTimeFinish.value
         };
         profileEdit(profileEditRequest, this.state.user.username)
             .then(response => {
@@ -169,37 +127,6 @@ class ProfileEdit extends Component {
         }
 
 
-        const DropdownStatus = () => {
-            const [dropdownOpen, setDropdownOpen] = useState(false);
-            const toggle = () => setDropdownOpen(prevState => !prevState);
-            let setStatus = {
-                status(state) {
-                    this.setState({status: {value: state}});
-                }
-            }
-            let status = setStatus.status.bind(this);
-            return (
-                <Dropdown isOpen={dropdownOpen} toggle={toggle} size='sm'>
-                    <DropdownToggle caret>
-                        Статус
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <DropdownItem onClick={ (event) => {
-                            status('0');
-                            this.handleInputChange(event);}}>Работает дома</DropdownItem>
-                        <DropdownItem onClick={ (event) => {
-                            status('1');
-                            this.handleInputChange(event);}}>Работает в офисе</DropdownItem>
-                        <DropdownItem onClick={ (event) => {
-                            status('2');
-                            this.handleInputChange(event);}}>На больничном</DropdownItem>
-                        <DropdownItem onClick={ (event) => {
-                            status('3');
-                            this.handleInputChange(event);}}>В отпуске</DropdownItem>
-                    </DropdownMenu>
-                </Dropdown>
-            )
-        };
 
         return (
             <div className="profile"  >
@@ -227,17 +154,6 @@ class ProfileEdit extends Component {
                                                    style={{width:165}}
                                                    onChange={(event) => {this.handleInputChange(event)}}/>
                                             <div style={{height: 10}}/>
-                                            <PhoneInput
-                                                international
-                                                placeholder="+7 905 226 23 58"
-                                                defaultCountry="RU"
-                                                value={this.state.phone.value}
-                                                style={{width:165, height:40}}
-                                                onChange={event => this.setState({phone: {value: event }})}/>
-                                            <div style={{height: 10}}/>
-                                            <Input type="text" name="tg" id="tg" placeholder={"telegram"}
-                                                   value={this.state.tg.value} style={{width:165}}
-                                                   onChange={(event) => this.handleInputChange(event)}/>
                                         </Col>
                                     </Row>
                                 </Col>
@@ -245,15 +161,6 @@ class ProfileEdit extends Component {
                                     <Row>
                                         <Col sm={{ size: 'auto'}}>
                                             <div style={{marginTop:20}} className='profile-text1'>Ф.И.О:</div>
-                                            <div className='profile-text1'>О себе:</div>
-                                            <div className='profile-text1' style={{marginTop:30}}>Должность:</div>
-                                            <div className='profile-text1'>Департамент:</div>
-                                            <div className='profile-text1'>Офис:</div>
-                                            <div className='profile-text1'>Рабочие часы:</div>
-                                            <div className='profile-text1'>В компании с:</div>
-                                            <div className='profile-text1'>Дата рождения:</div>
-                                            {this.state.CurUser.currentUser.privileges.includes('View_Secret') &&
-                                            <div className='profile-text1'>Секретная заметка:</div>}
                                         </Col>
                                         <Col sm={{ size: 7}}>
                                             <div style={{height: 10}}/>
@@ -266,83 +173,10 @@ class ProfileEdit extends Component {
                                                     {!this.state.CurUser.currentUser.privileges.includes('Edit_Users') &&
                                                     <div style={{marginBottom:10,height:30}}>{this.state.user.name}</div>}
                                                 </Col>
-                                                <Col sm={{ width:30}}>
-                                                    <div style={{marginTop:5, width:30,paddingRight:5}}>
-                                                        {this.state.status.value === '0' && <TooltipWidgetHome/>}
-                                                        {this.state.status.value === '1' && <TooltipWidgetAtWork/>}
-                                                        {this.state.status.value === '2' && <TooltipWidgetIll/>}
-                                                        {this.state.status.value === '3' && <TooltipWidgetHoliday/>}
-                                                    </div>
-                                                </Col>
-                                                <Col sm={{ width:30}}><DropdownStatus/></Col>
                                             </Row>
                                             <div style={{height: 10}}/>
-                                            <Input type="textarea" name="about" id="editAbout"
-                                                   spellCheck={true}
-                                                   maxLength={300}
-                                                   value={this.state.about.value}
-                                                   onChange={(event) => this.handleInputChange(event)}/>
-                                            <div style={{height: 20}}/>
-                                            {this.state.CurUser.currentUser.privileges.includes('Edit_Users') && <Input type="text" name="position" id="editPosition"
-                                                                                                                        required
-                                                                                                                        value={this.state.position.value}
-                                                                                                                        onChange={(event) => this.handleInputChange(event)}/>}
-                                            {!this.state.CurUser.currentUser.privileges.includes('Edit_Users') && <div style={{height:40}}>{this.state.user.position}</div>}
-                                            <div style={{height: 10}}/>
-                                            {this.state.CurUser.currentUser.privileges.includes('Edit_Users') &&  <Input type="text" name="department" id="editDepartment"
-                                                                                                                         required
-                                                                                                                         value={this.state.department.value}
-                                                                                                                         onChange={(event) => this.handleInputChange(event)}/>}
-                                            {!this.state.CurUser.currentUser.privileges.includes('Edit_Users') && <div style={{height:40}}>{this.state.user.department}</div>}
-                                            <div style={{height: 10}}/>
-                                            {this.state.CurUser.currentUser.privileges.includes('Edit_Users') &&  <Input type="text" name="office" id="editOffice"
-                                                                                                                         required pattern='[0-9][0-9][0-9]' placeholder='000'
-                                                                                                                         value={this.state.office.value}
-                                                                                                                         onChange={(event) => this.handleInputChange(event)}/>}
-                                            {!this.state.CurUser.currentUser.privileges.includes('Edit_Users') && <div style={{height:35}}>{this.state.user.office}</div>}
-                                            <div style={{height: 10}}/>
-                                            <Row>
-                                                <Col sm={{size:'auto'}}>
-                                                    <div>
-                                                        <Input type="time" name="startAt" id="startAt" style={{width:100}}
-                                                               value={formatTime(this.state.startAt.value)}
-                                                               required
-                                                               pattern="[0-9]{2}:[0-9]{2}"
-                                                               onChange={(event) => this.handleInputChange(event)}/>
-                                                    </div>
-                                                </Col>
-                                                <Col sm={{size:1.5}}>-</Col>
-                                                <Col sm={{size:'auto'}}>
-                                                    <div >
-                                                        <Input type="time" name="endAt" id="endAt" style={{width:100}}
-                                                               value={formatTime(this.state.endAt.value)}
-                                                               required
-                                                               pattern="[0-9]{2}:[0-9]{2}"
-                                                               onChange={(event) => this.handleInputChange(event)}/>
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                            <div style={{marginTop:20, height:20}}>{formatDate(this.state.user.joinedAt)}</div>
-                                            <div style={{height: 15}}/>
-                                            {this.state.CurUser.currentUser.privileges.includes('Edit_Users') &&
-                                            <Input type="date" name="birthday" id="birthday"
-                                                   required
-                                                   style={{marginTop: 10}}
-                                                   value={this.state.birthday.value}
-                                                   onChange={(event) => this.handleInputChange(event)}/>}
-                                            {!this.state.CurUser.currentUser.privileges.includes('Edit_Users') &&
-                                            <div style={{marginTop: 15, height:20}}>{formatDate(this.state.user.birthday)}</div>}
-                                            <div style={{height: 15}}/>
-                                            {this.state.CurUser.currentUser.privileges.includes('View_Secret') &&
-                                            !this.state.CurUser.currentUser.privileges.includes('Edit_Users') &&
-                                            <div style={{marginTop: 12, height:30}}>{this.state.user.secretNote}</div>}
-                                            {this.state.CurUser.currentUser.privileges.includes('Edit_Users') &&
-                                            this.state.CurUser.currentUser.privileges.includes('View_Secret') &&
-                                            <Input type="text" name="secretNote" id="editSecretNote"
-                                                   value={this.state.secretNote.value}
-                                                   onChange={(event) => this.handleInputChange(event)}/>}
                                             <div style={{marginTop:20}}>
-                                                <Button disabled={!(this.state.phone.value && isPossiblePhoneNumber(this.state.phone.value))} color="primary" size="sm">
+                                                <Button color="primary" size="sm">
                                                     Сохранить
                                                 </Button>
 
