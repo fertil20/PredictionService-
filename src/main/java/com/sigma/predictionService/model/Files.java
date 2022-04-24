@@ -25,9 +25,15 @@ public class Files {
     @Column(name = "contentType", nullable = false)
     private String contentType;
 
+    @Column(name = "createTime", nullable = false)
+    private LocalDateTime createTime;
+
+    @Column(name = "dataType", nullable = false)
+    private String dataType;
+
     @Column(name = "file")
     @Lob
-    private byte[] file = "Нет файла".getBytes(StandardCharsets.UTF_8);
+    private byte[] file;
 
     @ManyToOne
     @EqualsAndHashCode.Exclude
