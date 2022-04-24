@@ -41,8 +41,8 @@ public class PredictionService {
         this.userDetailsRepo = userDetailsRepo;
 
         httpClient = HttpClient.create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
-                .responseTimeout(Duration.ofMillis(5000))
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)
+                .responseTimeout(Duration.ofMillis(10000))
                 .doOnConnected(conn ->
                         conn.addHandlerLast(new ReadTimeoutHandler(15000, TimeUnit.MILLISECONDS))
                                 .addHandlerLast(new WriteTimeoutHandler(15000, TimeUnit.MILLISECONDS)));
