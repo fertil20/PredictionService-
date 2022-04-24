@@ -43,10 +43,10 @@ export default class NavigationPanel extends Component {
                         <div style={{paddingTop: 10}} className='row-navigation'>Главная</div>
                     </Link>
                     <Link to={`/users/${this.state.user.currentUser.username}/files`}>
-                        <div className='row-navigation'>Данные</div>
-                    </Link>
-                    <Link to='/about'>
                         <div className='row-navigation'>Прогнозирование</div>
+                    </Link>
+                    <Link to='/prediction'>
+                        <div className='row-navigation'>История</div>
                     </Link>
                     <hr/>
                     {this.state.user.currentUser.privileges.includes('Manage_Users') &&

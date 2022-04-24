@@ -1,11 +1,10 @@
 import {getAvatarColor} from '../../util/Colors';
-import {formatDate, formatTime} from '../../util/Helpers';
 import './Profile.css';
 import NotFound from '../../common/NotFound';
 import ServerError from '../../common/ServerError';
-import {Button, Col, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Form, Input, Row} from 'reactstrap';
+import {Button, Col, Form, Input, Row} from 'reactstrap';
 import {Avatar} from "antd";
-import React, {Component, useState} from "react";
+import React, {Component} from "react";
 import {getUserProfile, profileEdit} from "../../util/APIUtils";
 import './ProfileEdit.css';
 import NavigationPanel from "../../navigation/NavigationPanel";

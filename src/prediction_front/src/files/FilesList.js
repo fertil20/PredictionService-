@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Col, Row} from 'reactstrap';
-import {loadFilesByUser, parseFile, downloadFile, deleteFile, predictFile} from "../util/APIUtils";
+import {loadFilesByUser, downloadFile, deleteFile} from "../util/APIUtils";
 import ".//Files.css"
 import { Button} from 'antd';
 import { DownloadOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -20,6 +20,7 @@ export default class FilesList extends Component {
         this.loadAllFiles = this.loadAllFiles.bind(this)
         this.downloadThisFile = this.downloadThisFile.bind(this)
         this.deleteThisFile = this.deleteThisFile.bind(this)
+        this.predictionChart = this.predictionChart.bind(this)
     }
 
 
@@ -69,6 +70,10 @@ export default class FilesList extends Component {
             });
     }
 
+    predictionChart(fileId) {
+        this.props.history.push({pathname: "/prediction/" + fileId});
+    }
+
 /*    deleteFilesByID(filesId){
         deleteFiles(filesId)
             .then(response => {
@@ -98,7 +103,7 @@ export default class FilesList extends Component {
                                                         {files.id}
                                                     </Col>
                                                     <Col style={{minWidth: '70%'}}>
-                                                        <a className='parse-link' onClick={() => predictFile(files.id)}>{files.fileName}</a>
+                                                        <a className='parse-link' onClick={() => this.predictionChart(files.id)}>{files.fileName}</a>
                                                     </Col>
                                                     <Col style={{minWidth: '10%'}}>
                                                         <Button>
