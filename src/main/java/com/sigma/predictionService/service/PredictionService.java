@@ -23,10 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.Duration;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -58,9 +55,9 @@ public class PredictionService {
     }
 
 
-    public HashMap<String, Double> getPrediction(@NotNull Long id,
+    public Map<String, Double> getPrediction(@NotNull Long id,
                               @NotNull Long userId){
-        HashMap<String, Double> predictionPesponce = new HashMap<>();
+        Map<String, Double> predictionPesponce = new TreeMap<>();
         Files file = filesRepo.getById(id);
         if (Objects.equals(file.getUser().getId(), userId)) {
             String header1 = String.format("form-data; name=%s; filename=%s", "file", file.getFileName());
@@ -73,7 +70,7 @@ public class PredictionService {
                     .body(BodyInserters.fromMultipartData(builder.build()))
                     .exchangeToMono(response -> {
                         if (response.statusCode().equals(HttpStatus.OK)) {
-                            return response.bodyToMono(HashMap.class);
+                            return response.bodyToMono(Map.class);
                         } else {
                             throw new ServiceException("Error uploading file");
                         }
