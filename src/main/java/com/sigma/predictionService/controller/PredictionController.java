@@ -22,7 +22,7 @@ public class PredictionController {
 
     @Transactional
     @GetMapping("/predict/{id}")
-    public HashMap<String, Float> getPrediction(@PathVariable Long id,
+    public HashMap<String, Double> getPrediction(@PathVariable Long id,
                                  @CurrentUser UserPrincipal currentUser){
         return predictionService.getPrediction(id, currentUser.getId());
     }

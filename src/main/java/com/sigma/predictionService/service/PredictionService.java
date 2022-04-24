@@ -58,9 +58,9 @@ public class PredictionService {
     }
 
 
-    public HashMap<String,Float> getPrediction(@NotNull Long id,
+    public HashMap<String, Double> getPrediction(@NotNull Long id,
                               @NotNull Long userId){
-        HashMap<String,Float> predictionPesponce = new HashMap<>();
+        HashMap<String, Double> predictionPesponce = new HashMap<>();
         Files file = filesRepo.getById(id);
         if (Objects.equals(file.getUser().getId(), userId)) {
             String header1 = String.format("form-data; name=%s; filename=%s", "file", file.getFileName());
