@@ -9,6 +9,9 @@ import com.sigma.predictionService.repository.FilesRepo;
 import com.sigma.predictionService.repository.UserDetailsRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.supercsv.io.CsvListWriter;
+import org.supercsv.io.ICsvListWriter;
+import org.supercsv.prefs.CsvPreference;
 
 import javax.validation.constraints.NotNull;
 import java.io.*;
@@ -100,6 +103,57 @@ public class FileService {
     }
 
     public void savePrediction(Map<String,Double> data, Long id, String dataType){
+
+        StringWriter output = new StringWriter();
+
+        try (ICsvListWriter listWriter = new CsvListWriter(output,
+                CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE)){
+            listWriter.write("PAY", "PAY_DATE");
+            for (Map.Entry<String, Double> entry : data.entrySet()){
+                listWriter.write(entry.getValue(), entry.getKey());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(output);
+
+
+        Files newFiles = new Files();
+        newFiles.setFileName("TempName");
+        newFiles.setContentType("text/csv");
+        newFiles.setDataType(dataType);
+        newFiles.setCreateTime(LocalDateTime.now());
+        newFiles.setUser(userDetailsRepo.getById(id));
+        newFiles.setFile(output.toString().getBytes());
+
+        filesRepo.save(newFiles);
+
+
+
+        /*
+        String[] header = data.keySet().toArray(new String[data.size()]);
+        Double[] dataSetDouble = data.values().toArray(new Double[data.size()]);
+        String[] dataSet = new String[dataSetDouble.length];
+        for (int i = 0; i < dataSetDouble.length; i++)
+            dataSet[i] = String.valueOf(dataSetDouble[i]);
+
+
+
+
+//using custom delimiter and quote character
+        CSVWriter csvWriter = new CSVWriter(output,
+                                    '#',
+                                    '\n',
+                                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                                    CSVWriter.DEFAULT_LINE_END);
+        for (Map.Entry<String, Double> entry : data.entrySet()){
+            csvWriter.write(entry.getKey(), String.valueOf(entry.getValue()));
+        }
+        writer.writeNext(header);
+        writer.writeNext(dataSet);
+
+
+
         StringBuilder builder = new StringBuilder();
         builder.append(";PAY;");
         builder.append("PAY_DATE");
@@ -113,15 +167,8 @@ public class FileService {
             builder.append(kvp.getKey());
             builder.append("\r\n");
         }
-        Files newFiles = new Files();
-        newFiles.setFileName("TempName");
-        newFiles.setContentType("text/csv");
-        newFiles.setDataType(dataType);
-        newFiles.setCreateTime(LocalDateTime.now());
-        newFiles.setUser(userDetailsRepo.getById(id));
-        newFiles.setFile(String.valueOf(builder).getBytes());
 
-        filesRepo.save(newFiles);
+ */
     }
 
 

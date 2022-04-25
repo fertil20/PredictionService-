@@ -28,7 +28,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.4'
 	testImplementation 'org.springframework.security:spring-security-test:5.6.2'
 	// чтение csv
-	implementation group: 'com.opencsv', name: 'opencsv', version: '5.6'
+	//implementation group: 'com.opencsv', name: 'opencsv', version: '5.6'
 	//
 	implementation 'javax.validation:validation-api:2.0.1.Final'
 	implementation 'org.postgresql:postgresql:42.3.3'
@@ -41,7 +41,10 @@ dependencies {
 	// для сервиса питона
 	implementation 'org.springframework.boot:spring-boot-starter-webflux:2.6.6'
 	//json
-	implementation 'org.json:json:20220320'
+	//implementation 'org.json:json:20220320'
+	//csv
+	implementation 'com.opencsv:opencsv:5.6'
+	implementation 'net.sf.supercsv:super-csv:2.4.0'
 }
 
 tasks.named('test') {

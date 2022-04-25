@@ -28,10 +28,10 @@ public class FilesController {
 
     @PostMapping("/upload/{id}")
     public void uploadFile(@RequestParam("file") MultipartFile file,
-                           @PathVariable Long id,
+                           @CurrentUser UserPrincipal currentUser,
                            @RequestParam("dataType") String dataType) throws IOException {
-        if (file!= null && id!=null){
-            fileService.uploadFile(file, id, dataType);
+        if (file!= null && currentUser.getId()!=null){
+            fileService.uploadFile(file, currentUser.getId(), dataType);
         }
     }
 
