@@ -154,7 +154,7 @@ export default class FilesList extends Component {
                                                                onClick={() => this.predictionChart(files.id)}>{files.fileName}</a>
                                                         </Col>
                                                         <Col style={{width: '15%'}} className='news-title'>
-                                                            {files.date}
+                                                            {files.createDateTime}
                                                         </Col>
                                                         <Col style={{width: '5%'}}>
                                                             <Button>

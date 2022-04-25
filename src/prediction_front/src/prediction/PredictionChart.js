@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import {Col, Row} from 'reactstrap';
-import {predictFile} from "../util/APIUtils";
+import {predictFile, savePredict} from "../util/APIUtils";
 import NavigationPanel from "../navigation/NavigationPanel";
 import {Chart, registerables} from "chart.js";
 import './PredictionChart.css'
+import {Button} from "antd";
 
 
 
@@ -24,6 +25,7 @@ export default class PredictionChart extends Component {
                 this.downloadThisFile = this.downloadThisFile.bind(this)
                 this.deleteThisFile = this.deleteThisFile.bind(this)*/
         this.buildChart = this.buildChart.bind(this)
+        this.savePrediction = this.savePrediction.bind(this)
         Chart.register(...registerables);
     }
 
@@ -49,11 +51,21 @@ export default class PredictionChart extends Component {
             }, 2000);}
         }*/
 
-    buildChart () {
+    savePrediction(data) {
+        savePredict(data, "PredictionPayments")
+            .then(response => {
+                alert('Файл успешно сохранён')
+            })
+            .catch(error => {
+                alert('Что-то пошло не так')
+            })
+    }
+
+    buildChart() {
         predictFile(this.props.match.params.fileId)
             .then(response => {
                 if (this._isMounted) {
-                    this.setState({/*data: response, */isLoading: false})
+                    this.setState({isLoading: false, data: response})
                     console.log(response)
                     this.chart = new Chart(document.getElementById('myChart').getContext('2d'), {
                         type: 'line',
@@ -138,7 +150,7 @@ export default class PredictionChart extends Component {
         return (
             <Row>
                 <NavigationPanel/>
-                <Col sm={{size: 5.4}} style={{
+                <Col style={{
                     backgroundColor: 'white',
                     borderRadius: 10,
                     overflow: 'auto',
@@ -146,6 +158,10 @@ export default class PredictionChart extends Component {
                     height: '100%',
                     paddingBottom: 20,
                     width: '75%',
+                }}>
+                <Col sm={{size: 5.4}} style={{
+                    minHeight: 200,
+                    height: '100%',
                     display: 'flex'
                 }}>
                     {this.state.isLoading &&
@@ -155,6 +171,13 @@ export default class PredictionChart extends Component {
                     {!this.state.isLoading &&
                     <canvas id="myChart">
                     </canvas>}
+                </Col>
+                    <div style={{marginTop:15}}>
+                        {!this.state.isLoading &&
+                            <Button color="primary" size="sm" onClick={() => this.savePrediction(this.state.data)}>
+                                Сохранить предсказание
+                            </Button>}
+                    </div>
                 </Col>
             </Row>
         )

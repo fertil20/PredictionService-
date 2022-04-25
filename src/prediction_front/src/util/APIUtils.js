@@ -87,6 +87,14 @@ export function loadFilesByUser(userId) {
     });
 }
 
+export function savePredict(data, dataType) {
+    return request({
+        url: API_BASE_URL + "/file/savePrediction?dataType=" + dataType,
+        method: 'POST',
+        body: JSON.stringify(data)
+    })
+}
+
 export function predictFile(fileId) {
     return request({
         url: API_BASE_URL + "/prediction/predict/" + fileId,

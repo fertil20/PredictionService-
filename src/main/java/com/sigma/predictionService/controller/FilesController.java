@@ -35,12 +35,12 @@ public class FilesController {
         }
     }
 
-    @PostMapping("/savePrediction/{id}")
+    @PostMapping("/savePrediction")
     public void savePrediction(@RequestBody Map<String, Double> data,
-                               @PathVariable Long id,
+                               @CurrentUser UserPrincipal currentUser,
                                @RequestParam("dataType") String dataType){
-        if (id!=null){
-            fileService.savePrediction(data, id, dataType);
+        if (currentUser!=null){
+            fileService.savePrediction(data, currentUser.getId(), dataType);
         }
     }
 
