@@ -9,4 +9,5 @@ public interface FilesRepo extends JpaRepository<Files, Long> {
 
     Set<Files> findFilesByUserId(Long id);
 
+    Set<Files> findFilesByUserIdAndDataType(Long id, String dataType);
 }

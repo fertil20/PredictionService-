@@ -6,11 +6,13 @@ import lombok.Data;
 @Data
 public class UserFilesResponse {
 
-    private Long Id;
+    private Long id;
     private String fileName;
+    private String createDateTime;
 
-    public UserFilesResponse(Long id, String fileName) {
-        Id = id;
+    public UserFilesResponse(Long id, String fileName, String createDateTime) {
+        this.id = id;
         this.fileName = fileName;
+        this.createDateTime = createDateTime;
     }
 }
