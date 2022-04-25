@@ -12,7 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;;
+import java.io.IOException;
+import java.util.Map;;
 
 
 @RestController
@@ -31,6 +32,15 @@ public class FilesController {
                            @RequestParam("dataType") String dataType) throws IOException {
         if (file!= null && id!=null){
             fileService.uploadFile(file, id, dataType);
+        }
+    }
+
+    @PostMapping("/savePrediction/{id}")
+    public void changeFileName(@RequestParam("file") Map<String, Double> data,
+                               @PathVariable Long id,
+                               @RequestParam("dataType") String dataType){
+        if (id!=null){
+            fileService.savePrediction(data, id, dataType);
         }
     }
 

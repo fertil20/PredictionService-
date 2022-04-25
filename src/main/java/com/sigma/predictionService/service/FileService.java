@@ -15,6 +15,7 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -48,9 +49,8 @@ public class FileService {
     }
 
     public List<UserFilesResponse> getUserFiles(@NotNull Long id, @NotNull String dataType){
-            return filesRepo.findFilesByUserId(id)
+            return filesRepo.findFilesByUserIdAndDataType(id, dataType)
                     .stream()
-                    .filter(file ->  Objects.equals(file.getDataType(), dataType))
                     .map(files ->
                     new UserFilesResponse(
                             files.getId(),
@@ -98,6 +98,31 @@ public class FileService {
         }
         return null;
     }
+
+    public void savePrediction(Map<String,Double> data, Long id, String dataType){
+        StringBuilder builder = new StringBuilder();
+        builder.append(";PAY;");
+        builder.append("PAY_DATE");
+        builder.append("\r\n");
+        var i = 1;
+        for (Map.Entry<String, Double> kvp : data.entrySet()) {
+            builder.append(i)
+                    .append(";")
+                    .append(kvp.getValue());
+            builder.append(";");
+            builder.append(kvp.getKey());
+            builder.append("\r\n");
+        }
+        Files newFiles = new Files();
+        newFiles.setContentType("text/csv");
+        newFiles.setDataType(dataType);
+        newFiles.setCreateTime(LocalDateTime.now());
+        newFiles.setUser(userDetailsRepo.getById(id));
+        newFiles.setFile(String.valueOf(builder).getBytes());
+        filesRepo.save(newFiles);
+    }
+
+
 
     public void deleteFile(Long id){
         filesRepo.deleteById(id);
