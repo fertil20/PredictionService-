@@ -114,11 +114,13 @@ public class FileService {
             builder.append("\r\n");
         }
         Files newFiles = new Files();
+        newFiles.setFileName("TempName");
         newFiles.setContentType("text/csv");
         newFiles.setDataType(dataType);
         newFiles.setCreateTime(LocalDateTime.now());
         newFiles.setUser(userDetailsRepo.getById(id));
         newFiles.setFile(String.valueOf(builder).getBytes());
+
         filesRepo.save(newFiles);
     }
 
