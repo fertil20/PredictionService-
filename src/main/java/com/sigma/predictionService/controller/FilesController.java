@@ -36,7 +36,7 @@ public class FilesController {
     }
 
     @PostMapping("/savePrediction/{id}")
-    public void changeFileName(@RequestParam("file") Map<String, Double> data,
+    public void savePrediction(@RequestBody Map<String, Double> data,
                                @PathVariable Long id,
                                @RequestParam("dataType") String dataType){
         if (id!=null){
