@@ -35,7 +35,7 @@ public class FileService {
     }
 
     public void uploadFile(@NotNull MultipartFile file, @NotNull Long id, @NotNull String dataType) throws IOException {
-        if(Objects.equals(file.getContentType(),"text/csv")){
+        if(Objects.equals(file.getContentType(),"text/csv") || Objects.equals(file.getContentType(), "application/vnd.ms-excel")){
             Files newFiles = new Files();
             newFiles.setFileName(file.getOriginalFilename());
             newFiles.setFile(file.getBytes());
