@@ -1,10 +1,13 @@
 import React, {Component} from "react";
 import {Col, Row} from 'reactstrap';
-import {loadFilesByUser, downloadFile, deleteFile} from "../util/APIUtils";
+import {loadFilesByUser, downloadFile, deleteFile, editFile} from "../util/APIUtils";
 import ".//Files.css"
-import { Button} from 'antd';
-import { DownloadOutlined, DeleteOutlined } from '@ant-design/icons';
+import {Menu, Dropdown, Button, Modal, Input} from 'antd';
+import {DownloadOutlined, DeleteOutlined, EditOutlined} from '@ant-design/icons';
 import NavigationPanel from "../navigation/NavigationPanel";
+import 'antd/dist/antd.css';
+
+
 
 export default class FilesList extends Component {
 
@@ -14,13 +17,18 @@ export default class FilesList extends Component {
         this.state ={
             CurUser: JSON.parse(localStorage.getItem('app')),
             files: null,
-            image: [],
-            isLoading: false
+            isLoading: false,
+            loading: false,
+            visible: false,
+            name: null,
+            id: null
         }
         this.loadAllFiles = this.loadAllFiles.bind(this)
         this.downloadThisFile = this.downloadThisFile.bind(this)
         this.deleteThisFile = this.deleteThisFile.bind(this)
         this.predictionChart = this.predictionChart.bind(this)
+        this.handleMenuClick = this.handleMenuClick.bind(this)
+        this.showModal = this.showModal.bind(this)
     }
 
 
@@ -42,6 +50,22 @@ export default class FilesList extends Component {
             }, 2000);}
         }*/
 
+    showModal = (id, name) => {
+        this.setState({
+            visible: true,
+            id: id,
+            name: name
+        });
+    };
+
+    handleOk = () => {
+        this.setState({ loading: true});
+        this.editThisFile(this.state.id, this.state.name);
+    };
+
+    handleCancel = () => {
+        this.setState({ visible: false });
+    };
 
     loadAllFiles(){
         loadFilesByUser(this.state.CurUser.currentUser.id)
@@ -63,7 +87,7 @@ export default class FilesList extends Component {
         deleteFile(fileId)
             .then(response => {
                 alert('Файл успешно удалён')
-                window.location.reload();
+                window.location.reload(); //todo сделать норм ререндеринг
             })
             .catch(error => {
                 alert('Что-то пошло не так')
@@ -74,18 +98,41 @@ export default class FilesList extends Component {
         this.props.history.push({pathname: "/prediction/" + fileId});
     }
 
-/*    deleteFilesByID(filesId){
-        deleteFiles(filesId)
+    editThisFile(fileId, name) {
+        editFile(fileId, name)
             .then(response => {
-                alert('Новость удалена.');
-                this.props.history.go(`/files`);
+                this.setState({ loading: false, visible: false });
+                alert('Файл успешно изменён')
+                window.location.reload(); //todo сделать норм ререндеринг
             })
             .catch(error => {
-                alert('Что-то пошло не так.');
+                alert('Что-то пошло не так')
             });
-    }*/
+    }
+
+    handleMenuClick = (id, name, {key}) => {
+        if (key === '1') {
+            this.showModal(id, name)
+        }
+        if (key === '2') {
+            this.deleteThisFile(id);
+        }
+    };
+
+
+    /*    deleteFilesByID(filesId){
+            deleteFiles(filesId)
+                .then(response => {
+                    alert('Новость удалена.');
+                    this.props.history.go(`/files`);
+                })
+                .catch(error => {
+                    alert('Что-то пошло не так.');
+                });
+        }*/
 
     render () {
+        const { visible, loading } = this.state;
         if (this.state.isLoading) {
             return(
                 <Row>
@@ -98,23 +145,43 @@ export default class FilesList extends Component {
                                         this.state.files.map(
                                             (files, index) =>(
                                                 <div style={{width:"auto", marginBottom:30}}>
-                                                    <Row >
-                                                    <Col style={{minWidth: '10%'}} className='news-title'>
-                                                        {files.id}
-                                                    </Col>
-                                                    <Col style={{minWidth: '70%'}}>
-                                                        <a className='parse-link' onClick={() => this.predictionChart(files.id)}>{files.fileName}</a>
-                                                    </Col>
-                                                    <Col style={{minWidth: '10%'}}>
-                                                        <Button>
-                                                            <DownloadOutlined onClick={()=>this.downloadThisFile(files.id)}/>
-                                                        </Button>
-                                                    </Col>
-                                                    <Col style={{minWidth: '10%'}}>
-                                                        <Button>
-                                                            <DeleteOutlined onClick={()=>this.deleteThisFile(files.id)}/>
-                                                        </Button>
-                                                    </Col>
+                                                    <Row>
+                                                        <Col style={{width: '5%'}} className='news-title'>
+                                                            {files.id}
+                                                        </Col>
+                                                        <Col style={{width: '70%'}}>
+                                                            <a className='parse-link'
+                                                               onClick={() => this.predictionChart}>{files.fileName}</a>
+                                                        </Col>
+                                                        <Col style={{width: '15%'}} className='news-title'>
+                                                            {files.date}
+                                                        </Col>
+                                                        <Col style={{width: '5%'}}>
+                                                            <Button>
+                                                                <DownloadOutlined
+                                                                    onClick={() => this.downloadThisFile(files.id)}/>
+                                                            </Button>
+                                                        </Col>
+                                                        <Col style={{width: '5%'}}>
+                                                            <Dropdown.Button overlay={
+                                                                <Menu
+                                                                    onClick={({key}) => this.handleMenuClick(files.id, files.fileName, {key})}
+                                                                    items={[
+                                                                        {
+                                                                            label: 'Редактировать',
+                                                                            key: '1',
+                                                                            icon: <EditOutlined/>
+                                                                        },
+                                                                        {
+                                                                            label: 'Удалить',
+                                                                            key: '2',
+                                                                            icon: <DeleteOutlined/>
+                                                                        }
+                                                                    ]}
+                                                                />
+                                                            } trigger={['click']}>
+                                                            </Dropdown.Button>
+                                                        </Col>
                                                     </Row>
                                                 </div>)
                                         ).reverse()
@@ -123,6 +190,25 @@ export default class FilesList extends Component {
                             ) : null
                         }
                     </Col>
+                    <Modal
+                        visible={visible}
+                        title="Редактирование"
+                        onOk={this.handleOk}
+                        onCancel={this.handleCancel}
+                        footer={[
+                            <Button key="back" onClick={this.handleCancel}>
+                                Закрыть
+                            </Button>,
+                            <Button key="submit" type="primary" loading={loading}
+                                    onClick={this.handleOk}>
+                                Сохранить
+                            </Button>
+                        ]}
+                    >
+                        <Input placeholder="Новое имя" defaultValue={this.state.name} maxLength={100}
+                               onChange={this.onChange = (e) => {this.setState({name: e.target.value})}}>
+                        </Input>
+                    </Modal>
                 </Row>
             )
         }else{

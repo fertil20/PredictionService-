@@ -65,6 +65,14 @@ export function deleteFile(fileId) {
     });
 }
 
+export function editFile(fileId, name) {
+    return request({
+        url: API_BASE_URL + "/file/changeName/" + fileId,
+        method: 'POST',
+        body: name
+    });
+}
+
 export function downloadFile(fileId) {
     return getFile({
         url: API_BASE_URL + "/file/download/" + fileId,
@@ -74,7 +82,7 @@ export function downloadFile(fileId) {
 
 export function loadFilesByUser(userId) {
     return request({
-        url: API_BASE_URL + "/users/" +  userId + "/files",
+        url: API_BASE_URL + "/users/" +  userId + "/files/DataPayments",
         method: 'GET'
     });
 }
@@ -90,6 +98,7 @@ export function uploadFile(file, userId) {
 
     let fd = new FormData()
     fd.append('file', file)
+    fd.append('dataType',"DataPayments")
 
     return setFile({
         url: API_BASE_URL + "/file/upload/" + userId,

@@ -5,6 +5,8 @@ import NavigationPanel from "../navigation/NavigationPanel";
 import {Chart, registerables} from "chart.js";
 import './PredictionChart.css'
 
+
+
 export default class PredictionChart extends Component {
 
     chart = null;

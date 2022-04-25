@@ -45,7 +45,7 @@ public class FilesController {
     }
 
     @PostMapping("/changeName/{id}")
-    public void changeFileName(@PathVariable Long id, @RequestParam("name") String name){
+    public void changeFileName(@PathVariable Long id, @RequestBody String name){
         if (id!=null){
             fileService.changeFileName(id, name);
         }
