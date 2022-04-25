@@ -151,7 +151,7 @@ export default class FilesList extends Component {
                                                         </Col>
                                                         <Col style={{width: '70%'}}>
                                                             <a className='parse-link'
-                                                               onClick={() => this.predictionChart}>{files.fileName}</a>
+                                                               onClick={() => this.predictionChart(files.id)}>{files.fileName}</a>
                                                         </Col>
                                                         <Col style={{width: '15%'}} className='news-title'>
                                                             {files.date}
