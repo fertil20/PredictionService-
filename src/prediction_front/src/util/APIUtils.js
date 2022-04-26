@@ -80,9 +80,9 @@ export function downloadFile(fileId) {
     });
 }
 
-export function loadFilesByUser(userId) {
+export function loadFilesByUser(dataType) {
     return request({
-        url: API_BASE_URL + "/users/" +  userId + "/files/DataPayments",
+        url: API_BASE_URL + "/users/files/" + dataType,
         method: 'GET'
     });
 }
@@ -102,14 +102,14 @@ export function predictFile(fileId) {
     });
 }
 
-export function uploadFile(file, userId) {
+export function uploadFile(file) {
 
     let fd = new FormData()
     fd.append('file', file)
     fd.append('dataType',"DataPayments")
 
     return setFile({
-        url: API_BASE_URL + "/file/upload/" + userId,
+        url: API_BASE_URL + "/file/upload",
         method: 'POST',
         body: fd,
         headers:  new Headers({"Authorization": `Bearer ` + localStorage.getItem(ACCESS_TOKEN)})

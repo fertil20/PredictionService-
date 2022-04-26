@@ -13,7 +13,6 @@ export default class FilesAdd extends Component {
         super(props);
         this.state ={
             CurUser: JSON.parse(localStorage.getItem('app')),
-            CurrentDate: '',
             file: '',
             fileName: 'default',
             fileUrl: 'default',
@@ -34,7 +33,7 @@ export default class FilesAdd extends Component {
     }
 
     addNewFile(){
-        uploadFile(this.state.file, this.state.CurUser.currentUser.id)
+        uploadFile(this.state.file)
             .then(response => {
                 alert('Файл добавлен')
                 //this.props.history.push(`/news`);
@@ -82,15 +81,10 @@ export default class FilesAdd extends Component {
     }
 
     render () {
-
-        let date = new Date();
-        this.state.CurrentDate = formatDate(date)
-
         return(
             <Row>
                 <Col sm={{size:1.5}} style={{backgroundColor: 'white', borderRadius: 10,overflow: 'auto', height:'100%', paddingBottom: 20, marginRight: '2%', width: '53%'}}>
                     <div style={{width:570, marginBottom:30}}>
-                        <div className='file-date'>{this.state.CurrentDate}</div>
                         <Row>
                             <Col>
                                 <img style={{paddingLeft:20}} src={this.state.fileUrl} alt={this.state.fileName} id = 'fileUpload' className='file-upload'/>
@@ -101,7 +95,7 @@ export default class FilesAdd extends Component {
                         </Row>
                     </div>
                     <div>
-                        <Link to='/file/add'><Button size='sm' color='danger' className='files-cancel' >Отменить</Button></Link>
+                        <Link to='/'><Button size='sm' color='danger' className='files-cancel' >Отменить</Button></Link>
                         <Button size='sm' className='files-publish' onClick={()=>this.addNewFile()}>Подтвердить</Button>
                     </div>
                 </Col>

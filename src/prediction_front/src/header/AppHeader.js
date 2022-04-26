@@ -1,7 +1,7 @@
 import React, {Component, useState} from 'react';
 import './AppHeader.css';
 import {Col, DropdownItem, DropdownMenu, DropdownToggle, Row, UncontrolledDropdown} from 'reactstrap';
-import {withRouter} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 
 
 class AppHeader extends Component {
@@ -64,20 +64,26 @@ function NavBarLogged(props){
                         {props.currentUser.name}
                     </DropdownToggle>
                     <DropdownMenu end>
-                        <div style={{textAlign:'center'}}>{props.currentUser.username}</div>
-                        <div style={{textAlign:'center'}}> @{props.currentUser.username}</div>
-                        <DropdownItem divider />
-                        <DropdownItem href={`/users/${props.currentUser.username}`}>
-                            Профиль
-                        </DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem href={`/users/${props.currentUser.username}/files`}>
-                            Мои файлы
-                        </DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem href={`/changePassword`}>
-                            Сменить пароль
-                        </DropdownItem>
+                        <div style={{textAlign: 'center'}}>{props.currentUser.username}</div>
+                        <div style={{textAlign: 'center'}}> @{props.currentUser.username}</div>
+                        <DropdownItem divider/>
+                        <Link to={`/users/${props.currentUser.username}`}>
+                            <DropdownItem>
+                                Профиль
+                            </DropdownItem>
+                        </Link>
+                        <DropdownItem divider/>
+                        <Link to={`/files/${props.currentUser.username}`}>
+                            <DropdownItem>
+                                Мои файлы
+                            </DropdownItem>
+                        </Link>
+                        <DropdownItem divider/>
+                        <Link to={`/changePassword`}>
+                            <DropdownItem>
+                                Сменить пароль
+                            </DropdownItem>
+                        </Link>
                         <DropdownItem onClick={props.handleMenuClick} href="/login">
                             Выйти
                         </DropdownItem>

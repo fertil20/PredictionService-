@@ -50,9 +50,9 @@ public class UserController {
     }
 
     @Transactional
-    @GetMapping("/{id}/files/{dataType}")
-    public List<UserFilesResponse> getUserFiles(@PathVariable Long id, @PathVariable String dataType){
-        return fileService.getUserFiles(id, dataType);
+    @GetMapping("/files/{dataType}")
+    public List<UserFilesResponse> getUserFiles(@CurrentUser UserPrincipal currentUser, @PathVariable String dataType){
+        return fileService.getUserFiles(currentUser.getId(), dataType);
     }
 
     @Transactional

@@ -43,7 +43,7 @@ export default class Home extends Component {
                     <NavigationPanel/>
                     <Col sm={{size: 5.4}} style={{backgroundColor:'white', borderRadius:10,overflow: 'auto', height:'100%', paddingBottom:20, width: '75%'}}>
                         <div style={{width: '100%', maxHeight: '80%'}}>
-                            <Link to="/file/add">
+                            <Link to={`/files/${this.state.user.currentUser.username}/add`}>
                                 <div className='row-navigation'>Загрузить файлы</div>
                             </Link>
                         </div>

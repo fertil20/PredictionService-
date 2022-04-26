@@ -1,15 +1,15 @@
 import React, {Component} from "react";
 import {Col, Row} from 'reactstrap';
 import {loadFilesByUser, downloadFile, deleteFile, editFile} from "../util/APIUtils";
-import ".//Files.css"
 import {Menu, Dropdown, Button, Modal, Input} from 'antd';
 import {DownloadOutlined, DeleteOutlined, EditOutlined} from '@ant-design/icons';
 import NavigationPanel from "../navigation/NavigationPanel";
 import 'antd/dist/antd.css';
+import {Link} from "react-router-dom";
 
 
 
-export default class FilesList extends Component {
+export default class PredictionList extends Component {
 
     constructor(props) {
         super(props);
@@ -68,7 +68,7 @@ export default class FilesList extends Component {
     };
 
     loadAllFiles(){
-        loadFilesByUser("DataPayments")
+        loadFilesByUser("PredictionPayments")
             .then(response => {
                 this.setState({files: response})
                 if(response){
@@ -162,8 +162,7 @@ export default class FilesList extends Component {
                                             margin: 0,
                                             padding: 0
                                         }} className='news-title'>
-                                            <a className='parse-link'
-                                               onClick={() => this.predictionChart(files.id)}>{files.fileName}</a>
+                                            <Link to={`/history/${this.state.CurUser.currentUser.username}/${files.id}`}>{files.fileName}</Link>
                                         </Col>
                                         <Col style={{
                                             textAlign: 'center',

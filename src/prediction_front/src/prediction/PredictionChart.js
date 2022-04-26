@@ -21,9 +21,6 @@ export default class PredictionChart extends Component {
             isLoading: true,
             data: null
         }
-        /*        this.loadAllFiles = this.loadAllFiles.bind(this)
-                this.downloadThisFile = this.downloadThisFile.bind(this)
-                this.deleteThisFile = this.deleteThisFile.bind(this)*/
         this.buildChart = this.buildChart.bind(this)
         this.savePrediction = this.savePrediction.bind(this)
         Chart.register(...registerables);
@@ -158,21 +155,22 @@ export default class PredictionChart extends Component {
                     height: '100%',
                     paddingBottom: 20,
                     width: '75%',
+                    maxWidth: '75%'
                 }}>
-                <Col sm={{size: 5.4}} style={{
-                    minHeight: 200,
-                    height: '100%',
-                    display: 'flex'
-                }}>
-                    {this.state.isLoading &&
-                        <div className="spinner-border" role="status">
-                            <span className="sr-only">Loading...</span>
-                        </div>}
-                    {!this.state.isLoading &&
-                    <canvas id="myChart">
-                    </canvas>}
-                </Col>
-                    <div style={{marginTop:15}}>
+                    <Col sm={{size: 5.4}} style={{
+                        minHeight: 200,
+                        height: '100%',
+                        display: 'flex'
+                    }}>
+                        {this.state.isLoading &&
+                            <div className="spinner-border" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </div>}
+                        {!this.state.isLoading &&
+                            <canvas id="myChart">
+                            </canvas>}
+                    </Col>
+                    <div style={{marginTop: 15}}>
                         {!this.state.isLoading &&
                             <Button color="primary" size="sm" onClick={() => this.savePrediction(this.state.data)}>
                                 Сохранить предсказание

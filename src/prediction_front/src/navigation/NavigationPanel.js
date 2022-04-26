@@ -42,10 +42,10 @@ export default class NavigationPanel extends Component {
                     <Link to='/'>
                         <div style={{paddingTop: 10}} className='row-navigation'>Главная</div>
                     </Link>
-                    <Link to={`/users/${this.state.user.currentUser.username}/files`}>
+                    <Link to={`/files/${this.state.user.currentUser.username}`}>
                         <div className='row-navigation'>Прогнозирование</div>
                     </Link>
-                    <Link to='/prediction'>
+                    <Link to={`/history/${this.state.user.currentUser.username}`}>
                         <div className='row-navigation'>История</div>
                     </Link>
                     <hr/>

@@ -26,7 +26,7 @@ public class FilesController {
         this.fileService = fileService;
     }
 
-    @PostMapping("/upload/{id}")
+    @PostMapping("/upload")
     public void uploadFile(@RequestParam("file") MultipartFile file,
                            @CurrentUser UserPrincipal currentUser,
                            @RequestParam("dataType") String dataType) throws IOException {
@@ -44,6 +44,7 @@ public class FilesController {
         }
     }
 
+    @Transactional
     @PostMapping("/changeName/{id}")
     public void changeFileName(@PathVariable Long id, @RequestBody String name){
         if (id!=null){

@@ -23,6 +23,7 @@ import ForgotPasswordReset from "../user/passwordReset/ForgotPasswordReset";
 import ChangePassword from "../user/passwordReset/ChangePassword";
 import ProfileEdit from "../user/profile/ProfileEdit";
 import PredictionChart from "../prediction/PredictionChart";
+import PredictionList from "../prediction/PredictionList";
 
 
 const { Content } = Layout;
@@ -130,8 +131,9 @@ class App extends Component {
                             <PrivateRoute exact path="/users/:username/edit" authenticated={this.persistentState.getState().isAuthenticated} component={ProfileEdit} handleLogout={this.handleLogout}/>
                             <PrivateRoute exact path="/newUser" authenticated={this.persistentState.getState().isAuthenticated} component={NewUser} handleLogout={this.handleLogout}/>
                             <PrivateRoute exact path="/prediction/:fileId" authenticated={this.persistentState.getState().isAuthenticated} component={PredictionChart} handleLogout={this.handleLogout}/>
-                            <PrivateRoute exact path="/users/:username/files" authenticated={this.persistentState.getState().isAuthenticated} component={FilesList} handleLogout={this.handleLogout}/>
-                            <PrivateRoute exact path="/file/add" authenticated={this.persistentState.getState().isAuthenticated} component={FilesAdd} handleLogout={this.handleLogout}/>
+                            <PrivateRoute exact path="/history/:username" authenticated={this.persistentState.getState().isAuthenticated} component={PredictionList} handleLogout={this.handleLogout}/>
+                            <PrivateRoute exact path="/files/:username" authenticated={this.persistentState.getState().isAuthenticated} component={FilesList} handleLogout={this.handleLogout}/>
+                            <PrivateRoute exact path="/files/:username/add" authenticated={this.persistentState.getState().isAuthenticated} component={FilesAdd} handleLogout={this.handleLogout}/>
                             <Route component={NotFound} />
                         </Switch>
                     </div>
