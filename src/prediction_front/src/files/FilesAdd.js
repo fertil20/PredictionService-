@@ -2,9 +2,7 @@ import {Component} from "react";
 import {Button, Col, Input, Row} from 'reactstrap';
 import {uploadFile} from "../util/APIUtils";
 import {Link} from "react-router-dom";
-import {formatDate} from "../util/Helpers";
 
-let fileToUpload = ''
 
 
 export default class FilesAdd extends Component {
@@ -15,8 +13,7 @@ export default class FilesAdd extends Component {
             CurUser: JSON.parse(localStorage.getItem('app')),
             file: '',
             fileName: 'default',
-            fileUrl: 'default',
-            image: ''
+            fileUrl: 'default'
         }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.onChange = this.onChange.bind(this)
@@ -46,26 +43,12 @@ export default class FilesAdd extends Component {
 
     onChange(e) {
         if(e.target.files.length !== 0) {
-            this.state.file = e.target.files[0]
+            this.setState({file: e.target.files[0]})
             // imageToUpload = new Blob([JSON.stringify(this.state.file, null, 2)]);
             // this.getBinary(e)
-            this.setState({fileUrl: URL.createObjectURL(e.target.files[0])})
-            this.state.fileName = e.target.files[0].name
+            // this.setState({fileUrl: URL.createObjectURL(e.target.files[0])})
+            // this.setState({fileName: e.target.files[0].name})
         }
-    }
-
-    getBinary(e){
-        let file = e.target.files[0];
-        let reader = new FileReader();
-        let binaryBlob = null
-        reader.onloadend = function() {
-            let data=(reader.result).split(',')[1];
-            binaryBlob = reader.result;
-            // console.log('done')
-            fileToUpload = binaryBlob
-        }
-        reader.readAsText(file);
-
     }
 
     handleInputChange(event) {

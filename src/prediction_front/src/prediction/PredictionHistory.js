@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Col, Row} from 'reactstrap';
 import {loadFilesByUser} from "../util/APIUtils";
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 import {Link} from "react-router-dom";
 
 

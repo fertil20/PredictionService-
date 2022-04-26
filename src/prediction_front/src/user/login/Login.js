@@ -5,7 +5,7 @@ import {ACCESS_TOKEN} from '../../constants/constants';
 import {Form} from '@ant-design/compatible';
 import {Button, Input} from 'antd';
 import {Link} from "react-router-dom";
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 // import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
 
 

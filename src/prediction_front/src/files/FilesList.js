@@ -5,7 +5,7 @@ import ".//Files.css"
 import {Menu, Dropdown, Button, Modal, Input} from 'antd';
 import {DownloadOutlined, DeleteOutlined, EditOutlined} from '@ant-design/icons';
 import NavigationPanel from "../navigation/NavigationPanel";
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 
 
 
