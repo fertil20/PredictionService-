@@ -23,9 +23,10 @@ public class PredictionController {
 
     @Transactional
     @GetMapping("/predict/{id}")
-    public Map<String, Double> getPrediction(@PathVariable Long id,
+    public Map<String, Map<String, Double>> getPrediction(@PathVariable Long id,
                                              @CurrentUser UserPrincipal currentUser){
-        return predictionService.getPrediction(id, currentUser.getId());
+        String startDate = "23.05.2021", endDate = "24.11.2021";
+        return predictionService.getPrediction(id, currentUser.getId(), startDate, endDate);
     }
 
 }
