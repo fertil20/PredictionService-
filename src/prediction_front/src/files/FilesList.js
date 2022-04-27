@@ -68,7 +68,7 @@ export default class FilesList extends Component {
     };
 
     loadAllFiles(){
-        loadFilesByUser("DataPayments")
+        loadFilesByUser("DATA_PAYMENTS")
             .then(response => {
                 this.setState({files: response})
                 if(response){

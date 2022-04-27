@@ -106,7 +106,7 @@ export function uploadFile(file) {
 
     let fd = new FormData()
     fd.append('file', file)
-    fd.append('dataType',"DataPayments")
+    fd.append('dataType',"DATA_PAYMENTS")
 
     return setFile({
         url: API_BASE_URL + "/file/upload",

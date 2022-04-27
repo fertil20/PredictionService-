@@ -49,7 +49,7 @@ export default class PredictionChart extends Component {
         }*/
 
     savePrediction(data) {
-        savePredict(data, "PredictionPayments")
+        savePredict(data, "DATA_PAYMENTS")
             .then(response => {
                 alert('Файл успешно сохранён')
             })

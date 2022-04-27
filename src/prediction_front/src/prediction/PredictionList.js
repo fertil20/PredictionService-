@@ -68,7 +68,7 @@ export default class PredictionList extends Component {
     };
 
     loadAllFiles(){
-        loadFilesByUser("PredictionPayments")
+        loadFilesByUser("DATA_PAYMENTS")
             .then(response => {
                 this.setState({files: response})
                 if(response){

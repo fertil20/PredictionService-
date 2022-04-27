@@ -39,7 +39,7 @@ export default class PredictionHistory extends Component {
         }*/
 
     loadAllFiles(){
-        loadFilesByUser("PredictionPayments")
+        loadFilesByUser("DATA_PAYMENTS")
             .then(response => {
                 this.setState({files: response})
                 if(response){
