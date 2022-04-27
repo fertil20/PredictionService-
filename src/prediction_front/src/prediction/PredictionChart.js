@@ -49,7 +49,7 @@ export default class PredictionChart extends Component {
         }*/
 
     savePrediction(data) {
-        savePredict(data, "DATA_PAYMENTS")
+        savePredict(data.PREDICTION, "PREDICTION_PAYMENTS")
             .then(response => {
                 alert('Файл успешно сохранён')
             })
@@ -63,13 +63,12 @@ export default class PredictionChart extends Component {
             .then(response => {
                 if (this._isMounted) {
                     this.setState({isLoading: false, data: response})
-                    console.log(response)
                     this.chart = new Chart(document.getElementById('myChart').getContext('2d'), {
                         type: 'line',
                         data: {
                             datasets: [{
-                                label: 'Объем платежей',
-                                data: response,
+                                label: 'Исходные данные',
+                                data: response.DATA,
                                 backgroundColor: [
                                     'rgba(241,47,47,0.73)',
                                     // 'rgba(54, 162, 235, 0.2)',
@@ -80,14 +79,36 @@ export default class PredictionChart extends Component {
                                 ],
                                 borderColor: [
                                     // 'rgba(255, 99, 132, 1)',
-                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(241,47,47,0.73)',
                                     // 'rgba(255, 206, 86, 1)',
                                     // 'rgba(75, 192, 192, 1)',
                                     // 'rgba(153, 102, 255, 1)',
                                     // 'rgba(255, 159, 64, 1)'
                                 ],
                                 borderWidth: 1
-                            }]
+                            },
+                                {
+                                    label: 'Предсказание',
+                                    data: response.PREDICTION,
+                                    backgroundColor: [
+                                        'rgba(54, 162, 235, 1)',
+                                        // 'rgba(54, 162, 235, 0.2)',
+                                        // 'rgba(255, 206, 86, 0.2)',
+                                        // 'rgba(75, 192, 192, 0.2)',
+                                        // 'rgba(153, 102, 255, 0.2)',
+                                        // 'rgba(255, 159, 64, 0.2)'
+                                    ],
+                                    borderColor: [
+                                        // 'rgba(255, 99, 132, 1)',
+                                        'rgba(54, 162, 235, 1)',
+                                        // 'rgba(255, 206, 86, 1)',
+                                        // 'rgba(75, 192, 192, 1)',
+                                        // 'rgba(153, 102, 255, 1)',
+                                        // 'rgba(255, 159, 64, 1)'
+                                    ],
+                                    borderWidth: 1
+                                }
+                            ]
                         },
                         options: {
                             scales: {
