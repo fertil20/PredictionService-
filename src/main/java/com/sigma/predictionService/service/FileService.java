@@ -1,12 +1,14 @@
 package com.sigma.predictionService.service;
 
-import com.opencsv.CSVReader;
+import com.opencsv.*;
 import com.opencsv.exceptions.CsvException;
 import com.sigma.predictionService.dto.FileDownloadResponse;
 import com.sigma.predictionService.dto.UserFilesResponse;
 import com.sigma.predictionService.model.Files;
 import com.sigma.predictionService.repository.FilesRepo;
 import com.sigma.predictionService.repository.UserDetailsRepo;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.supercsv.io.CsvListWriter;
@@ -16,10 +18,7 @@ import org.supercsv.prefs.CsvPreference;
 import javax.validation.constraints.NotNull;
 import java.io.*;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -64,17 +63,46 @@ public class FileService {
     }
 
 
-    public void readScv(Long fileId){
+    public Map<String,Double> readScv(Long fileId){
+        Map<String, Double> answer = new LinkedHashMap<>();
         Files file = filesRepo.getById(fileId);
-        try(CSVReader reader = new CSVReader(
-                                new InputStreamReader(
-                                    new ByteArrayInputStream(file.getFile())))){
+
+        //CSVParser parser = new CSVParserBuilder().withSeparator(';').build();
+        //CSVReader csvReader = new CSVReaderBuilder(new InputStreamReader(new ByteArrayInputStream(file.getFile()))).withCSVParser(parser).build();
+        //CSVReader csvReader = new CSVReader(new InputStreamReader(new ByteArrayInputStream(file.getFile())), ';');
+
+        InputStreamReader in = new InputStreamReader(new ByteArrayInputStream(file.getFile()));
+        try {
+            Iterable<CSVRecord>  records = CSVFormat.EXCEL.builder().setHeader(getHeaders(file.getDataType())).setSkipHeaderRecord(true).setDelimiter(';').build().parse(in);
+            for (CSVRecord record : records) {
+                String payDate = record.get("PAY_DATE");
+                String pay = record.get("PAY").replace(',','.');
+                answer.put(payDate,Double.valueOf(pay));
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //System.out.println(Arrays.toString(answer));
+
+        /*
+                try(CSVReader reader = new CSVReader(new InputStreamReader(new ByteArrayInputStream(file.getFile())))
+        ){
             List<String[]> r = reader.readAll();
-            r.forEach(x -> System.out.println(Arrays.toString(x)));
+            r.forEach(x -> {
+                            //System.out.println(Arrays.toString(x));
+                            answer.put(x[1], Double.valueOf(x[3]));
+            });
         } catch (IOException | CsvException e) {
             e.printStackTrace();
         }
+         */
+        return answer;
     }
+
+
+
+
 
     public void changeFileName(Long id, String name){
         Files updatedFile = filesRepo.getById(id);
@@ -102,13 +130,14 @@ public class FileService {
         return null;
     }
 
+
     public void savePrediction(Map<String,Double> data, Long id, String dataType){
 
         StringWriter output = new StringWriter();
 
         try (ICsvListWriter listWriter = new CsvListWriter(output,
                 CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE)){
-            listWriter.write("PAY", "PAY_DATE");
+            listWriter.write("PAY", "PAY_DATE");//TODO переделать
             for (Map.Entry<String, Double> entry : data.entrySet()){
                 listWriter.write(entry.getValue(), entry.getKey());
             }
@@ -175,6 +204,28 @@ public class FileService {
 
     public void deleteFile(Long id){
         filesRepo.deleteById(id);
+    }
+
+    private String[] getHeaders(String dataType){
+        String[] Headers;
+        dataTypes type = dataTypes.valueOf(dataType);
+        switch (type){
+            case DATA_PAYMENTS:
+                Headers = new String[] {"", "PAY", "CNT","PAY_DATE"};
+                break;
+            case PREDICTION_PAYMENTS:
+                Headers = new String[] {"PAY", "PAY_DATE"};
+                break;
+            default:
+                Headers = null;
+                break;
+        }
+        return Headers;
+    }
+
+    private enum dataTypes{
+        DATA_PAYMENTS,
+        PREDICTION_PAYMENTS
     }
 
 }

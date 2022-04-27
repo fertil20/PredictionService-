@@ -19,9 +19,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 
 import javax.validation.constraints.NotNull;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -32,10 +29,12 @@ public class PredictionService {
     private final HttpClient httpClient;
     final private FilesRepo filesRepo;
     final private UserDetailsRepo userDetailsRepo;
+    final private FileService fileService;
 
-    public PredictionService(FilesRepo filesRepo, UserDetailsRepo userDetailsRepo) {
+    public PredictionService(FilesRepo filesRepo, UserDetailsRepo userDetailsRepo, FileService fileService) {
         this.filesRepo = filesRepo;
         this.userDetailsRepo = userDetailsRepo;
+        this.fileService = fileService;
 
         httpClient = HttpClient.create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)
@@ -55,14 +54,22 @@ public class PredictionService {
     }
 
 
-    public Map<String, Double> getPrediction(@NotNull Long id,
-                              @NotNull Long userId){
-        Map<String, Double> predictionPesponce = new TreeMap<>();
+    public Map<String, Map<String, Double>> getPrediction(@NotNull Long id,
+                                                          @NotNull Long userId,
+                                                          @NotNull String startDate,
+                                                          @NotNull String endDate
+    ){
+        Map<String, Double> predictionPesponce = new LinkedHashMap<>();
+        Map<String, Double> dataPesponce = new LinkedHashMap<>();
+        Map<String, Map<String, Double>> resultMap = new LinkedHashMap<>();
+
         Files file = filesRepo.getById(id);
         if (Objects.equals(file.getUser().getId(), userId)) {
+
             String header1 = String.format("form-data; name=%s; filename=%s", "file", file.getFileName());
             MultipartBodyBuilder builder = new MultipartBodyBuilder();
             builder.part("file", new ByteArrayResource(file.getFile())).header("Content-Disposition", header1);
+
 
             predictionPesponce = client
                     .post()
@@ -76,9 +83,14 @@ public class PredictionService {
                         }
                     })
                     .block();
-            System.out.println(predictionPesponce);
+            //System.out.println(predictionPesponce);
         }
-        return predictionPesponce;
+
+        dataPesponce = fileService.readScv(id);
+        //System.out.println(dataPesponce);
+        resultMap.put("DATA", dataPesponce);
+        resultMap.put("PREDICTION", predictionPesponce);
+        return resultMap;
     }
 
 }
