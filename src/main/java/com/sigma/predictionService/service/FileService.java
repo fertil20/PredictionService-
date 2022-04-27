@@ -66,11 +66,6 @@ public class FileService {
     public Map<String,Double> readScv(Long fileId){
         Map<String, Double> answer = new LinkedHashMap<>();
         Files file = filesRepo.getById(fileId);
-
-        //CSVParser parser = new CSVParserBuilder().withSeparator(';').build();
-        //CSVReader csvReader = new CSVReaderBuilder(new InputStreamReader(new ByteArrayInputStream(file.getFile()))).withCSVParser(parser).build();
-        //CSVReader csvReader = new CSVReader(new InputStreamReader(new ByteArrayInputStream(file.getFile())), ';');
-
         InputStreamReader in = new InputStreamReader(new ByteArrayInputStream(file.getFile()));
         try {
             Iterable<CSVRecord>  records = CSVFormat.EXCEL.builder().setHeader(getHeaders(file.getDataType())).setSkipHeaderRecord(true).setDelimiter(';').build().parse(in);
@@ -83,21 +78,23 @@ public class FileService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //System.out.println(Arrays.toString(answer));
-
-        /*
-                try(CSVReader reader = new CSVReader(new InputStreamReader(new ByteArrayInputStream(file.getFile())))
-        ){
-            List<String[]> r = reader.readAll();
-            r.forEach(x -> {
-                            //System.out.println(Arrays.toString(x));
-                            answer.put(x[1], Double.valueOf(x[3]));
-            });
-        } catch (IOException | CsvException e) {
-            e.printStackTrace();
-        }
-         */
         return answer;
+    }
+
+    public Map<String,Double> getDataMapForDates(Long fileId ,String startDate, String endDate){
+        Map<String,Double> rawMap = readScv(fileId);
+        Map<String,Double> filteredMap = new LinkedHashMap<>();
+        boolean inRange = false;
+        for (String key : rawMap.keySet()){
+            if (Objects.equals(key,startDate) || inRange){
+                filteredMap.put(key,rawMap.get(key));
+                inRange = true;
+            }
+            else if (Objects.equals(key,endDate)){
+                inRange = false;
+            }
+        }
+        return filteredMap;
     }
 
 
@@ -205,6 +202,7 @@ public class FileService {
     public void deleteFile(Long id){
         filesRepo.deleteById(id);
     }
+
 
     private String[] getHeaders(String dataType){
         String[] Headers;

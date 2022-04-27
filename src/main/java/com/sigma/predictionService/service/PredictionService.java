@@ -86,7 +86,7 @@ public class PredictionService {
             //System.out.println(predictionPesponce);
         }
 
-        dataPesponce = fileService.readScv(id);
+        dataPesponce = fileService.getDataMapForDates(id, startDate, endDate);
         //System.out.println(dataPesponce);
         resultMap.put("DATA", dataPesponce);
         resultMap.put("PREDICTION", predictionPesponce);
