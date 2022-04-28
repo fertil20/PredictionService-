@@ -38,9 +38,10 @@ public class FilesController {
     @PostMapping("/savePrediction")
     public void savePrediction(@RequestBody Map<String, Double> data,
                                @CurrentUser UserPrincipal currentUser,
-                               @RequestParam("dataType") String dataType){
+                               @RequestParam("dataType") String dataType,
+                               @RequestParam("fileName") String fileName){
         if (currentUser!=null){
-            fileService.savePrediction(data, currentUser.getId(), dataType);
+            fileService.savePrediction(data, currentUser.getId(), dataType, fileName);
         }
     }
 

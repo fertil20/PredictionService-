@@ -128,7 +128,7 @@ public class FileService {
     }
 
 
-    public void savePrediction(Map<String,Double> data, Long id, String dataType){
+    public void savePrediction(Map<String,Double> data, Long id, String dataType, String fileName){
 
         StringWriter output = new StringWriter();
 
@@ -145,7 +145,7 @@ public class FileService {
 
 
         Files newFiles = new Files();
-        newFiles.setFileName("TempName");
+        newFiles.setFileName("PREDICTION_"+fileName);
         newFiles.setContentType("text/csv");
         newFiles.setDataType(dataType);
         newFiles.setCreateTime(LocalDateTime.now());
