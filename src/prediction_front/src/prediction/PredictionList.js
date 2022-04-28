@@ -99,7 +99,7 @@ export default class PredictionList extends Component {
     }
 
     predictionChart(fileId) {
-        this.props.history.push({pathname: "/prediction/" + fileId});
+        this.props.history.push({pathname: "/history/" + this.state.CurUser.currentUser.username + "/" + fileId});
     }
 
     editThisFile(fileId, name) {

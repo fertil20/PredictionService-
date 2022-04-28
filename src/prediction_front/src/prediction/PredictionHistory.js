@@ -1,3 +1,4 @@
+/*
 import React, {Component} from "react";
 import {Col, Row} from 'reactstrap';
 import {loadFilesByUser} from "../util/APIUtils";
@@ -30,13 +31,13 @@ export default class PredictionHistory extends Component {
         this._isMounted = false;
     }
 
-    /*    componentDidUpdate(prevProps, prevState, snapshot) {
+    /!*    componentDidUpdate(prevProps, prevState, snapshot) {
             if(!this.state.isLoading){
             let idVar = setInterval(() => {
                 this.loadAllFiles()
                 if(this.state.isLoading)clearInterval(idVar)
             }, 2000);}
-        }*/
+        }*!/
 
     loadAllFiles(){
         loadFilesByUser("DATA_PAYMENTS")
@@ -50,11 +51,11 @@ export default class PredictionHistory extends Component {
             });
     }
 
-/*    openPrediction(id) {
+/!*    openPrediction(id) {
         loadOldPrediction(id)
             .then(response => {
             })
-    }*/
+    }*!/
 
 
     render () {
@@ -79,9 +80,9 @@ export default class PredictionHistory extends Component {
                                 <Col style={{textAlign: 'center', width: '45%', maxWidth: '45%', margin: 0, padding: 0}} className='news-title'>
                                     {files.createDateTime}
                                 </Col>
-{/*                                <Col style={{textAlign: 'center', width: '5%', maxWidth: '5%', margin: 0, padding: 0}} className='news-title'>
+{/!*                                <Col style={{textAlign: 'center', width: '5%', maxWidth: '5%', margin: 0, padding: 0}} className='news-title'>
                                     {files.id}
-                                </Col>*/}
+                                </Col>*!/}
                                 <Col style={{textAlign: 'center', width: '55%', maxWidth: '55%', margin: 0, padding: 0}} className='news-title'>
                                     <Link to={`/history/${files.id}`}>{files.fileName}</Link>
                                 </Col>
@@ -92,4 +93,4 @@ export default class PredictionHistory extends Component {
             </Col>
         )
     }
-}
+}*/

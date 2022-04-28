@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Col, Row} from 'reactstrap';
-import {predictFile, savePredict} from "../util/APIUtils";
+import {predictFile, savePredict, viewPredict} from "../util/APIUtils";
 import NavigationPanel from "../navigation/NavigationPanel";
 import {Chart, registerables} from "chart.js";
 import './PredictionChart.css'
@@ -19,7 +19,8 @@ export default class PredictionChart extends Component {
             CurUser: JSON.parse(localStorage.getItem('app')),
             image: [],
             isLoading: true,
-            data: null
+            data: null,
+            built: (this.props.location.pathname === ('/history/' + this.props.match.params.username + "/" + this.props.match.params.fileId))
         }
         this.buildChart = this.buildChart.bind(this)
         this.savePrediction = this.savePrediction.bind(this)
@@ -49,7 +50,7 @@ export default class PredictionChart extends Component {
         }*/
 
     savePrediction(data) {
-        savePredict(data.PREDICTION, "PREDICTION_PAYMENTS")
+        savePredict(data.PREDICTION, "PREDICTION_PAYMENTS", this.props.history.location.state.fileName)
             .then(response => {
                 alert('Файл успешно сохранён')
             })
@@ -59,39 +60,19 @@ export default class PredictionChart extends Component {
     }
 
     buildChart() {
-        predictFile(this.props.match.params.fileId)
-            .then(response => {
-                if (this._isMounted) {
-                    this.setState({isLoading: false, data: response})
-                    this.chart = new Chart(document.getElementById('myChart').getContext('2d'), {
-                        type: 'line',
-                        data: {
-                            datasets: [{
-                                label: 'Исходные данные',
-                                data: response.DATA,
-                                backgroundColor: [
-                                    'rgba(241,47,47,0.73)',
-                                    // 'rgba(54, 162, 235, 0.2)',
-                                    // 'rgba(255, 206, 86, 0.2)',
-                                    // 'rgba(75, 192, 192, 0.2)',
-                                    // 'rgba(153, 102, 255, 0.2)',
-                                    // 'rgba(255, 159, 64, 0.2)'
-                                ],
-                                borderColor: [
-                                    // 'rgba(255, 99, 132, 1)',
-                                    'rgba(241,47,47,0.73)',
-                                    // 'rgba(255, 206, 86, 1)',
-                                    // 'rgba(75, 192, 192, 1)',
-                                    // 'rgba(153, 102, 255, 1)',
-                                    // 'rgba(255, 159, 64, 1)'
-                                ],
-                                borderWidth: 1
-                            },
-                                {
-                                    label: 'Предсказание',
-                                    data: response.PREDICTION,
+        if (!this.state.built) {
+            predictFile(this.props.match.params.fileId, "23.05.2021", "24.11.2021")
+                .then(response => {
+                    if (this._isMounted) {
+                        this.setState({isLoading: false, data: response})
+                        this.chart = new Chart(document.getElementById('myChart').getContext('2d'), {
+                            type: 'line',
+                            data: {
+                                datasets: [{
+                                    label: 'Исходные данные',
+                                    data: response.DATA,
                                     backgroundColor: [
-                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(241,47,47,0.73)',
                                         // 'rgba(54, 162, 235, 0.2)',
                                         // 'rgba(255, 206, 86, 0.2)',
                                         // 'rgba(75, 192, 192, 0.2)',
@@ -100,29 +81,97 @@ export default class PredictionChart extends Component {
                                     ],
                                     borderColor: [
                                         // 'rgba(255, 99, 132, 1)',
-                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(241,47,47,0.73)',
                                         // 'rgba(255, 206, 86, 1)',
                                         // 'rgba(75, 192, 192, 1)',
                                         // 'rgba(153, 102, 255, 1)',
                                         // 'rgba(255, 159, 64, 1)'
                                     ],
                                     borderWidth: 1
-                                }
-                            ]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
+                                },
+                                    {
+                                        label: 'Предсказание',
+                                        data: response.PREDICTION,
+                                        backgroundColor: [
+                                            'rgba(54, 162, 235, 1)',
+                                            // 'rgba(54, 162, 235, 0.2)',
+                                            // 'rgba(255, 206, 86, 0.2)',
+                                            // 'rgba(75, 192, 192, 0.2)',
+                                            // 'rgba(153, 102, 255, 0.2)',
+                                            // 'rgba(255, 159, 64, 0.2)'
+                                        ],
+                                        borderColor: [
+                                            // 'rgba(255, 99, 132, 1)',
+                                            'rgba(54, 162, 235, 1)',
+                                            // 'rgba(255, 206, 86, 1)',
+                                            // 'rgba(75, 192, 192, 1)',
+                                            // 'rgba(153, 102, 255, 1)',
+                                            // 'rgba(255, 159, 64, 1)'
+                                        ],
+                                        borderWidth: 1
+                                    }
+                                ]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
                                 }
                             }
-                        }
-                    });
-                }
-            })
-            .catch(error => {
-                alert('Что-то пошло не так')
-            })
+                        });
+                    }
+                })
+                .catch(error => {
+                    alert('Что-то пошло не так')
+                })
+        }
+        else {
+            viewPredict(this.props.match.params.fileId)
+                .then(response => {
+                    if (this._isMounted) {
+                        this.setState({isLoading: false, data: response})
+                        this.chart = new Chart(document.getElementById('myChart').getContext('2d'), {
+                            type: 'line',
+                            data: {
+                                datasets: [
+                                    {
+                                        label: 'Предсказание',
+                                        data: response,
+                                        backgroundColor: [
+                                            'rgba(54, 162, 235, 1)',
+                                            // 'rgba(54, 162, 235, 0.2)',
+                                            // 'rgba(255, 206, 86, 0.2)',
+                                            // 'rgba(75, 192, 192, 0.2)',
+                                            // 'rgba(153, 102, 255, 0.2)',
+                                            // 'rgba(255, 159, 64, 0.2)'
+                                        ],
+                                        borderColor: [
+                                            // 'rgba(255, 99, 132, 1)',
+                                            'rgba(54, 162, 235, 1)',
+                                            // 'rgba(255, 206, 86, 1)',
+                                            // 'rgba(75, 192, 192, 1)',
+                                            // 'rgba(153, 102, 255, 1)',
+                                            // 'rgba(255, 159, 64, 1)'
+                                        ],
+                                        borderWidth: 1
+                                    }
+                                ]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    }
+                })
+                .catch(error => {
+                    alert('Что-то пошло не так')
+                })
+        }
     }
 
     /*
@@ -192,7 +241,7 @@ export default class PredictionChart extends Component {
                             </canvas>}
                     </Col>
                     <div style={{marginTop: 15}}>
-                        {!this.state.isLoading &&
+                        {!this.state.isLoading && !this.state.built &&
                             <Button color="primary" size="sm" onClick={() => this.savePrediction(this.state.data)}>
                                 Сохранить предсказание
                             </Button>}

@@ -98,8 +98,8 @@ export default class FilesList extends Component {
             });
     }
 
-    predictionChart(fileId) {
-        this.props.history.push({pathname: "/prediction/" + fileId});
+    predictionChart(fileId, fileName) {
+        this.props.history.push({pathname: "/prediction/" + fileId}, {fileName: fileName});
     }
 
     editThisFile(fileId, name) {
@@ -163,7 +163,7 @@ export default class FilesList extends Component {
                                             padding: 0
                                         }} className='news-title'>
                                             <a className='parse-link'
-                                               onClick={() => this.predictionChart(files.id)}>{files.fileName}</a>
+                                               onClick={() => this.predictionChart(files.id, files.fileName)}>{files.fileName}</a>
                                         </Col>
                                         <Col style={{
                                             textAlign: 'center',

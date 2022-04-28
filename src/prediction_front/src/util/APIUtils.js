@@ -87,17 +87,24 @@ export function loadFilesByUser(dataType) {
     });
 }
 
-export function savePredict(data, dataType) {
+export function viewPredict(fileId) {
     return request({
-        url: API_BASE_URL + "/file/savePrediction?dataType=" + dataType,
+        url: API_BASE_URL + "/file/parse/" + fileId,
+        method: 'GET'
+    })
+}
+
+export function savePredict(data, dataType, fileName) {
+    return request({
+        url: API_BASE_URL + "/file/savePrediction?dataType=" + dataType + "&fileName=" + fileName,
         method: 'POST',
         body: JSON.stringify(data)
     })
 }
 
-export function predictFile(fileId) {
+export function predictFile(fileId, startDate, endDate) {
     return request({
-        url: API_BASE_URL + "/prediction/predict/" + fileId,
+        url: API_BASE_URL + "/prediction/predict/" + fileId + "?startDate=" + startDate + "&endDate=" + endDate,
         method: 'GET'
     });
 }

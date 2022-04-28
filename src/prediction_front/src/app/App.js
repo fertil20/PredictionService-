@@ -132,6 +132,7 @@ class App extends Component {
                             <PrivateRoute exact path="/newUser" authenticated={this.persistentState.getState().isAuthenticated} component={NewUser} handleLogout={this.handleLogout}/>
                             <PrivateRoute exact path="/prediction/:fileId" authenticated={this.persistentState.getState().isAuthenticated} component={PredictionChart} handleLogout={this.handleLogout}/>
                             <PrivateRoute exact path="/history/:username" authenticated={this.persistentState.getState().isAuthenticated} component={PredictionList} handleLogout={this.handleLogout}/>
+                            <PrivateRoute exact path="/history/:username/:fileId" authenticated={this.persistentState.getState().isAuthenticated} component={PredictionChart} handleLogout={this.handleLogout}/>
                             <PrivateRoute exact path="/files/:username" authenticated={this.persistentState.getState().isAuthenticated} component={FilesList} handleLogout={this.handleLogout}/>
                             <PrivateRoute exact path="/files/:username/add" authenticated={this.persistentState.getState().isAuthenticated} component={FilesAdd} handleLogout={this.handleLogout}/>
                             <Route component={NotFound} />
