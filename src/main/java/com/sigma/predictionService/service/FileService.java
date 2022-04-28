@@ -1,7 +1,5 @@
 package com.sigma.predictionService.service;
 
-import com.opencsv.*;
-import com.opencsv.exceptions.CsvException;
 import com.sigma.predictionService.dto.FileDownloadResponse;
 import com.sigma.predictionService.dto.UserFilesResponse;
 import com.sigma.predictionService.model.Files;
@@ -63,7 +61,7 @@ public class FileService {
     }
 
 
-    public Map<String,Double> readScv(Long fileId){
+    public Map<String,Double> readCsv(Long fileId){
         Map<String, Double> answer = new LinkedHashMap<>();
         Files file = filesRepo.getById(fileId);
         InputStreamReader in = new InputStreamReader(new ByteArrayInputStream(file.getFile()));
@@ -82,7 +80,7 @@ public class FileService {
     }
 
     public Map<String,Double> getDataMapForDates(Long fileId ,String startDate, String endDate){
-        Map<String,Double> rawMap = readScv(fileId);
+        Map<String,Double> rawMap = readCsv(fileId);
         Map<String,Double> filteredMap = new LinkedHashMap<>();
         boolean inRange = false;
         for (String key : rawMap.keySet()){

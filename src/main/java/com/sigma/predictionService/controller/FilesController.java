@@ -62,8 +62,8 @@ public class FilesController {
 
     @Transactional
     @GetMapping("/parse/{id}")
-    public void parseFile(@PathVariable Long id){
-        fileService.readScv(id);
+    public Map<String,Double> parseFile(@PathVariable Long id){
+        return fileService.readCsv(id);
     }
 
 
