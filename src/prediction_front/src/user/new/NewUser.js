@@ -254,7 +254,7 @@ class NewUser extends Component {
                         <Form onSubmit={this.handleSubmit}>
                             <Row >
                                 <NavigationPanel/>
-                                <Col sm={{ size: 4.4 }} style={{backgroundColor: 'white', borderRadius:10, height:500, width: '30%'}}>
+                                <Col sm={{ size: 4.4 }} style={{backgroundColor: 'white', borderRadius:10, height:500, width: '35%'}}>
                                     {/*<div style={{backgroundColor: 'white', margin: 20,borderRadius:10,height:300,width:300}}>*/}
                                     {/*    /!*<Avatar className="user-avatar-circle" style={{ backgroundColor: getAvatarColor(this.state.user.name)}}>*!/*/}
                                     {/*    /!*    {this.state.user.name.toUpperCase()}*!/*/}
@@ -302,7 +302,7 @@ class NewUser extends Component {
                                         </Col>
                                     </Row>
                                 </Col >
-                                <Col sm={{ size: 1.1}} style={{backgroundColor: 'white',borderRadius:10, height:500, marginLeft: '2%', width: '43%'}}>
+                                <Col sm={{ size: 1.1}} style={{backgroundColor: 'white',borderRadius:10, height:500, marginLeft: '1%', width: '44%'}}>
                                     <Row>
                                         <Col sm={{ size: 'auto'}}>
                                             <div className='profile-text1' style={{marginTop:15}}>Ф.И.О:</div>

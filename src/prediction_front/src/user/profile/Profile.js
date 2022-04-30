@@ -89,7 +89,7 @@ class Profile extends Component {
                        this.state.user ? (
                 <Row>
                     <NavigationPanel/>
-                    <Col sm={{ size: 4.4 }} style={{backgroundColor: 'white',borderRadius:10,height:500, width: '73%'}}>
+                    <Col sm={{ size: 4.4 }} style={{backgroundColor: 'white', borderRadius:10, height:500, width: '80%'}}>
                         <div style={{backgroundColor: 'white', margin: 20,borderRadius:10,height:300,width:"auto"}}>
                             <Avatar className="user-avatar-circle" style={{ backgroundColor: getAvatarColor(this.state.user.name)}}>
                                 {this.state.user.name.toUpperCase()}

@@ -141,7 +141,7 @@ export default class PredictionList extends Component {
             return(
                 <Row>
                     <NavigationPanel/>
-                    <Col style={{paddingLeft: 0, paddingRight: 0, backgroundColor:'white', overflow:'auto', borderRadius:10, height:'100%', paddingBottom:20, width: '75%', maxWidth: '75%'}}>
+                    <Col style={{paddingLeft: 0, paddingRight: 0, backgroundColor:'white', overflow:'auto', borderRadius:10, height:'100%', paddingBottom:20, width: '80%', maxWidth: '80%'}}>
                         {this.state.files ? (
                             this.state.files.map(
                                 (files, index) => (

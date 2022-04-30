@@ -60,7 +60,7 @@ export default class PredictionChart extends Component {
 
     buildChart() {
         if (!this.state.built) {
-            predictFile(this.props.match.params.fileId, "23.05.2021", "24.11.2021")
+            predictFile(this.props.match.params.fileId, "23.05.2021", "24.01.2022")
                 .then(response => {
                     if (this._isMounted) {
                         this.setState({isLoading: false, data: response})
@@ -221,52 +221,57 @@ export default class PredictionChart extends Component {
                     borderRadius: 10,
                     minHeight: 200,
                     height: '100%',
-                    width: '75%',
-                    maxWidth: '75%'
+                    width: '80%',
+                    maxWidth: '80%'
                 }}>
-                    <Row style={{flexWrap: 'wrap', display: 'flex', alignContent: 'stretch', maxHeight: 400}}>
+                    <Row style={{flexWrap: 'wrap', display: 'flex', alignContent: 'stretch', maxHeight: 350}}>
                     <Col style={{
                         minHeight: 200,
                         display: 'flex',
-                        width: '25%',
-                        maxWidth: '25%',
-                        maxHeight: 'inherit'
+                        width: '35%',
+                        maxWidth: '35%',
+                        maxHeight: 'inherit',
+                        overflowX:'auto'
                     }}>
                         {this.state.isLoading &&
                             <div className="spinner-border" role="status">
                                 <span className="sr-only">Loading...</span>
                             </div>}
                         {
-                            !this.state.isLoading && this.state.data.PREDICTION ? (
-                                <div style={{overflowX: 'auto', overflowY: 'scroll', maxHeight: 'inherit'}}>
-                                    <ListGroup horizontal className='table-top-line' key={"TABLE"}>
-                                        <ListGroupItem style={{width: '50%', overflowX: 'auto'}}
-                                                       key={"DATE"}>Дата</ListGroupItem>
-                                        <ListGroupItem style={{width: '50%', overflowX: 'auto'}}
-                                                       key={"SUM"}>Сумма</ListGroupItem>
+                            !this.state.isLoading && this.state.data ? (
+                                <div style={{maxHeight: 'inherit', overflowX: 'hidden', overflowY: 'hidden'}}>
+                                    <ListGroup horizontal style={{marginRight:'2.5%'}}>
+                                        <ListGroupItem style={{width: '32.5%', overflowX: 'auto'}}
+                                                       variant="dark">Дата</ListGroupItem>
+                                        <ListGroupItem style={{width: '32.5%', overflowX: 'auto'}}
+                                                       variant="dark">Исходное</ListGroupItem>
+                                        <ListGroupItem style={{width: '32.5%', overflowX: 'auto'}}
+                                                       variant="dark">Предсказание</ListGroupItem>
                                     </ListGroup>
-                                    {
-                                        Object.keys(this.state.data.PREDICTION).map((key, index) => (
-                                                <div>
-                                                    <ListGroup horizontal className='table-top-line' key={index}>
-                                                        <ListGroupItem style={{width: '50%', overflowX: 'auto'}}
-                                                                       key={index}>{key}</ListGroupItem>
-                                                        <ListGroupItem style={{width: '50%', overflowX: 'auto'}}
-                                                                       key={index}>{Object.values(this.state.data.PREDICTION)[index]}</ListGroupItem>
-                                                    </ListGroup>
-                                                </div>
-                                        ))
-                                    }
-                                </div>
-                            ) : null
+                                    <div style={{overflowX: 'auto', overflowY: 'scroll', maxHeight: 'inherit'}}>
+                                        {
+                                            Object.keys(this.state.data.PREDICTION).map((date, index) => (
+                                                <ListGroup horizontal className='table-top-line' key={index}>
+                                                    <ListGroupItem style={{width: '33.3%', overflowX: 'auto'}}
+                                                                   key={index}>{date}</ListGroupItem>
+                                                    <ListGroupItem style={{width: '33.3%', overflowX: 'auto'}}
+                                                                   key={index}>{Object.values(this.state.data.DATA)[index]}</ListGroupItem>
+                                                    <ListGroupItem style={{width: '33.3%', overflowX: 'auto'}}
+                                                                   key={index}>{Object.values(this.state.data.PREDICTION)[index]}</ListGroupItem>
+                                                </ListGroup>
+                                            ))
+                                        }
+                                    </div>
+
+                                </div>) : null
                         }
                     </Col>
                     <Col style={{
                         minHeight: 200,
                         height: '100%',
                         display: 'flex',
-                        width: '75%',
-                        maxWidth: '75%'
+                        width: '65%',
+                        maxWidth: '65%'
                     }}>
                         {this.state.isLoading &&
                             <div className="spinner-border" role="status">
