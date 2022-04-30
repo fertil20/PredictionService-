@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Col, Row} from 'reactstrap';
+import {Col, ListGroup, ListGroupItem, Row} from 'reactstrap';
 import {predictFile, savePredict, viewPredict} from "../util/APIUtils";
 import NavigationPanel from "../navigation/NavigationPanel";
 import {Chart, registerables} from "chart.js";
@@ -17,7 +17,6 @@ export default class PredictionChart extends Component {
         this._isMounted = false;
         this.state = {
             CurUser: JSON.parse(localStorage.getItem('app')),
-            image: [],
             isLoading: true,
             data: null,
             built: (this.props.location.pathname === ('/history/' + this.props.match.params.username + "/" + this.props.match.params.fileId))
@@ -130,7 +129,7 @@ export default class PredictionChart extends Component {
             viewPredict(this.props.match.params.fileId)
                 .then(response => {
                     if (this._isMounted) {
-                        this.setState({isLoading: false, data: response})
+                        this.setState({isLoading: false, data: {PREDICTION: response}})
                         this.chart = new Chart(document.getElementById('myChart').getContext('2d'), {
                             type: 'line',
                             data: {
@@ -220,17 +219,54 @@ export default class PredictionChart extends Component {
                 <Col style={{
                     backgroundColor: 'white',
                     borderRadius: 10,
-                    overflow: 'auto',
                     minHeight: 200,
                     height: '100%',
-                    paddingBottom: 20,
                     width: '75%',
                     maxWidth: '75%'
                 }}>
-                    <Col sm={{size: 5.4}} style={{
+                    <Row style={{flexWrap: 'wrap', display: 'flex', alignContent: 'stretch', maxHeight: 400}}>
+                    <Col style={{
+                        minHeight: 200,
+                        display: 'flex',
+                        width: '25%',
+                        maxWidth: '25%',
+                        maxHeight: 'inherit'
+                    }}>
+                        {this.state.isLoading &&
+                            <div className="spinner-border" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </div>}
+                        {
+                            !this.state.isLoading && this.state.data.PREDICTION ? (
+                                <div style={{overflowX: 'auto', overflowY: 'scroll', maxHeight: 'inherit'}}>
+                                    <ListGroup horizontal className='table-top-line' key={"TABLE"}>
+                                        <ListGroupItem style={{width: '50%', overflowX: 'auto'}}
+                                                       key={"DATE"}>Дата</ListGroupItem>
+                                        <ListGroupItem style={{width: '50%', overflowX: 'auto'}}
+                                                       key={"SUM"}>Сумма</ListGroupItem>
+                                    </ListGroup>
+                                    {
+                                        Object.keys(this.state.data.PREDICTION).map((key, index) => (
+                                                <div>
+                                                    <ListGroup horizontal className='table-top-line' key={index}>
+                                                        <ListGroupItem style={{width: '50%', overflowX: 'auto'}}
+                                                                       key={index}>{key}</ListGroupItem>
+                                                        <ListGroupItem style={{width: '50%', overflowX: 'auto'}}
+                                                                       key={index}>{Object.values(this.state.data.PREDICTION)[index]}</ListGroupItem>
+                                                    </ListGroup>
+                                                </div>
+                                        ))
+                                    }
+                                </div>
+                            ) : null
+                        }
+                    </Col>
+                    <Col style={{
                         minHeight: 200,
                         height: '100%',
-                        display: 'flex'
+                        display: 'flex',
+                        width: '75%',
+                        maxWidth: '75%'
                     }}>
                         {this.state.isLoading &&
                             <div className="spinner-border" role="status">
@@ -240,7 +276,8 @@ export default class PredictionChart extends Component {
                             <canvas id="myChart">
                             </canvas>}
                     </Col>
-                    <div style={{marginTop: 15}}>
+                    </Row>
+                    <div style={{marginTop: 25, marginBottom: 10}}>
                         {!this.state.isLoading && !this.state.built &&
                             <Button color="primary" size="sm" onClick={() => this.savePrediction(this.state.data)}>
                                 Сохранить предсказание
