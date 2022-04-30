@@ -66,10 +66,14 @@ public class PredictionService {
         Files file = filesRepo.getById(id);
         if (Objects.equals(file.getUser().getId(), userId)) {
 
-            String header1 = String.format("form-data; name=%s; filename=%s", "file", file.getFileName());
-            MultipartBodyBuilder builder = new MultipartBodyBuilder();
-            builder.part("file", new ByteArrayResource(file.getFile())).header("Content-Disposition", header1);
+            String fileHeader = String.format("form-data; name=%s; filename=%s", "file", file.getFileName());
+            String startDateHeader = String.format("form-data; name=%s", "start_date");
+            String endDateHeader = String.format("form-data; name=%s", "end_date");
 
+            MultipartBodyBuilder builder = new MultipartBodyBuilder();
+            builder.part("file", new ByteArrayResource(file.getFile())).header("Content-Disposition", fileHeader);
+            builder.part("start_date", startDate).header("Content-Disposition", startDateHeader);
+            builder.part("end_date", endDate).header("Content-Disposition", endDateHeader);
 
             predictionPesponce = client
                     .post()
