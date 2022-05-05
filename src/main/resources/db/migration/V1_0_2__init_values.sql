@@ -1,3 +1,11 @@
+
+
+
+
+
+
+
+
 INSERT INTO users (username, name, email, password)
 VALUES ('ralin', 'Перелыгин Дмитрий', 'kurralin@mail.ru', '$2b$10$QLXUPVP.ihTNij6tg/f0Kubfu2b8b4Ty9Ur0V1KnlgF1fE5iL7Gia');
 
