@@ -1,21 +1,17 @@
 package com.sigma.predictionService.controller;
 
 
-import com.sigma.predictionService.dto.JwtAuthenticationResponse;
-import com.sigma.predictionService.dto.LoginRequest;
-import com.sigma.predictionService.repository.UserDetailsRepo;
+import com.sigma.predictionService.dto.*;
+import com.sigma.predictionService.exception.TokenRefreshException;
+import com.sigma.predictionService.model.RefreshToken;
 import com.sigma.predictionService.security.JwtTokenProvider;
-import com.sigma.predictionService.service.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sigma.predictionService.security.UserPrincipal;
+import com.sigma.predictionService.service.RefreshTokenService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,10 +22,17 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
+    private final RefreshTokenService refreshTokenService;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider tokenProvider) {
+    public AuthController(AuthenticationManager authenticationManager,
+                          JwtTokenProvider tokenProvider,
+                          RefreshTokenService refreshTokenService,
+                          JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.tokenProvider = tokenProvider;
+        this.refreshTokenService = refreshTokenService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
 
@@ -43,9 +46,28 @@ public class AuthController {
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
+        UserPrincipal userPrincipal = (UserPrincipal)authentication.getPrincipal();
         String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userPrincipal.getId());
+        return ResponseEntity.ok(new JwtResponse(jwt,
+                                                refreshToken.getToken(),
+                                                userPrincipal.getId(),
+                                                userPrincipal.getUsername(),
+                                                userPrincipal.getEmail()));
+    }
+
+    @PostMapping("/refreshtoken")
+    public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest request) {
+        String requestRefreshToken = request.getRefreshToken();
+        return refreshTokenService.findByToken(requestRefreshToken)
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUser)
+                .map(user -> {
+                    String token = jwtTokenProvider.generateToken(user.getId());
+                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
+                })
+                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
+                        "Refresh token is not in database!"));
     }
 
 }
