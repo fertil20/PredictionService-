@@ -1,8 +1,6 @@
 package com.sigma.predictionService.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -17,7 +15,8 @@ import java.util.Set;
         "email"
 })
 })
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class User {
 
