@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import './ForgotPassword.css';
 import {Button, Form, FormGroup, Input} from 'reactstrap';
-import {changePassword} from "../../util/APIUtils";
+import {changePassword, refreshToken} from "../../util/APIUtils";
 import NotFound from "../../common/NotFound";
 import ServerError from "../../common/ServerError";
+import {ACCESS_TOKEN, REFRESH_TOKEN} from "../../constants/constants";
+import {PersistentState} from "../../util/PersistentState";
 
 let textContent = ''
 let buttonDisabled = ''
@@ -56,7 +58,23 @@ export default class ChangePassword extends Component {
                         notFound: true,
                         isLoading: false
                     });
-                } else {
+                } else if(error.status === 401) {
+                    refreshToken(localStorage.getItem(REFRESH_TOKEN))
+                        .then(response => {
+
+                        })
+                        .catch(error => {
+                            localStorage.removeItem(ACCESS_TOKEN);
+                            this.persistentState = new PersistentState(this, "app")
+
+                            this.persistentState.setState({
+                                currentUser: null,
+                                isAuthenticated: false
+                            });
+                            this.props.history.push("/login");
+                        })
+                }
+                else {
                     this.setState({
                         serverError: true,
                         isLoading: false

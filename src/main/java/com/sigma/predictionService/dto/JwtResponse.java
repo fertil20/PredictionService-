@@ -1,20 +1,15 @@
 package com.sigma.predictionService.dto;
 
-import java.util.List;
 
+import lombok.Data;
+
+@Data
 public class JwtResponse {
-    private String token;
+    private String accessToken;
     private String type = "Bearer";
     private String refreshToken;
-    private Long id;
-    private String username;
-    private String email;
-    public JwtResponse(String accessToken, String refreshToken, Long id, String username, String email) {
-        this.token = accessToken;
+    public JwtResponse(String accessToken, String refreshToken) {
+        this.accessToken = accessToken;
         this.refreshToken = refreshToken;
-        this.id = id;
-        this.username = username;
-        this.email = email;
     }
-    // getters and setters
 }

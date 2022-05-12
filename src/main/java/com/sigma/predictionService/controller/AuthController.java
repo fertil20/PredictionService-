@@ -50,15 +50,11 @@ public class AuthController {
         String jwt = tokenProvider.generateToken(authentication);
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userPrincipal.getId());
         return ResponseEntity.ok(new JwtResponse(jwt,
-                                                refreshToken.getToken(),
-                                                userPrincipal.getId(),
-                                                userPrincipal.getUsername(),
-                                                userPrincipal.getEmail()));
+                                                refreshToken.getToken()));
     }
 
     @PostMapping("/refreshToken")
-    public ResponseEntity<?> refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
-        String requestRefreshToken = request.getRefreshToken();
+    public ResponseEntity<?> refreshToken(@Valid @RequestBody String requestRefreshToken) {
         return refreshTokenService.findByToken(requestRefreshToken)
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUser)

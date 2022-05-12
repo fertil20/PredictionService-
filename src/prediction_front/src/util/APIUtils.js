@@ -213,6 +213,14 @@ export function checkEmailAvailability(email) {
     });
 }
 
+export function refreshToken(requestRefreshToken) {
+    return request({
+        url: API_BASE_URL + "/auth/refreshToken",
+        method: 'POST',
+        body: JSON.stringify(requestRefreshToken)
+    });
+}
+
 export function getCurrentUser() {
     if(!localStorage.getItem(ACCESS_TOKEN)) {
         return Promise.reject("No access token set.");

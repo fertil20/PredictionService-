@@ -71,7 +71,6 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.loadCurrentUser();
         this._isMounted = true;
     }
 
@@ -120,7 +119,7 @@ class App extends Component {
                 <Content className="app-content">
                     <div className="container">
                         <Switch>
-                            <PrivateRoute exact path="/" authenticated={this.persistentState.getState().isAuthenticated} component={Home}/>
+                            <PrivateRoute exact path="/" authenticated={this.persistentState.getState().isAuthenticated} component={Home} handleLogout={this.handleLogout}/>
                             <Route path="/login"
                                    render={(props) => <Login onLogin={this.handleLogin} {...props} />}/>
                             <Route path="/forgotPassword" component={ForgotPassword}/>

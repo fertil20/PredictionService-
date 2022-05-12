@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {login} from '../../util/APIUtils';
 import './Login.css';
-import {ACCESS_TOKEN} from '../../constants/constants';
+import {ACCESS_TOKEN, REFRESH_TOKEN} from '../../constants/constants';
 import {Form} from '@ant-design/compatible';
 import {Button, Input} from 'antd';
 import {Link} from "react-router-dom";
@@ -40,6 +40,7 @@ class LoginForm extends Component {
                 login(loginRequest)
                 .then(response => {
                     localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+                    localStorage.setItem(REFRESH_TOKEN, response.refreshToken);
                     this.props.onLogin();
                 }).catch(error => {
                     if(error.status === 401) {

@@ -10,7 +10,7 @@ body {
   margin-right: auto;
   padding-left: 15px;
   padding-right: 15px;
-  background-color: #EDEEF0;
+  /*background-color: #EDEEF0;*/
 }
 
 @media (max-width: 768px) {

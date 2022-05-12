@@ -1,5 +1,8 @@
 package com.sigma.predictionService.dto;
 
+import lombok.Data;
+
+@Data
 public class TokenRefreshResponse {
     private String accessToken;
     private String refreshToken;
@@ -8,5 +11,4 @@ public class TokenRefreshResponse {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
-    // getters and setters
 }
