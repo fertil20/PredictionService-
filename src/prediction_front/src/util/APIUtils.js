@@ -1,24 +1,42 @@
-import {ACCESS_TOKEN, API_BASE_URL} from '../constants/constants';
+import {ACCESS_TOKEN, API_BASE_URL, REFRESH_TOKEN} from '../constants/constants';
+
 
 const request = (options) => {
     const headers = new Headers({
         'Content-Type': 'application/json',
     })
-    
-    if(localStorage.getItem(ACCESS_TOKEN)) {
+
+    if (localStorage.getItem(ACCESS_TOKEN)) {
         headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
     }
 
     const defaults = {headers: headers};
-    options = Object.assign({}, defaults, options);
+    const newOptions = Object.assign({}, defaults, options);
 
-    return fetch(options.url, options)
+    return fetch(newOptions.url, newOptions)
         .then((res) => {
-            if(!res.ok) {
+            if (!res.ok) {
                 return Promise.reject(res);
             }
-            return res.text()})
+            return res.text()
+        })
         .then((text) => text.length ? JSON.parse(text) : {})
+        .catch((error) => {
+            if ((error.status === 401) && (localStorage.getItem(ACCESS_TOKEN))) {
+                return refreshToken(localStorage.getItem(REFRESH_TOKEN))
+                    .then(token => {
+                        localStorage.setItem(ACCESS_TOKEN, token.accessToken)
+                        return request(options)
+                    })
+                    .catch(error => {
+                        localStorage.removeItem(ACCESS_TOKEN);
+
+                        window.location.href = "http://localhost:3000/login";
+                    })
+            } else if ((error.status === 401) && (!localStorage.getItem(ACCESS_TOKEN))) {
+                window.location.href = "http://localhost:3000/login";
+            }
+        })
 };
 
 const setFile = async (options) => {
@@ -217,7 +235,7 @@ export function refreshToken(requestRefreshToken) {
     return request({
         url: API_BASE_URL + "/auth/refreshToken",
         method: 'POST',
-        body: JSON.stringify(requestRefreshToken)
+        body: requestRefreshToken
     });
 }
 
