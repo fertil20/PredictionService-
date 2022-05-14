@@ -43,8 +43,13 @@ public class User {
     @EqualsAndHashCode.Exclude
     private Set<Role> roles;
 
-    @OneToMany (mappedBy = "user")
+    @OneToMany (mappedBy = "user", cascade = CascadeType.ALL)
     @EqualsAndHashCode.Exclude
     private Set<Files> files;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    @EqualsAndHashCode.Exclude
+    private RefreshToken refreshToken;
 
 }

@@ -17,13 +17,25 @@ import org.springframework.transaction.annotation.Transactional;
 public class RefreshTokenService {
     @Value("${app.jwtRefreshExpirationMs}")
     private Long refreshTokenDurationMs;
-    @Autowired
-    private RefreshTokenRepo refreshTokenRepository;
-    @Autowired
-    private UserDetailsRepo userRepository;
+
+    private final RefreshTokenRepo refreshTokenRepository;
+
+    private final UserDetailsRepo userRepository;
+
+    public RefreshTokenService(RefreshTokenRepo refreshTokenRepository, UserDetailsRepo userRepository) {
+        this.refreshTokenRepository = refreshTokenRepository;
+        this.userRepository = userRepository;
+    }
+
+
     public Optional<RefreshToken> findByToken(String token) {
         return refreshTokenRepository.findByToken(token);
     }
+
+    public Optional<RefreshToken> findById(Long id) {
+        return refreshTokenRepository.findById(id);
+    }
+
     public RefreshToken createRefreshToken(Long userId) {
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setUser(userRepository.findById(userId).get());
@@ -32,6 +44,7 @@ public class RefreshTokenService {
         refreshToken = refreshTokenRepository.save(refreshToken);
         return refreshToken;
     }
+
     public RefreshToken verifyExpiration(RefreshToken token) {
         if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
             refreshTokenRepository.delete(token);
@@ -39,6 +52,7 @@ public class RefreshTokenService {
         }
         return token;
     }
+
     @Transactional
     public int deleteByUserId(Long userId) {
         return 0; //TODO не знаю почему не могу заставить работать
