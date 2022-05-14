@@ -1,6 +1,7 @@
 package com.sigma.predictionService.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -13,12 +14,13 @@ import java.time.Instant;
 public class RefreshToken {
 
     @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private long id;
+    @Column(name = "user_id")
+    private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @MapsId
+    @JoinColumn(name = "user_id")
+    @EqualsAndHashCode.Exclude
     private User user;
 
     @Column(name = "token", nullable = false, unique = true)
