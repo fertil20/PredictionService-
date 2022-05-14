@@ -47,9 +47,25 @@ const setFile = async (options) => {
     }
 
     const defaults = {headers: headers};
-    options = Object.assign({}, defaults, options);
+    const newOptions = Object.assign({}, defaults, options);
 
-    return await fetch(options.url, options)
+    return await fetch(newOptions.url, newOptions)
+        .catch((error) => {
+            if ((error.status === 401) && (localStorage.getItem(ACCESS_TOKEN))) {
+                return refreshToken(localStorage.getItem(REFRESH_TOKEN))
+                    .then(token => {
+                        localStorage.setItem(ACCESS_TOKEN, token.accessToken)
+                        return request(options)
+                    })
+                    .catch(error => {
+                        localStorage.removeItem(ACCESS_TOKEN);
+
+                        window.location.href = "http://localhost:3000/login";
+                    })
+            } else if ((error.status === 401) && (!localStorage.getItem(ACCESS_TOKEN))) {
+                window.location.href = "http://localhost:3000/login";
+            }
+        })
 };
 
 const getFile = (options) => {
@@ -60,9 +76,9 @@ const getFile = (options) => {
     }
 
     const defaults = {headers: headers};
-    options = Object.assign({}, defaults, options);
+    const newOptions = Object.assign({}, defaults, options);
 
-    return fetch(options.url, options)
+    return fetch(newOptions.url, newOptions)
         .then(response => {
             const filename =  response.headers.get('Content-Disposition').split('filename=')[1];
             response.blob().then(blob => {
@@ -72,6 +88,22 @@ const getFile = (options) => {
                 a.download = filename;
                 a.click();
             });
+        })
+        .catch((error) => {
+            if ((error.status === 401) && (localStorage.getItem(ACCESS_TOKEN))) {
+                return refreshToken(localStorage.getItem(REFRESH_TOKEN))
+                    .then(token => {
+                        localStorage.setItem(ACCESS_TOKEN, token.accessToken)
+                        return request(options)
+                    })
+                    .catch(error => {
+                        localStorage.removeItem(ACCESS_TOKEN);
+
+                        window.location.href = "http://localhost:3000/login";
+                    })
+            } else if ((error.status === 401) && (!localStorage.getItem(ACCESS_TOKEN))) {
+                window.location.href = "http://localhost:3000/login";
+            }
         });
 }
 
