@@ -100,6 +100,7 @@
   z-index: 100;
   width: 100%;
   background: white;
+  display: flex;
   height: 50px;
 }
 

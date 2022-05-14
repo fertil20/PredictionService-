@@ -34,7 +34,7 @@ const NavBarNotLogged = () => {
 
         return (
             <div className='nav-bar-container'>
-                <Row >
+                <Row style={{width: 'inherit'}}>
                     <Col>
                     </Col>
                     <Col>
@@ -51,7 +51,7 @@ function NavBarLogged(props){
 
     return (
         <div className='nav-bar-container'>
-            <Row >
+            <Row style={{width: 'inherit'}}>
                 <Col>
                 </Col>
                 <Col>
