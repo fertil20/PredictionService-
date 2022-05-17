@@ -37,11 +37,11 @@ public class PredictionService {
         this.fileService = fileService;
 
         httpClient = HttpClient.create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 30000)
-                .responseTimeout(Duration.ofMillis(30000))
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 60000)
+                .responseTimeout(Duration.ofMillis(60000))
                 .doOnConnected(conn ->
-                        conn.addHandlerLast(new ReadTimeoutHandler(15000, TimeUnit.MILLISECONDS))
-                                .addHandlerLast(new WriteTimeoutHandler(15000, TimeUnit.MILLISECONDS)));
+                        conn.addHandlerLast(new ReadTimeoutHandler(60000, TimeUnit.MILLISECONDS))
+                                .addHandlerLast(new WriteTimeoutHandler(60000, TimeUnit.MILLISECONDS)));
 
         client = WebClient.builder()
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
