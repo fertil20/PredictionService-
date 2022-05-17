@@ -29,4 +29,9 @@ public class RefreshToken {
     @Column(name = "expiryDate", nullable = false)
     private Instant expiryDate;
     //getters and setters
+
+    @PreRemove
+    private void preRemove() {
+        user.setRefreshToken(null);
+    }
 }

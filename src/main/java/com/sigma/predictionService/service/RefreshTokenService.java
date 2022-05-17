@@ -8,7 +8,6 @@ import com.sigma.predictionService.exception.TokenRefreshException;
 import com.sigma.predictionService.model.RefreshToken;
 import com.sigma.predictionService.repository.RefreshTokenRepo;
 import com.sigma.predictionService.repository.UserDetailsRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +40,7 @@ public class RefreshTokenService {
         refreshToken.setUser(userRepository.findById(userId).get());
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshToken.setToken(UUID.randomUUID().toString());
+        refreshTokenRepository.deleteById(userId);
         refreshToken = refreshTokenRepository.save(refreshToken);
         return refreshToken;
     }
