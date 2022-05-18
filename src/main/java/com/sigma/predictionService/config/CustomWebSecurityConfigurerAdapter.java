@@ -73,6 +73,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
                 .authorizeRequests()
+            .antMatchers("/actuator/**").permitAll()
             .antMatchers(HttpMethod.GET, "/*", "/login/**", "/forgotPassword/**", "/resetPassword/**")
                 .permitAll()
             .antMatchers("/", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js")
