@@ -8,6 +8,8 @@ import com.sigma.predictionService.exception.TokenRefreshException;
 import com.sigma.predictionService.model.RefreshToken;
 import com.sigma.predictionService.repository.RefreshTokenRepo;
 import com.sigma.predictionService.repository.UserDetailsRepo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +20,9 @@ public class RefreshTokenService {
     private Long refreshTokenDurationMs;
 
     private final RefreshTokenRepo refreshTokenRepository;
-
     private final UserDetailsRepo userRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(RefreshTokenService.class);
 
     public RefreshTokenService(RefreshTokenRepo refreshTokenRepository, UserDetailsRepo userRepository) {
         this.refreshTokenRepository = refreshTokenRepository;
@@ -40,8 +43,12 @@ public class RefreshTokenService {
         refreshToken.setUser(userRepository.findById(userId).get());
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshToken.setToken(UUID.randomUUID().toString());
-        refreshTokenRepository.deleteById(userId);
+
+        Optional<RefreshToken> oldToken = refreshTokenRepository.findById(userId);
+        oldToken.ifPresent(token -> refreshTokenRepository.deleteById(token.getId()));
+
         refreshToken = refreshTokenRepository.save(refreshToken);
+        logger.info("Successfully create refreshToken");
         return refreshToken;
     }
 
