@@ -37,8 +37,8 @@ export default class NavigationPanel extends Component {
 
     render() {
         return (
-            <Col className='col-left'>
-                <Col className='col-navigation'>
+            <Col sm={{size: 2.7}} className='col-left'>
+                <Col sm={{size: 2.7}} className='col-navigation'>
                     <Link to='/'>
                         <div style={{paddingTop: 10}} className='row-navigation'>Главная</div>
                     </Link>
