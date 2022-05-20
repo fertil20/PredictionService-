@@ -141,7 +141,7 @@ export default class PredictionList extends Component {
             return(
                 <Row>
                     <NavigationPanel/>
-                    <Col style={{paddingLeft: 0, paddingRight: 0, backgroundColor:'white', overflow:'auto', borderRadius:10, height:'100%', paddingBottom:20, width: '80%', maxWidth: '80%'}}>
+                    <Col style={{paddingLeft: 0, paddingRight: 0, backgroundColor:'white', overflow:'auto', borderRadius:10, height:'100%', paddingBottom:20, width: '85%', maxWidth: '85%'}}>
                         {this.state.files ? (
                             this.state.files.map(
                                 (files, index) => (
@@ -180,9 +180,8 @@ export default class PredictionList extends Component {
                                             margin: 0,
                                             padding: 0
                                         }} className='news-title'>
-                                            <Button>
-                                                <DownloadOutlined
-                                                    onClick={() => this.downloadThisFile(files.id)}/>
+                                            <Button onClick={() => this.downloadThisFile(files.id)}>
+                                                <DownloadOutlined/>
                                             </Button>
                                         </Col>
                                         <Col style={{

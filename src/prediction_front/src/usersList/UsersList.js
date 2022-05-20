@@ -120,7 +120,7 @@ class UsersList extends Component {
         return (
             <Row>
                 <NavigationPanel/>
-                <Col sm={{size: 5.4}} style={{backgroundColor:'white', borderRadius:10,overflow: 'auto', height:'100%', paddingBottom:20, width: '80%'}}>
+                <Col sm={{size: 5.4}} style={{backgroundColor:'white', borderRadius:10,overflow: 'auto', height:'100%', paddingBottom:20, width: '85%'}}>
                     <div>
                         <Form>
                             <Row style={{width:'auto', marginRight: '0%', marginLeft: '0%'}}>

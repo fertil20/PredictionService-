@@ -134,7 +134,7 @@ class ProfileEdit extends Component {
                         <Form onSubmit={this.handleSubmit}>
                             <Row >
                                 <NavigationPanel/>
-                                <Col sm={{ size: 4.4 }} style={{backgroundColor: 'white',borderRadius:10,height:500, width: '35%'}}>
+                                <Col sm={{ size: 4.4 }} style={{backgroundColor: 'white',borderRadius:10,height:500, width: '37%'}}>
                                     <div style={{backgroundColor: 'white', margin: 20,borderRadius:10,height:300,width:"auto"}}>
                                         <Avatar className="user-avatar-circle" style={{ backgroundColor: getAvatarColor(this.state.user.name)}}>
                                             {this.state.user.name.toUpperCase()}
@@ -155,7 +155,7 @@ class ProfileEdit extends Component {
                                         </Col>
                                     </Row>
                                 </Col>
-                                <Col sm={{ size: 6.6}} style={{backgroundColor: 'white',borderRadius:10,height:500, marginLeft: '1%', width: '44%'}}>
+                                <Col sm={{ size: 6.6}} style={{backgroundColor: 'white',borderRadius:10,height:500, marginLeft: '1%', width: '47%'}}>
                                     <Row>
                                         <Col sm={{ size: 'auto'}}>
                                             <div style={{marginTop:20}} className='profile-text1'>Ф.И.О:</div>

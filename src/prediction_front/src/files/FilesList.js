@@ -3,7 +3,7 @@ import {Col, Row} from 'reactstrap';
 import {loadFilesByUser, downloadFile, deleteFile, editFile} from "../util/APIUtils";
 import ".//Files.css"
 import {Menu, Dropdown, Button, Modal, Input} from 'antd';
-import {DownloadOutlined, DeleteOutlined, EditOutlined} from '@ant-design/icons';
+import {DownloadOutlined, DeleteOutlined, EditOutlined, UploadOutlined} from '@ant-design/icons';
 import NavigationPanel from "../navigation/NavigationPanel";
 import 'antd/dist/antd.min.css';
 
@@ -141,11 +141,18 @@ export default class FilesList extends Component {
             return(
                 <Row>
                     <NavigationPanel/>
-                    <Col style={{paddingLeft: 0, paddingRight: 0, backgroundColor:'white', overflow:'auto', borderRadius:10, height:'100%', paddingBottom:20, width: '80%', maxWidth: '75%'}}>
+                    <Col style={{paddingLeft: 0, paddingRight: 0, backgroundColor:'white', overflow:'auto', borderRadius:10, height:'100%', paddingBottom:20, width: '85%', maxWidth: '85%'}}>
                         {this.state.files ? (
                             this.state.files.map(
                                 (files, index) => (
                                     <Row style={{width:'100%', margin: 0}}>
+                                        <div style={{marginTop: 25, marginBottom: 20, display: 'flex'}}>
+                                            <Button type="primary" size="sm" style={{marginLeft: 'auto', marginRight: '1%'}} onClick={() => this.props.history.push(`/files/${this.state.CurUser.currentUser.username}/add`)}>
+                                                <UploadOutlined/>
+                                                Загрузить данные
+                                            </Button>
+                                        </div>
+                                        <hr/>
                                         <Col style={{
                                             textAlign: 'center',
                                             width: '5%',
@@ -181,9 +188,8 @@ export default class FilesList extends Component {
                                             margin: 0,
                                             padding: 0
                                         }} className='news-title'>
-                                            <Button>
-                                                <DownloadOutlined
-                                                    onClick={() => this.downloadThisFile(files.id)}/>
+                                            <Button onClick={() => this.downloadThisFile(files.id)}>
+                                                <DownloadOutlined/>
                                             </Button>
                                         </Col>
                                         <Col style={{

@@ -117,7 +117,7 @@ class App extends Component {
                            currentUser={this.persistentState.getState().currentUser}
                            onLogout={this.handleLogout} className='header-of-app'/>
                 <Content className="app-content">
-                    <div className="container">
+                    <div className="container" style={{width: '95%', minWidth: '95%', maxWidth: '95%'}}>
                         <Switch>
                             <PrivateRoute exact path="/" authenticated={this.persistentState.getState().isAuthenticated} component={Home} handleLogout={this.handleLogout}/>
                             <Route path="/login"

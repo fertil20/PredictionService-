@@ -98,7 +98,7 @@ const getFile = (options) => {
                     })
                     .catch(error => {
                         localStorage.removeItem(ACCESS_TOKEN);
-
+                        //todo Разлогинивать блин надо в App
                         window.location.href = "http://localhost:3000/login";
                     })
             } else if ((error.status === 401) && (!localStorage.getItem(ACCESS_TOKEN))) {

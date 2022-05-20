@@ -219,17 +219,17 @@ export default class PredictionChart extends Component {
                 <Col style={{
                     backgroundColor: 'white',
                     borderRadius: 10,
-                    minHeight: 200,
+                    minHeight: 250,
                     height: '100%',
-                    width: '80%',
-                    maxWidth: '80%'
+                    width: '85%',
+                    maxWidth: '85%'
                 }}>
                     <Row style={{flexWrap: 'wrap', display: 'flex', alignContent: 'stretch', maxHeight: 350}}>
                     <Col style={{
-                        minHeight: 200,
+                        minHeight: 250,
                         display: 'flex',
-                        width: '35%',
-                        maxWidth: '35%',
+                        width: '30%',
+                        maxWidth: '30%',
                         maxHeight: 'inherit',
                         overflowX:'auto'
                     }}>
@@ -267,11 +267,11 @@ export default class PredictionChart extends Component {
                         }
                     </Col>
                     <Col style={{
-                        minHeight: 200,
+                        minHeight: 250,
                         height: '100%',
                         display: 'flex',
-                        width: '65%',
-                        maxWidth: '65%'
+                        width: '70%',
+                        maxWidth: '70%'
                     }}>
                         {this.state.isLoading &&
                             <div className="spinner-border" role="status">

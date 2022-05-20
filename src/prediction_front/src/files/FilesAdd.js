@@ -78,8 +78,10 @@ export default class FilesAdd extends Component {
                         </Row>
                     </div>
                     <div>
-                        <Link to='/'><Button size='sm' color='danger' className='files-cancel' >Отменить</Button></Link>
-                        <Button size='sm' className='files-publish' onClick={()=>this.addNewFile()}>Подтвердить</Button>
+                        <Link to={`/files/${this.state.CurUser.currentUser.username}`}><Button size='sm' color='danger' className='files-cancel'>Отменить</Button></Link>
+                        <Button size='sm' className='files-publish' onClick={()=>{
+                            this.addNewFile();
+                            this.props.history.push(`/files/${this.state.CurUser.currentUser.username}`)}}>Подтвердить</Button>
                     </div>
                 </Col>
             </Row>
