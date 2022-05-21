@@ -219,70 +219,99 @@ export default class PredictionChart extends Component {
                 <Col style={{
                     backgroundColor: 'white',
                     borderRadius: 10,
-                    minHeight: 250,
+                    minHeight: '100%',
                     height: '100%',
+                    maxHeight: '100%',
                     width: '85%',
                     maxWidth: '85%'
                 }}>
-                    <Row style={{flexWrap: 'wrap', display: 'flex', alignContent: 'stretch', maxHeight: 500}}>
-                    <Col style={{
-                        minHeight: 250,
+                    <Row style={{
+                        flexWrap: 'wrap',
                         display: 'flex',
-                        minWidth: '30%',
-                        width: '30%',
-                        maxWidth: '30%',
-                        maxHeight: 'inherit',
-                        overflowX:'auto'
+                        alignContent: 'stretch',
+                        maxHeight: 500,
+                        minHeight: 500,
+                        height: 500
                     }}>
-                        {this.state.isLoading &&
-                            <div className="spinner-border" role="status">
-                                <span className="sr-only">Loading...</span>
-                            </div>}
-                        {
-                            !this.state.isLoading && this.state.data ? (
-                                <div style={{maxHeight: 'inherit', overflowX: 'hidden', overflowY: 'hidden', minWidth: '100%', width: '100%', maxWidth: '100%'}}>
-                                    <ListGroup horizontal style={{marginRight:'2.5%'}}>
-                                        <ListGroupItem style={{width: '32.5%'}}
-                                                       variant="dark">Дата</ListGroupItem>
-                                        <ListGroupItem style={{width: '32.5%'}}
-                                                       variant="dark">Исходное</ListGroupItem>
-                                        <ListGroupItem style={{width: '32.5%'}}
-                                                       variant="dark">Предсказание</ListGroupItem>
-                                    </ListGroup>
-                                    <div style={{overflowX: 'auto', overflowY: 'scroll', maxHeight: 'inherit'}}>
-                                        {
-                                            Object.keys(this.state.data.PREDICTION).map((date, index) => (
-                                                <ListGroup horizontal className='table-top-line' key={index}>
-                                                    <ListGroupItem style={{width: '33.3%'}}
-                                                                   key={index}>{date}</ListGroupItem>
-                                                    <ListGroupItem style={{width: '33.3%'}}
-                                                                   key={index}>{Object.values(this.state.data.DATA)[index]}</ListGroupItem>
-                                                    <ListGroupItem style={{width: '33.3%'}}
-                                                                   key={index}>{Object.values(this.state.data.PREDICTION)[index]}</ListGroupItem>
-                                                </ListGroup>
-                                            ))
-                                        }
-                                    </div>
-
-                                </div>) : null
-                        }
-                    </Col>
-                    <Col style={{
-                        minHeight: 250,
-                        height: '100%',
-                        display: 'flex',
-                        minWidth: '70%',
-                        width: '70%',
-                        maxWidth: '70%'
-                    }}>
-                        {this.state.isLoading &&
-                            <div className="spinner-border" role="status">
-                                <span className="sr-only">Loading...</span>
-                            </div>}
-                        {!this.state.isLoading &&
-                            <canvas id="myChart">
-                            </canvas>}
-                    </Col>
+                        <Col style={{
+                            display: 'flex',
+                            minWidth: '30%',
+                            width: '30%',
+                            maxWidth: '30%',
+                            minHeight: 'inherit',
+                            height: 'inherit',
+                            maxHeight: 'inherit',
+                            overflowX: 'auto'
+                        }}>
+                            {this.state.isLoading &&
+                                <div className="spinner-border" role="status">
+                                    <span className="sr-only">Loading...</span>
+                                </div>}
+                            {
+                                !this.state.isLoading && this.state.data ? (
+                                    <div style={{
+                                        minHeight: 'inherit',
+                                        height: 'inherit',
+                                        maxHeight: 'inherit',
+                                        overflowX: 'hidden',
+                                        overflowY: 'hidden',
+                                        minWidth: '100%',
+                                        width: '100%',
+                                        maxWidth: '100%'
+                                    }}>
+                                        <ListGroup horizontal style={{
+                                            marginRight: '2.5%',
+                                            minHeight: '10%',
+                                            height: '10%',
+                                            maxHeight: '10%',
+                                        }}>
+                                            <ListGroupItem style={{width: '32.5%'}}
+                                                           variant="dark">Дата</ListGroupItem>
+                                            <ListGroupItem style={{width: '32.5%'}}
+                                                           variant="dark">Исходное</ListGroupItem>
+                                            <ListGroupItem style={{width: '32.5%'}}
+                                                           variant="dark">Предсказание</ListGroupItem>
+                                        </ListGroup>
+                                        <div style={{
+                                            overflowX: 'auto',
+                                            overflowY: 'scroll',
+                                            minHeight: '90%',
+                                            height: '90%',
+                                            maxHeight: '90%',
+                                        }}>
+                                            {
+                                                Object.keys(this.state.data.PREDICTION).map((date, index) => (
+                                                    <ListGroup horizontal className='table-top-line' key={index}>
+                                                        <ListGroupItem style={{width: '33.3%'}}
+                                                                       key={index}>{date}</ListGroupItem>
+                                                        <ListGroupItem style={{width: '33.3%'}}
+                                                                       key={index}>{this.state.data.DATA && Object.values(this.state.data.DATA)[index]}</ListGroupItem>
+                                                        <ListGroupItem style={{width: '33.3%'}}
+                                                                       key={index}>{Object.values(this.state.data.PREDICTION)[index]}</ListGroupItem>
+                                                    </ListGroup>
+                                                ))
+                                            }
+                                        </div>
+                                    </div>) : null
+                            }
+                        </Col>
+                        <Col style={{
+                            minHeight: 'inherit',
+                            height: 'inherit',
+                            maxHeight: 'inherit',
+                            display: 'flex',
+                            minWidth: '70%',
+                            width: '70%',
+                            maxWidth: '70%'
+                        }}>
+                            {this.state.isLoading &&
+                                <div className="spinner-border" role="status">
+                                    <span className="sr-only">Loading...</span>
+                                </div>}
+                            {!this.state.isLoading &&
+                                <canvas id="myChart">
+                                </canvas>}
+                        </Col>
                     </Row>
                     <div style={{marginTop: 25, marginBottom: 10}}>
                         {!this.state.isLoading && !this.state.built &&
