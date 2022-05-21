@@ -224,10 +224,11 @@ export default class PredictionChart extends Component {
                     width: '85%',
                     maxWidth: '85%'
                 }}>
-                    <Row style={{flexWrap: 'wrap', display: 'flex', alignContent: 'stretch', maxHeight: 350}}>
+                    <Row style={{flexWrap: 'wrap', display: 'flex', alignContent: 'stretch', maxHeight: 500}}>
                     <Col style={{
                         minHeight: 250,
                         display: 'flex',
+                        minWidth: '30%',
                         width: '30%',
                         maxWidth: '30%',
                         maxHeight: 'inherit',
@@ -239,24 +240,24 @@ export default class PredictionChart extends Component {
                             </div>}
                         {
                             !this.state.isLoading && this.state.data ? (
-                                <div style={{maxHeight: 'inherit', overflowX: 'hidden', overflowY: 'hidden'}}>
+                                <div style={{maxHeight: 'inherit', overflowX: 'hidden', overflowY: 'hidden', minWidth: '100%', width: '100%', maxWidth: '100%'}}>
                                     <ListGroup horizontal style={{marginRight:'2.5%'}}>
-                                        <ListGroupItem style={{width: '32.5%', overflowX: 'auto'}}
+                                        <ListGroupItem style={{width: '32.5%'}}
                                                        variant="dark">Дата</ListGroupItem>
-                                        <ListGroupItem style={{width: '32.5%', overflowX: 'auto'}}
+                                        <ListGroupItem style={{width: '32.5%'}}
                                                        variant="dark">Исходное</ListGroupItem>
-                                        <ListGroupItem style={{width: '32.5%', overflowX: 'auto'}}
+                                        <ListGroupItem style={{width: '32.5%'}}
                                                        variant="dark">Предсказание</ListGroupItem>
                                     </ListGroup>
                                     <div style={{overflowX: 'auto', overflowY: 'scroll', maxHeight: 'inherit'}}>
                                         {
                                             Object.keys(this.state.data.PREDICTION).map((date, index) => (
                                                 <ListGroup horizontal className='table-top-line' key={index}>
-                                                    <ListGroupItem style={{width: '33.3%', overflowX: 'auto'}}
+                                                    <ListGroupItem style={{width: '33.3%'}}
                                                                    key={index}>{date}</ListGroupItem>
-                                                    <ListGroupItem style={{width: '33.3%', overflowX: 'auto'}}
+                                                    <ListGroupItem style={{width: '33.3%'}}
                                                                    key={index}>{Object.values(this.state.data.DATA)[index]}</ListGroupItem>
-                                                    <ListGroupItem style={{width: '33.3%', overflowX: 'auto'}}
+                                                    <ListGroupItem style={{width: '33.3%'}}
                                                                    key={index}>{Object.values(this.state.data.PREDICTION)[index]}</ListGroupItem>
                                                 </ListGroup>
                                             ))
@@ -270,6 +271,7 @@ export default class PredictionChart extends Component {
                         minHeight: 250,
                         height: '100%',
                         display: 'flex',
+                        minWidth: '70%',
                         width: '70%',
                         maxWidth: '70%'
                     }}>

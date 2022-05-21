@@ -14,14 +14,28 @@ export default class FilesList extends Component {
     constructor(props) {
         super(props);
         this._isMounted = false;
-        this.state ={
-            CurUser: JSON.parse(localStorage.getItem('app')),
-            files: null,
-            isLoading: false,
-            loading: false,
-            visible: false,
-            name: null,
-            id: null
+        if (this.props.history.location.state !== undefined) {
+            this.state ={
+                CurUser: JSON.parse(localStorage.getItem('app')),
+                files: null,
+                isLoading: false,
+                loading: false,
+                visible: false,
+                name: null,
+                id: null,
+                update: this.props.history.location.state.update
+            }
+        } else {
+            this.state = {
+                CurUser: JSON.parse(localStorage.getItem('app')),
+                files: null,
+                isLoading: false,
+                loading: false,
+                visible: false,
+                name: null,
+                id: null,
+                update: false
+            }
         }
         this.loadAllFiles = this.loadAllFiles.bind(this)
         this.downloadThisFile = this.downloadThisFile.bind(this)
@@ -37,18 +51,18 @@ export default class FilesList extends Component {
         this._isMounted = true;
     }
 
+    componentDidUpdate (prevProps, prevState, snapshot) {
+        if (this.state.update) {
+            setTimeout({}, 100)
+            this.loadAllFiles()
+            this.setState({update: false})
+        }
+    }
 
     componentWillUnmount() {
         this._isMounted = false;
     }
 
-    /*    componentDidUpdate(prevProps, prevState, snapshot) {
-            if(!this.state.isLoading){
-            let idVar = setInterval(() => {
-                this.loadAllFiles()
-                if(this.state.isLoading)clearInterval(idVar)
-            }, 2000);}
-        }*/
 
     showModal = (id, name) => {
         this.setState({
@@ -90,8 +104,8 @@ export default class FilesList extends Component {
     deleteThisFile(fileId){
         deleteFile(fileId)
             .then(response => {
+                this.setState({update: true})
                 alert('Файл успешно удалён')
-                window.location.reload(); //todo сделать норм ререндеринг
             })
             .catch(error => {
                 alert('Что-то пошло не так')
@@ -106,8 +120,8 @@ export default class FilesList extends Component {
         editFile(fileId, name)
             .then(response => {
                 this.setState({ loading: false, visible: false });
+                this.setState({update: true})
                 alert('Файл успешно изменён')
-                window.location.reload(); //todo сделать норм ререндеринг
             })
             .catch(error => {
                 alert('Что-то пошло не так')
@@ -142,17 +156,17 @@ export default class FilesList extends Component {
                 <Row>
                     <NavigationPanel/>
                     <Col style={{paddingLeft: 0, paddingRight: 0, backgroundColor:'white', overflow:'auto', borderRadius:10, height:'100%', paddingBottom:20, width: '85%', maxWidth: '85%'}}>
+                        <div style={{marginTop: 25, marginBottom: 20, display: 'flex'}}>
+                            <Button type="primary" size="sm" style={{marginLeft: 'auto', marginRight: '1%'}} onClick={() => this.props.history.push(`/files/${this.state.CurUser.currentUser.username}/add`)}>
+                                <UploadOutlined/>
+                                Загрузить данные
+                            </Button>
+                        </div>
+                        <hr/>
                         {this.state.files ? (
                             this.state.files.map(
                                 (files, index) => (
                                     <Row style={{width:'100%', margin: 0}}>
-                                        <div style={{marginTop: 25, marginBottom: 20, display: 'flex'}}>
-                                            <Button type="primary" size="sm" style={{marginLeft: 'auto', marginRight: '1%'}} onClick={() => this.props.history.push(`/files/${this.state.CurUser.currentUser.username}/add`)}>
-                                                <UploadOutlined/>
-                                                Загрузить данные
-                                            </Button>
-                                        </div>
-                                        <hr/>
                                         <Col style={{
                                             textAlign: 'center',
                                             width: '5%',

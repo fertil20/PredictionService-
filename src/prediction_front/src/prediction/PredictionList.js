@@ -21,7 +21,8 @@ export default class PredictionList extends Component {
             loading: false,
             visible: false,
             name: null,
-            id: null
+            id: null,
+            update: false
         }
         this.loadAllFiles = this.loadAllFiles.bind(this)
         this.downloadThisFile = this.downloadThisFile.bind(this)
@@ -42,13 +43,13 @@ export default class PredictionList extends Component {
         this._isMounted = false;
     }
 
-    /*    componentDidUpdate(prevProps, prevState, snapshot) {
-            if(!this.state.isLoading){
-            let idVar = setInterval(() => {
-                this.loadAllFiles()
-                if(this.state.isLoading)clearInterval(idVar)
-            }, 2000);}
-        }*/
+    componentDidUpdate (prevProps, prevState, snapshot) {
+        if (this.state.update) {
+            setTimeout({}, 100)
+            this.loadAllFiles()
+            this.setState({update: false})
+        }
+    }
 
     showModal = (id, name) => {
         this.setState({
@@ -90,8 +91,8 @@ export default class PredictionList extends Component {
     deleteThisFile(fileId){
         deleteFile(fileId)
             .then(response => {
+                this.setState({update: true})
                 alert('Файл успешно удалён')
-                window.location.reload(); //todo сделать норм ререндеринг
             })
             .catch(error => {
                 alert('Что-то пошло не так')
@@ -106,8 +107,8 @@ export default class PredictionList extends Component {
         editFile(fileId, name)
             .then(response => {
                 this.setState({ loading: false, visible: false });
+                this.setState({update: true})
                 alert('Файл успешно изменён')
-                window.location.reload(); //todo сделать норм ререндеринг
             })
             .catch(error => {
                 alert('Что-то пошло не так')
