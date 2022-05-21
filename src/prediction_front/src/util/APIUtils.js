@@ -1,7 +1,10 @@
 import {ACCESS_TOKEN, API_BASE_URL, REFRESH_TOKEN} from '../constants/constants';
+import {PersistentState} from "./PersistentState";
+import App from "../app/App";
 
 
 const request = (options) => {
+    let pers = new PersistentState(App, 'app')
     const headers = new Headers({
         'Content-Type': 'application/json',
     })
@@ -28,11 +31,14 @@ const request = (options) => {
                         localStorage.setItem(ACCESS_TOKEN, token.accessToken)
                         return request(options)
                     })
-                    .catch(error => {
-                        localStorage.removeItem(ACCESS_TOKEN);
-
-                        window.location.href = "http://localhost:3000/login";
-                    })
+            } else if ((error.status === 403) && (localStorage.getItem(ACCESS_TOKEN))) {
+                //todo Сделать норм удаление стейта
+                localStorage.removeItem(ACCESS_TOKEN);
+                window.location.href = "http://localhost:3000/login";
+/*                pers.setState({
+                    currentUser: null,
+                    isAuthenticated: false
+                });*/
             } else if ((error.status === 401) && (!localStorage.getItem(ACCESS_TOKEN))) {
                 window.location.href = "http://localhost:3000/login";
             }

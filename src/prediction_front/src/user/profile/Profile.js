@@ -89,33 +89,33 @@ class Profile extends Component {
                        this.state.user ? (
                 <Row>
                     <NavigationPanel/>
-                    <Col sm={{ size: 4.4 }} style={{backgroundColor: 'white', borderRadius:10, height:500, width: '85%'}}>
-                        <div style={{backgroundColor: 'white', margin: 20,borderRadius:10,height:300,width:"auto"}}>
-                            <Avatar className="user-avatar-circle" style={{ backgroundColor: getAvatarColor(this.state.user.name)}}>
+                    <Col style={{backgroundColor: 'white', borderRadius:10, height:400, width: '40%', minWidth: '40%', maxWidth:'40%', marginLeft:'auto', marginRight:'auto'}}>
+                        <div style={{backgroundColor: 'white', margin: 20,borderRadius:10,height:200,width:"auto", display: 'flex'}}>
+                            <Avatar className="user-avatar-circle" style={{ backgroundColor: getAvatarColor(this.state.user.name), marginLeft:'auto', marginRight:'auto'}}>
                                 {this.state.user.name.toUpperCase()}
                             </Avatar>
                         </div>
                         <Row>
-                            <Col>
+                            <Col style={{display:'flex'}}>
                                 <div className='profile-text1'>Ф.И.О:</div>
                             </Col>
-                            <Col>
+                            <Col style={{display:'flex'}}>
                                 <div className='profile-text2'>{this.state.user.name}</div>
                             </Col>
                         </Row>
                         <Row>
-                            <Col>
-                                <div className='profile-text1'>Логин</div>
+                            <Col style={{display:'flex'}}>
+                                <div className='profile-text1'>Логин:</div>
                             </Col>
-                            <Col>
+                            <Col style={{display:'flex'}}>
                                 <div className='profile-text2'>{this.state.user.username}</div>
                             </Col>
                         </Row>
                         <Row>
-                            <Col>
+                            <Col style={{display:'flex'}}>
                                 <div className='profile-text1'>Почта:</div>
                             </Col>
-                            <Col>
+                            <Col style={{display:'flex'}}>
                                 <div className='profile-text2'>{this.state.user.email}</div>
                             </Col>
                         </Row>

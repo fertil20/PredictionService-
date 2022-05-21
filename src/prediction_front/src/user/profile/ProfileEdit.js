@@ -1,5 +1,4 @@
 import {getAvatarColor} from '../../util/Colors';
-import './Profile.css';
 import NotFound from '../../common/NotFound';
 import ServerError from '../../common/ServerError';
 import {Button, Col, Form, Input, Row} from 'reactstrap';

@@ -12,8 +12,8 @@ export default class FilesAdd extends Component {
         this.state ={
             CurUser: JSON.parse(localStorage.getItem('app')),
             file: '',
-            fileName: 'default',
-            fileUrl: 'default'
+            fileName: 'loadFile',
+            fileUrl: 'loadFile'
         }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.onChange = this.onChange.bind(this)
@@ -43,11 +43,11 @@ export default class FilesAdd extends Component {
 
     onChange(e) {
         if(e.target.files.length !== 0) {
-            this.setState({file: e.target.files[0]})
-            // imageToUpload = new Blob([JSON.stringify(this.state.file, null, 2)]);
-            // this.getBinary(e)
-            // this.setState({fileUrl: URL.createObjectURL(e.target.files[0])})
-            // this.setState({fileName: e.target.files[0].name})
+            this.setState({
+                file: e.target.files[0],
+                fileUrl: URL.createObjectURL(e.target.files[0]),
+                fileName: e.target.files[0].name
+            })
         }
     }
 
@@ -70,8 +70,8 @@ export default class FilesAdd extends Component {
                     <div style={{width:570, marginBottom:30}}>
                         <Row>
                             <Col>
-                                <img style={{paddingLeft:20}} src={this.state.fileUrl} alt={this.state.fileName} id = 'fileUpload' className='file-upload'/>
-                                <div style={{width:200,paddingLeft:20}}>
+                                {/*<img style={{paddingLeft:20}} src={this.state.fileUrl} alt={this.state.fileName} id = 'fileUpload' className='file-upload'/>*/}
+                                <div style={{width:'100%',paddingLeft:20,marginRight:0,marginTop:20}}>
                                     <Input type='file' name='multipartFile' className="file" onChange={(event)=>this.onChange(event)}/>
                                 </div>
                             </Col>
