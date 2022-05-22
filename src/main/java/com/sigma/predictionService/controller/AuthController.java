@@ -7,6 +7,8 @@ import com.sigma.predictionService.model.RefreshToken;
 import com.sigma.predictionService.security.JwtTokenProvider;
 import com.sigma.predictionService.security.UserPrincipal;
 import com.sigma.predictionService.service.RefreshTokenService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +26,8 @@ public class AuthController {
     private final JwtTokenProvider tokenProvider;
     private final RefreshTokenService refreshTokenService;
     private final JwtTokenProvider jwtTokenProvider;
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     public AuthController(AuthenticationManager authenticationManager,
                           JwtTokenProvider tokenProvider,
@@ -60,6 +64,7 @@ public class AuthController {
                 .map(RefreshToken::getUser)
                 .map(user -> {
                     String token = jwtTokenProvider.generateToken(user.getId());
+                    logger.info("Generate new Access Token via RefreshToken");
                     return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
                 })
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
