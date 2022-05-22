@@ -8,6 +8,7 @@ import NavigationPanel from "../navigation/NavigationPanel";
 import 'antd/dist/antd.min.css';
 import 'moment/locale/ru';
 import locale from 'antd/es/date-picker/locale/ru_RU';
+import moment from "moment";
 
 
 
@@ -27,8 +28,8 @@ export default class FilesList extends Component {
                 name: null,
                 id: null,
                 update: this.props.history.location.state.update,
-                startDate: null,
-                endDate: null,
+                startDate: "24.10.2021",
+                endDate: "24.01.2022",
                 status: "error"
             }
         } else {
@@ -42,8 +43,8 @@ export default class FilesList extends Component {
                 name: null,
                 id: null,
                 update: false,
-                startDate: null,
-                endDate: null,
+                startDate: "24.10.2021",
+                endDate: "24.01.2022",
                 status: "error"
             }
         }
@@ -306,6 +307,7 @@ export default class FilesList extends Component {
                                 width: '100%',
                             }}
                             format={"DD.MM.YYYY"}
+                            defaultValue={[moment("24.10.2021", "DD.MM.YYYY"), moment("24.01.2022", "DD.MM.YYYY")]}
                             onChange={this.onChange = (date, string) => {this.setState({startDate: string[0], endDate: string[1], status: "none"})}}
                         />
                     </Modal>

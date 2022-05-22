@@ -5,6 +5,7 @@ import NavigationPanel from "../navigation/NavigationPanel";
 import {Chart, registerables} from "chart.js";
 import './PredictionChart.css'
 import {Button} from "antd";
+import {PlusSquareTwoTone} from "@ant-design/icons";
 
 
 
@@ -125,7 +126,7 @@ export default class PredictionChart extends Component {
                     alert('Что-то пошло не так')
                 })
         }
-        else {
+        else if (this.state.built && !this.props.history.location.state) {
             viewPredict(this.props.match.params.fileId)
                 .then(response => {
                     if (this._isMounted) {
@@ -165,6 +166,129 @@ export default class PredictionChart extends Component {
                                 }
                             }
                         });
+                    }
+                })
+                .catch(error => {
+                    alert('Что-то пошло не так')
+                })
+        } else {
+            viewPredict(this.props.history.location.state.compare)
+                .then(response => {
+                    if (this._isMounted) {
+                        this.setState({isLoading: false, data: {DATA: response, PREDICTION: this.props.history.location.state.previousPredict}})
+                        if (Object.keys(this.state.data.PREDICTION).at(0) < (Object.keys(this.state.data.DATA).at(0)))
+                            this.chart = new Chart(document.getElementById('myChart').getContext('2d'), {
+                                type: 'line',
+                                data: {
+                                    datasets: [{
+                                        label: 'Предсказание 2',
+                                        data: this.state.data.PREDICTION,
+                                        backgroundColor: [
+                                            'rgba(54, 162, 235, 1)',
+                                            // 'rgba(54, 162, 235, 0.2)',
+                                            // 'rgba(255, 206, 86, 0.2)',
+                                            // 'rgba(75, 192, 192, 0.2)',
+                                            // 'rgba(153, 102, 255, 0.2)',
+                                            // 'rgba(255, 159, 64, 0.2)'
+                                        ],
+                                        borderColor: [
+                                            // 'rgba(255, 99, 132, 1)',
+                                            'rgba(54, 162, 235, 1)',
+                                            // 'rgba(255, 206, 86, 1)',
+                                            // 'rgba(75, 192, 192, 1)',
+                                            // 'rgba(153, 102, 255, 1)',
+                                            // 'rgba(255, 159, 64, 1)'
+                                        ],
+                                        borderWidth: 1
+                                    },
+                                        {
+                                            label: 'Предсказание 1',
+                                            data: response,
+                                            backgroundColor: [
+                                                'rgba(241,47,47,0.73)',
+                                                // 'rgba(54, 162, 235, 0.2)',
+                                                // 'rgba(255, 206, 86, 0.2)',
+                                                // 'rgba(75, 192, 192, 0.2)',
+                                                // 'rgba(153, 102, 255, 0.2)',
+                                                // 'rgba(255, 159, 64, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                // 'rgba(255, 99, 132, 1)',
+                                                'rgba(241,47,47,0.73)',
+                                                // 'rgba(255, 206, 86, 1)',
+                                                // 'rgba(75, 192, 192, 1)',
+                                                // 'rgba(153, 102, 255, 1)',
+                                                // 'rgba(255, 159, 64, 1)'
+                                            ],
+                                            borderWidth: 1
+                                        }
+                                    ]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        else {
+                            this.chart = new Chart(document.getElementById('myChart').getContext('2d'), {
+                                type: 'line',
+                                data: {
+                                    datasets: [{
+                                        label: 'Предсказание 1',
+                                        data: response,
+                                        backgroundColor: [
+                                            'rgba(241,47,47,0.73)',
+                                            // 'rgba(54, 162, 235, 0.2)',
+                                            // 'rgba(255, 206, 86, 0.2)',
+                                            // 'rgba(75, 192, 192, 0.2)',
+                                            // 'rgba(153, 102, 255, 0.2)',
+                                            // 'rgba(255, 159, 64, 0.2)'
+                                        ],
+                                        borderColor: [
+                                            // 'rgba(255, 99, 132, 1)',
+                                            'rgba(241,47,47,0.73)',
+                                            // 'rgba(255, 206, 86, 1)',
+                                            // 'rgba(75, 192, 192, 1)',
+                                            // 'rgba(153, 102, 255, 1)',
+                                            // 'rgba(255, 159, 64, 1)'
+                                        ],
+                                        borderWidth: 1
+                                    },
+                                        {
+                                            label: 'Предсказание 2',
+                                            data: this.state.data.PREDICTION,
+                                            backgroundColor: [
+                                                'rgba(54, 162, 235, 1)',
+                                                // 'rgba(54, 162, 235, 0.2)',
+                                                // 'rgba(255, 206, 86, 0.2)',
+                                                // 'rgba(75, 192, 192, 0.2)',
+                                                // 'rgba(153, 102, 255, 0.2)',
+                                                // 'rgba(255, 159, 64, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                // 'rgba(255, 99, 132, 1)',
+                                                'rgba(54, 162, 235, 1)',
+                                                // 'rgba(255, 206, 86, 1)',
+                                                // 'rgba(75, 192, 192, 1)',
+                                                // 'rgba(153, 102, 255, 1)',
+                                                // 'rgba(255, 159, 64, 1)'
+                                            ],
+                                            borderWidth: 1
+                                        }
+                                    ]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        }
                     }
                 })
                 .catch(error => {
@@ -267,10 +391,29 @@ export default class PredictionChart extends Component {
                                         }}>
                                             <ListGroupItem style={{width: '32.5%'}}
                                                            variant="dark">Дата</ListGroupItem>
-                                            <ListGroupItem style={{width: '32.5%'}}
-                                                           variant="dark">Исходное</ListGroupItem>
-                                            <ListGroupItem style={{width: '32.5%'}}
-                                                           variant="dark">Предсказание</ListGroupItem>
+                                            {this.state.built && !this.props.history.location.state &&
+                                                <ListGroupItem style={{width: '32.5%', display: 'flex'}}
+                                                               variant="dark">
+                                                    <PlusSquareTwoTone
+                                                        title={'Добавить данные к сравнению'}
+                                                        style={{margin: 'auto', fontSize: '34px'}}
+                                                        onClick={() => this.props.history.push({pathname: `/history/${this.state.CurUser.currentUser.username}`}, {
+                                                            choose: true,
+                                                            oldFile: this.props.match.params.fileId,
+                                                            previousPredict: this.state.data.PREDICTION
+                                                        })}/>
+                                                </ListGroupItem>}
+                                            {!this.state.built &&
+                                                <ListGroupItem style={{width: '32.5%'}}
+                                                               variant="dark">Исходное</ListGroupItem>}
+                                            {this.state.built && this.props.history.location.state &&
+                                                <ListGroupItem style={{width: '32.5%'}}
+                                                               variant="dark">Предсказание 1</ListGroupItem>}
+                                            {(this.state.built && this.props.history.location.state) ?
+                                                <ListGroupItem style={{width: '32.5%'}}
+                                                               variant="dark">Предсказание 2</ListGroupItem> :
+                                                <ListGroupItem style={{width: '32.5%'}}
+                                                           variant="dark">Предсказание</ListGroupItem>}
                                         </ListGroup>
                                         <div style={{
                                             overflowX: 'auto',
@@ -280,14 +423,41 @@ export default class PredictionChart extends Component {
                                             maxHeight: '90%',
                                         }}>
                                             {
+                                                this.state.data.DATA && Object.keys(this.state.data.PREDICTION).at(0) <= (Object.keys(this.state.data.DATA).at(0)) &&
+                                                Array.from(new Set([...Object.keys(this.state.data.PREDICTION), ...Object.keys(this.state.data.DATA)])).map((date, index) => (
+                                                    <ListGroup horizontal className='table-top-line' key={index}>
+                                                        <ListGroupItem style={{width: '33.3%'}}
+                                                                       key={index + '.1'}>{date}</ListGroupItem>
+                                                        <ListGroupItem style={{width: '33.3%'}}
+                                                                       key={index + '.2'}>{this.state.data.DATA[date]}</ListGroupItem>
+                                                        <ListGroupItem style={{width: '33.3%'}}
+                                                                       key={index + '.3'}>{this.state.data.PREDICTION[date]}</ListGroupItem>
+                                                    </ListGroup>
+                                                ))
+                                            }
+                                            {
+                                                this.state.data.DATA && Object.keys(this.state.data.PREDICTION).at(0) > (Object.keys(this.state.data.DATA).at(0)) &&
+                                                Array.from(new Set([...Object.keys(this.state.data.DATA), ...Object.keys(this.state.data.PREDICTION)])).map((date, index) => (
+                                                    <ListGroup horizontal className='table-top-line' key={index}>
+                                                        <ListGroupItem style={{width: '33.3%'}}
+                                                                       key={index + '.1'}>{date}</ListGroupItem>
+                                                        <ListGroupItem style={{width: '33.3%'}}
+                                                                       key={index + '.2'}>{this.state.data.DATA[date]}</ListGroupItem>
+                                                        <ListGroupItem style={{width: '33.3%'}}
+                                                                       key={index + '.3'}>{this.state.data.PREDICTION[date]}</ListGroupItem>
+                                                    </ListGroup>
+                                                ))
+                                            }
+                                            {
+                                                !this.state.data.DATA &&
                                                 Object.keys(this.state.data.PREDICTION).map((date, index) => (
                                                     <ListGroup horizontal className='table-top-line' key={index}>
                                                         <ListGroupItem style={{width: '33.3%'}}
-                                                                       key={index}>{date}</ListGroupItem>
+                                                                       key={index + '.1'}>{date}</ListGroupItem>
                                                         <ListGroupItem style={{width: '33.3%'}}
-                                                                       key={index}>{this.state.data.DATA && Object.values(this.state.data.DATA)[index]}</ListGroupItem>
+                                                                       key={index + '.2'}></ListGroupItem>
                                                         <ListGroupItem style={{width: '33.3%'}}
-                                                                       key={index}>{Object.values(this.state.data.PREDICTION)[index]}</ListGroupItem>
+                                                                       key={index + '.3'}>{this.state.data.PREDICTION[date]}</ListGroupItem>
                                                     </ListGroup>
                                                 ))
                                             }

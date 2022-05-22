@@ -14,6 +14,7 @@ import {checkEmailAvailability, checkUsernameAvailability, newUser} from "../../
 import {EMAIL_MAX_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH} from "../../constants/constants";
 import FormItem from "@ant-design/compatible/es/form/FormItem";
 import NavigationPanel from "../../navigation/NavigationPanel";
+import {Radio} from "antd";
 
 
 class NewUser extends Component {
@@ -26,7 +27,8 @@ class NewUser extends Component {
             isLoading: false,
             username: {value: ''},
             email: {value: ''},
-            name:{value:''}
+            name:{value:''},
+            role: 'Пользователь'
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -54,7 +56,8 @@ class NewUser extends Component {
         const newUserRequest = {
             username: this.state.username.value,
             email: this.state.email.value,
-            name: this.state.name.value
+            name: this.state.name.value,
+            role: this.state.role
         };
         newUser(newUserRequest)
             .then(response => {
@@ -317,6 +320,10 @@ class NewUser extends Component {
                                                    onChange={(event) => this.handleInputChange(event)}/>
                                                 </Col>
                                             </Row>
+                                            <Radio.Group style={{marginTop: 20}} onChange={(e) => {this.setState({role: e.target.value})}} value={this.state.role}>
+                                                <Radio value={'Пользователь'}>Пользователь</Radio>
+                                                <Radio value={'Администратор'}>Администратор</Radio>
+                                            </Radio.Group>
                                             <div style={{marginTop:20}}>
                                                 <Button color="primary" size="sm" disabled={this.isFormInvalid()}>
                                                     Добавить пользователя
