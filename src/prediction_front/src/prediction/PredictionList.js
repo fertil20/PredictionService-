@@ -92,7 +92,7 @@ export default class PredictionList extends Component {
         deleteFile(fileId)
             .then(response => {
                 this.setState({update: true})
-                alert('Файл успешно удалён')
+                // alert('Файл успешно удалён')
             })
             .catch(error => {
                 alert('Что-то пошло не так')
@@ -108,7 +108,7 @@ export default class PredictionList extends Component {
             .then(response => {
                 this.setState({ loading: false, visible: false });
                 this.setState({update: true})
-                alert('Файл успешно изменён')
+                // alert('Файл успешно изменён')
             })
             .catch(error => {
                 alert('Что-то пошло не так')

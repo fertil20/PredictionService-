@@ -32,7 +32,7 @@ export default class FilesAdd extends Component {
     addNewFile(){
         uploadFile(this.state.file)
             .then(response => {
-                alert('Файл добавлен')
+                // alert('Файл добавлен')
                 //this.props.history.push(`/news`);
             })
             .catch(error => {

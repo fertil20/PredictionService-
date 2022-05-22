@@ -35,9 +35,6 @@ const request = (options) => {
                 localStorage.removeItem(REFRESH_TOKEN);
                 localStorage.removeItem('app');
                 window.location.href = "http://localhost:3000/login";
-            } else
-            {
-                window.location.href = "http://localhost:3000/login";
             }
         })
 };
@@ -65,9 +62,6 @@ const setFile = async (options) => {
                 localStorage.removeItem(ACCESS_TOKEN);
                 localStorage.removeItem(REFRESH_TOKEN);
                 localStorage.removeItem('app');
-                window.location.href = "http://localhost:3000/login";
-            } else
-            {
                 window.location.href = "http://localhost:3000/login";
             }
         })
@@ -106,9 +100,6 @@ const getFile = (options) => {
                 localStorage.removeItem(ACCESS_TOKEN);
                 localStorage.removeItem(REFRESH_TOKEN);
                 localStorage.removeItem('app');
-                window.location.href = "http://localhost:3000/login";
-            } else
-            {
                 window.location.href = "http://localhost:3000/login";
             }
         })

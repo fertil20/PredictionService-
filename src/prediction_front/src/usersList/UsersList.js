@@ -73,7 +73,7 @@ class UsersList extends Component {
         this.setState({deleteUserID: userID})
         deleteUser(userID)
             .then(response => {
-                alert('Пользователь удалён');
+                // alert('Пользователь удалён');
                 this.componentDidMount(UsersList);
             })
             .catch(error => {
@@ -173,7 +173,7 @@ class UsersList extends Component {
                     }
                     <div>
                         <Button size="sm" href='/newUser' style={{marginTop:10, marginLeft:10}} className='add-button'>
-                            Добавить сотрудника
+                            Добавить пользователя
                         </Button>
                     </div>
                 </Col>

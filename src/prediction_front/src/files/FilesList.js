@@ -2,10 +2,12 @@ import React, {Component} from "react";
 import {Col, Row} from 'reactstrap';
 import {loadFilesByUser, downloadFile, deleteFile, editFile} from "../util/APIUtils";
 import ".//Files.css"
-import {Menu, Dropdown, Button, Modal, Input} from 'antd';
+import {Menu, Dropdown, Button, Modal, Input, DatePicker} from 'antd';
 import {DownloadOutlined, DeleteOutlined, EditOutlined, UploadOutlined} from '@ant-design/icons';
 import NavigationPanel from "../navigation/NavigationPanel";
 import 'antd/dist/antd.min.css';
+import 'moment/locale/ru';
+import locale from 'antd/es/date-picker/locale/ru_RU';
 
 
 
@@ -21,9 +23,13 @@ export default class FilesList extends Component {
                 isLoading: false,
                 loading: false,
                 visible: false,
+                visibleDate: false,
                 name: null,
                 id: null,
-                update: this.props.history.location.state.update
+                update: this.props.history.location.state.update,
+                startDate: null,
+                endDate: null,
+                status: "error"
             }
         } else {
             this.state = {
@@ -32,9 +38,13 @@ export default class FilesList extends Component {
                 isLoading: false,
                 loading: false,
                 visible: false,
+                visibleDate: false,
                 name: null,
                 id: null,
-                update: false
+                update: false,
+                startDate: null,
+                endDate: null,
+                status: "error"
             }
         }
         this.loadAllFiles = this.loadAllFiles.bind(this)
@@ -43,6 +53,7 @@ export default class FilesList extends Component {
         this.predictionChart = this.predictionChart.bind(this)
         this.handleMenuClick = this.handleMenuClick.bind(this)
         this.showModal = this.showModal.bind(this)
+        this.showDateModal = this.showDateModal.bind(this)
     }
 
 
@@ -72,6 +83,14 @@ export default class FilesList extends Component {
         });
     };
 
+    showDateModal = (fileId, fileName) => {
+        this.setState({
+            visibleDate: true,
+            id: fileId,
+            name: fileName
+        });
+    };
+
     handleOk = () => {
         this.setState({ loading: true});
         this.editThisFile(this.state.id, this.state.name);
@@ -79,6 +98,14 @@ export default class FilesList extends Component {
 
     handleCancel = () => {
         this.setState({ visible: false });
+    };
+
+    handleDateOk = () => {
+        this.props.history.push({pathname: "/prediction/" + this.state.id}, {fileName: this.state.name, startDate: this.state.startDate, endDate: this.state.endDate});
+    };
+
+    handleDateCancel = () => {
+        this.setState({ visibleDate: false });
     };
 
     loadAllFiles(){
@@ -105,7 +132,7 @@ export default class FilesList extends Component {
         deleteFile(fileId)
             .then(response => {
                 this.setState({update: true})
-                alert('Файл успешно удалён')
+                // alert('Файл успешно удалён')
             })
             .catch(error => {
                 alert('Что-то пошло не так')
@@ -113,7 +140,7 @@ export default class FilesList extends Component {
     }
 
     predictionChart(fileId, fileName) {
-        this.props.history.push({pathname: "/prediction/" + fileId}, {fileName: fileName});
+        this.showDateModal(fileId, fileName)
     }
 
     editThisFile(fileId, name) {
@@ -121,7 +148,7 @@ export default class FilesList extends Component {
             .then(response => {
                 this.setState({ loading: false, visible: false });
                 this.setState({update: true})
-                alert('Файл успешно изменён')
+                // alert('Файл успешно изменён')
             })
             .catch(error => {
                 alert('Что-то пошло не так')
@@ -151,6 +178,7 @@ export default class FilesList extends Component {
 
     render () {
         const { visible, loading } = this.state;
+        const { visibleDate } = this.state;
         if (this.state.isLoading) {
             return(
                 <Row>
@@ -255,6 +283,31 @@ export default class FilesList extends Component {
                         <Input placeholder="Новое имя" defaultValue={this.state.name} maxLength={100}
                                onChange={this.onChange = (e) => {this.setState({name: e.target.value})}}>
                         </Input>
+                    </Modal>
+                    <Modal
+                        visible={visibleDate}
+                        title="Выберите дату"
+                        onOk={this.handleDateOk}
+                        onCancel={this.handleDateCancel}
+                        footer={[
+                            <Button key="back" onClick={this.handleDateCancel}>
+                                Закрыть
+                            </Button>,
+                            <Button key="submit" type="primary"
+                                    onClick={this.handleDateOk}>
+                                Сделать прогноз
+                            </Button>
+                        ]}
+                    >
+                        <DatePicker.RangePicker
+                            locale={locale}
+                            status={this.state.status}
+                            style={{
+                                width: '100%',
+                            }}
+                            format={"DD.MM.YYYY"}
+                            onChange={this.onChange = (date, string) => {this.setState({startDate: string[0], endDate: string[1], status: "none"})}}
+                        />
                     </Modal>
                 </Row>
             )
