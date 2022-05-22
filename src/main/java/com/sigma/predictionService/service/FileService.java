@@ -7,6 +7,8 @@ import com.sigma.predictionService.repository.FilesRepo;
 import com.sigma.predictionService.repository.UserDetailsRepo;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.supercsv.io.CsvListWriter;
@@ -25,6 +27,7 @@ public class FileService {
     final private LocalDateTimeFormatter localDateTimeFormatter;
     final private FilesRepo filesRepo;
     final private UserDetailsRepo userDetailsRepo;
+    private static final Logger logger = LoggerFactory.getLogger(FileService.class);
 
     public FileService(LocalDateTimeFormatter localDateTimeFormatter,
                        FilesRepo filesRepo,
@@ -34,7 +37,7 @@ public class FileService {
         this.userDetailsRepo = userDetailsRepo;
     }
 
-    public void uploadFile(@NotNull MultipartFile file, @NotNull Long id, @NotNull String dataType) throws IOException {
+    public Long uploadFile(@NotNull MultipartFile file, @NotNull Long id, @NotNull String dataType) throws IOException {
         if(Objects.equals(file.getContentType(),"text/csv") || Objects.equals(file.getContentType(), "application/vnd.ms-excel")){
             Files newFiles = new Files();
             newFiles.setFileName(file.getOriginalFilename());
@@ -43,10 +46,14 @@ public class FileService {
             newFiles.setDataType(dataType);
             newFiles.setCreateTime(LocalDateTime.now());
             newFiles.setUser(userDetailsRepo.getById(id));
-
-            filesRepo.save(newFiles);
+            //if (verifyFileStructure(newFiles.getFile(), newFiles.getDataType()))
+                var a = filesRepo.save(newFiles);
+                logger.info("Successfully upload file with name - {}", newFiles.getFileName());
+                return a.getId();
         }
+        return null;
     }
+
 
     public List<UserFilesResponse> getUserFiles(@NotNull Long id, @NotNull String dataType){
             return filesRepo.findFilesByUserIdAndDataType(id, dataType)
@@ -87,9 +94,9 @@ public class FileService {
             if (Objects.equals(key,startDate) || inRange){
                 filteredMap.put(key,rawMap.get(key));
                 inRange = true;
-            }
-            else if (Objects.equals(key,endDate)){
-                inRange = false;
+                if (Objects.equals(key,endDate)){
+                    inRange = false;
+                }
             }
         }
         return filteredMap;
@@ -111,6 +118,10 @@ public class FileService {
             return file.getFile();
         }
         return null;
+    }
+
+    public byte[] getFile(Long id){
+            return filesRepo.getById(id).getFile();
     }
 
     public FileDownloadResponse getDownloadFile(Long id, Long userId){
@@ -207,7 +218,7 @@ public class FileService {
         dataTypes type = dataTypes.valueOf(dataType);
         switch (type){
             case DATA_PAYMENTS:
-                Headers = new String[] {"", "PAY", "CNT","PAY_DATE"};
+                Headers = new String[] {" ", "PAY", "CNT","PAY_DATE"};
                 break;
             case PREDICTION_PAYMENTS:
                 Headers = new String[] {"PAY", "PAY_DATE"};
@@ -217,6 +228,30 @@ public class FileService {
                 break;
         }
         return Headers;
+    }
+
+    private boolean verifyFileStructure(byte[] fileToCheck, String dataType){
+        boolean flag = false;
+        String[] Headers = getHeaders(dataType);
+        String[] RequirementHeaders = getHeaders(dataType);
+        List<String> verifyHeaders = new ArrayList();
+        InputStreamReader in = new InputStreamReader(new ByteArrayInputStream(fileToCheck));
+        try {
+            Iterable<CSVRecord>  records = CSVFormat.EXCEL.builder().setHeader(Headers).setDelimiter(';').build().parse(in);
+            for (CSVRecord record : records) {
+                for (String header: Headers){
+                    var a = record.toMap().values().toArray(new String[0]);
+                    List<String> recordHeaders = new ArrayList<String>( record.toMap().values());
+                    if (!Arrays.asList(recordHeaders).contains(header))
+                        return false;
+                    //verifyHeaders.add(header);
+                }
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private enum dataTypes{
