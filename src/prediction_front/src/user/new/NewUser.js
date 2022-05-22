@@ -28,7 +28,7 @@ class NewUser extends Component {
             username: {value: ''},
             email: {value: ''},
             name:{value:''},
-            role: 'Пользователь'
+            role: 1
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -321,8 +321,8 @@ class NewUser extends Component {
                                                 </Col>
                                             </Row>
                                             <Radio.Group style={{marginTop: 20}} onChange={(e) => {this.setState({role: e.target.value})}} value={this.state.role}>
-                                                <Radio value={'Пользователь'}>Пользователь</Radio>
-                                                <Radio value={'Администратор'}>Администратор</Radio>
+                                                <Radio value={1}>Пользователь</Radio>
+                                                <Radio value={2}>Администратор</Radio>
                                             </Radio.Group>
                                             <div style={{marginTop:20}}>
                                                 <Button color="primary" size="sm" disabled={this.isFormInvalid()}>

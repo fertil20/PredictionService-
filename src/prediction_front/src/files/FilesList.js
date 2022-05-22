@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Col, Row} from 'reactstrap';
 import {loadFilesByUser, downloadFile, deleteFile, editFile} from "../util/APIUtils";
 import ".//Files.css"
-import {Menu, Dropdown, Button, Modal, Input, DatePicker} from 'antd';
+import {Menu, Dropdown, Button, Modal, Input, DatePicker, Radio} from 'antd';
 import {DownloadOutlined, DeleteOutlined, EditOutlined, UploadOutlined} from '@ant-design/icons';
 import NavigationPanel from "../navigation/NavigationPanel";
 import 'antd/dist/antd.min.css';
@@ -30,7 +30,8 @@ export default class FilesList extends Component {
                 update: this.props.history.location.state.update,
                 startDate: "24.10.2021",
                 endDate: "24.01.2022",
-                status: "error"
+                status: "error",
+                peak: 1
             }
         } else {
             this.state = {
@@ -45,7 +46,8 @@ export default class FilesList extends Component {
                 update: false,
                 startDate: "24.10.2021",
                 endDate: "24.01.2022",
-                status: "error"
+                status: "error",
+                peak: 1
             }
         }
         this.loadAllFiles = this.loadAllFiles.bind(this)
@@ -102,7 +104,12 @@ export default class FilesList extends Component {
     };
 
     handleDateOk = () => {
-        this.props.history.push({pathname: "/prediction/" + this.state.id}, {fileName: this.state.name, startDate: this.state.startDate, endDate: this.state.endDate});
+        this.props.history.push({pathname: "/prediction/" + this.state.id}, {
+            fileName: this.state.name,
+            startDate: this.state.startDate,
+            endDate: this.state.endDate,
+            peak: this.state.peak
+        });
     };
 
     handleDateCancel = () => {
@@ -287,7 +294,7 @@ export default class FilesList extends Component {
                     </Modal>
                     <Modal
                         visible={visibleDate}
-                        title="Выберите дату"
+                        title="Выберите параметры"
                         onOk={this.handleDateOk}
                         onCancel={this.handleDateCancel}
                         footer={[
@@ -300,6 +307,10 @@ export default class FilesList extends Component {
                             </Button>
                         ]}
                     >
+                        <Radio.Group style={{marginBottom: 20}} onChange={(e) => {this.setState({role: e.target.value})}} value={this.state.role}>
+                            <Radio value={1}>С пиками</Radio>
+                            <Radio value={2}>Без пиков</Radio>
+                        </Radio.Group>
                         <DatePicker.RangePicker
                             locale={locale}
                             status={this.state.status}

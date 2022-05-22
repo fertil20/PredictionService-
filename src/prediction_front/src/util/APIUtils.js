@@ -150,9 +150,9 @@ export function savePredict(data, dataType, fileName) {
     })
 }
 
-export function predictFile(fileId, startDate, endDate) {
+export function predictFile(fileId, startDate, endDate, peak) {
     return request({
-        url: API_BASE_URL + "/prediction/predict/" + fileId + "?startDate=" + startDate + "&endDate=" + endDate,
+        url: API_BASE_URL + "/prediction/predict/" + fileId + "?startDate=" + startDate + "&endDate=" + endDate + "&peak=" + peak,
         method: 'GET'
     });
 }

@@ -61,7 +61,7 @@ export default class PredictionChart extends Component {
 
     buildChart() {
         if (!this.state.built) {
-            predictFile(this.props.match.params.fileId, this.props.history.location.state.startDate, this.props.history.location.state.endDate)
+            predictFile(this.props.match.params.fileId, this.props.history.location.state.startDate, this.props.history.location.state.endDate, this.props.history.location.state.peak)
                 .then(response => {
                     if (this._isMounted) {
                         this.setState({isLoading: false, data: response})
