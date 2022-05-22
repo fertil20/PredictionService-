@@ -5,8 +5,6 @@ import {Menu, Dropdown, Button, Modal, Input} from 'antd';
 import {DownloadOutlined, DeleteOutlined, EditOutlined} from '@ant-design/icons';
 import NavigationPanel from "../navigation/NavigationPanel";
 import 'antd/dist/antd.min.css';
-import {Link} from "react-router-dom";
-
 
 
 export default class PredictionList extends Component {
@@ -100,7 +98,13 @@ export default class PredictionList extends Component {
     }
 
     predictionChart(fileId) {
-        this.props.history.push({pathname: "/history/" + this.state.CurUser.currentUser.username + "/" + fileId});
+        if (this.props.history.location.state) {
+            if (this.props.location.state.choose) {
+                this.props.history.push({pathname: "/history/" + this.state.CurUser.currentUser.username + "/" + this.props.history.location.state.oldFile}, {compare: JSON.stringify(fileId), previousPredict: this.props.history.location.state.previousPredict});
+            }
+        } else {
+            this.props.history.push({pathname: "/history/" + this.state.CurUser.currentUser.username + "/" + fileId});
+        }
     }
 
     editThisFile(fileId, name) {
@@ -163,7 +167,8 @@ export default class PredictionList extends Component {
                                             margin: 0,
                                             padding: 0
                                         }} className='news-title'>
-                                            <Link to={`/history/${this.state.CurUser.currentUser.username}/${files.id}`}>{files.fileName}</Link>
+                                            <a className='parse-link'
+                                               onClick={() => this.predictionChart(files.id)}>{files.fileName}</a>
                                         </Col>
                                         <Col style={{
                                             textAlign: 'center',
