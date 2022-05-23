@@ -26,8 +26,9 @@ public class PredictionController {
     public Map<String, Map<String, Double>> getPrediction(@PathVariable Long id,
                                                           @CurrentUser UserPrincipal currentUser,
                                                           @RequestParam String startDate,
-                                                          @RequestParam String endDate){
-        return predictionService.getPrediction(id, currentUser.getId(), startDate, endDate);
+                                                          @RequestParam String endDate,
+                                                          @RequestParam Integer peak){
+        return predictionService.getPrediction(id, currentUser.getId(), startDate, endDate, peak);
     }
 
 }

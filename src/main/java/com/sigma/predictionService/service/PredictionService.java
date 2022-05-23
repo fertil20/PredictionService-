@@ -57,7 +57,8 @@ public class PredictionService {
     public Map<String, Map<String, Double>> getPrediction(@NotNull Long id,
                                                           @NotNull Long userId,
                                                           @NotNull String startDate,
-                                                          @NotNull String endDate
+                                                          @NotNull String endDate,
+                                                          @NotNull Integer peak
     ){
         Map<String, Double> predictionPesponce = new LinkedHashMap<>();
         Map<String, Double> dataPesponce = new LinkedHashMap<>();
@@ -69,11 +70,13 @@ public class PredictionService {
             String fileHeader = String.format("form-data; name=%s; filename=%s", "file", file.getFileName());
             String startDateHeader = String.format("form-data; name=%s", "start_date");
             String endDateHeader = String.format("form-data; name=%s", "end_date");
+            String peakHeader = String.format("form-data; name=%s", "enter_pick");
 
             MultipartBodyBuilder builder = new MultipartBodyBuilder();
             builder.part("file", new ByteArrayResource(file.getFile())).header("Content-Disposition", fileHeader);
             builder.part("start_date", startDate).header("Content-Disposition", startDateHeader);
             builder.part("end_date", endDate).header("Content-Disposition", endDateHeader);
+            builder.part("end_date", peak).header("Content-Disposition", peakHeader);
 
             predictionPesponce = client
                     .post()
