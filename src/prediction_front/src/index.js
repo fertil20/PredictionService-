@@ -8,7 +8,7 @@ import {BrowserRouter as Router} from 'react-router-dom';
 
 const body = document.querySelector('body')
 
-body.style.backgroundColor = '#EDEEF0'
+body.style.backgroundColor = 'rgb(240, 242, 245)'
 
 ReactDOM.render(
     <Router>
