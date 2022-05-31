@@ -274,7 +274,7 @@ class NewUser extends Component {
                                                 <FormItem hasFeedback
                                                           validateStatus={this.state.username.validateStatus}
                                                           help={this.state.username.errorMsg}
-                                                          style={{height:50}}>
+                                                          style={{height:50, margin: 0}}>
                                                     <Input
                                                         type="text" className='profile-form'
                                                         required
@@ -290,7 +290,7 @@ class NewUser extends Component {
                                                     hasFeedback className='profile-form'
                                                     validateStatus={this.state.email.validateStatus}
                                                     help={this.state.email.errorMsg}
-                                                    style={{height:80}}>
+                                                    style={{height:80, margin: 0}}>
                                                     <Input
                                                         name="email"
                                                         type="email"
