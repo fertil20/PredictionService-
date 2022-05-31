@@ -148,20 +148,20 @@ class UsersList extends Component {
                                     <ListGroupItem style={{width:'25%', overflowX: 'auto'}} key={"DEL"}></ListGroupItem>
                                 </ListGroup>
                                 {
-                                    this.state.user.map(
+                                    Object.keys(this.state.user).map(
                                         user =>
 
-                                            ((user.name.toLowerCase().indexOf(this.state.FIO.value.toLowerCase()) !== -1)
-                                                || (user.id.toLowerCase().indexOf(this.state.FIO.value.toLowerCase()) !== -1)
-                                                || (user.username.toLowerCase().indexOf(this.state.FIO.value.toLowerCase()) !== -1)
-                                                || (user.email.toLowerCase().indexOf(this.state.FIO.value.toLowerCase()) !== -1)) && <div>
+                                            ((JSON.stringify(this.state.user[user].name).toLowerCase().indexOf(this.state.FIO.value.toLowerCase()) !== -1)
+                                                || (JSON.stringify(this.state.user[user].id).toLowerCase().indexOf(this.state.FIO.value.toLowerCase()) !== -1)
+                                                || (JSON.stringify(this.state.user[user].username).toLowerCase().indexOf(this.state.FIO.value.toLowerCase()) !== -1)
+                                                || (JSON.stringify(this.state.user[user].email).toLowerCase().indexOf(this.state.FIO.value.toLowerCase()) !== -1)) && <div>
                                                 <ListGroup horizontal className='table-top-line' key={user.id}>
-                                                    <ListGroupItem style={{width:'10%', overflowX: 'auto'}} key={user.id+'.1'}>{user.id}</ListGroupItem>
-                                                    <ListGroupItem style={{width:'20%', overflowX: 'auto'}} key={user.id+'.2'}>{user.username}</ListGroupItem>
-                                                    <ListGroupItem style={{width:'20%', overflowX: 'auto', color: '#0a58ca'}} key={user.id+'.3'} tag = 'a' href={`/users/${user.username}`}>{user.name}</ListGroupItem>
-                                                    <ListGroupItem style={{width:'25%', overflowX: 'auto'}} key={user.id+'.4'}>{user.email}</ListGroupItem>
+                                                    <ListGroupItem style={{width:'10%', overflowX: 'auto'}} key={user.id+'.1'}>{this.state.user[user].id}</ListGroupItem>
+                                                    <ListGroupItem style={{width:'20%', overflowX: 'auto'}} key={user.id+'.2'}>{this.state.user[user].username}</ListGroupItem>
+                                                    <ListGroupItem style={{width:'20%', overflowX: 'auto', color: '#0a58ca'}} key={this.state.user[user].name+'.3'} tag = 'a' href={`/users/${this.state.user[user].username}`}>{this.state.user[user].name}</ListGroupItem>
+                                                    <ListGroupItem style={{width:'25%', overflowX: 'auto'}} key={user.id+'.4'}>{this.state.user[user].email}</ListGroupItem>
                                                     <ListGroupItem style={{width:'25%', overflowX: 'auto'}} key={user.id+'.5'}>
-                                                        {user.username !== this.state.CurUser.currentUser.username &&
+                                                        {this.state.user[user].username !== this.state.CurUser.currentUser.username &&
                                                             <Button size='sm' color='danger' style={{height:30, marginTop:5}} key={user.id+'.5'} onClick={() => this.DeleteUser(user.id)}>Удалить пользователя</Button>}
                                                     </ListGroupItem>
                                                 </ListGroup>
