@@ -162,7 +162,7 @@ class UsersList extends Component {
                                                     <ListGroupItem style={{width:'25%', overflowX: 'auto'}} key={user.id+'.4'}>{this.state.user[user].email}</ListGroupItem>
                                                     <ListGroupItem style={{width:'25%', overflowX: 'auto'}} key={user.id+'.5'}>
                                                         {this.state.user[user].username !== this.state.CurUser.currentUser.username &&
-                                                            <Button size='sm' color='danger' style={{height:30, marginTop:5}} key={user.id+'.5'} onClick={() => this.DeleteUser(user.id)}>Удалить пользователя</Button>}
+                                                            <Button size='sm' color='danger' style={{height:30, marginTop:5}} key={user.id+'.5'} onClick={() => this.DeleteUser(this.state.user[user].id)}>Удалить пользователя</Button>}
                                                     </ListGroupItem>
                                                 </ListGroup>
                                         </div>

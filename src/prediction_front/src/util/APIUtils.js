@@ -173,7 +173,7 @@ export function uploadFile(file) {
 
 export function deleteUser(deleteUserId) {
     return request({
-        url: API_BASE_URL + "/deleteUser/" + deleteUserId,
+        url: API_BASE_URL + "/users/" + deleteUserId + "/deleteUser/",
         method: 'POST'
     });
 }
