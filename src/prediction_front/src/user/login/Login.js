@@ -84,7 +84,7 @@ class LoginForm extends Component {
                         placeholder="Пароль"  />
                 )}
                 </FormItem>
-                <FormItem>
+                <FormItem style={{marginBottom: 5}}>
                     <Button type="primary" htmlType="submit" size="large" className="login-form-button">Войти</Button>
                     <Link className="forgot-password" to={'/forgotPassword'}>Забыл пароль</Link>
                 </FormItem>
