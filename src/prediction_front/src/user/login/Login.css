@@ -49,7 +49,6 @@
     left: 0;
     top: 10px;
     padding-bottom: 100px;
-    height: 50px;
 }
 
 .login-form-button {
@@ -69,6 +68,7 @@
 }
 .ant-legacy-form-item {
     margin-bottom: 5px;
+    margin-top: 20px;
 }
 /* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
 /* stylelint-disable no-duplicate-selectors */
@@ -207,6 +207,7 @@
     font-feature-settings: 'tnum';
     margin-bottom: 24px;
     vertical-align: top;
+    margin-top: 20px;
 }
 .ant-legacy-form-item label {
     position: relative;
