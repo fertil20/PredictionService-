@@ -307,7 +307,7 @@ export default class FilesList extends Component {
                             </Button>
                         ]}
                     >
-                        <Radio.Group style={{marginBottom: 20}} onChange={(e) => {this.setState({role: e.target.value})}} value={this.state.role}>
+                        <Radio.Group style={{marginBottom: 20}} onChange={(e) => {this.setState({peak: e.target.value})}} value={this.state.peak}>
                             <Radio value={1}>С пиками</Radio>
                             <Radio value={2}>Без пиков</Radio>
                         </Radio.Group>
