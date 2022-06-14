@@ -56,10 +56,9 @@ class NewUser extends Component {
         const newUserRequest = {
             username: this.state.username.value,
             email: this.state.email.value,
-            name: this.state.name.value,
-            role: this.state.role
+            name: this.state.name.value
         };
-        newUser(newUserRequest)
+        newUser(newUserRequest, this.state.role)
             .then(response => {
                 this.setState({isLoading: false})
                 alert('Новый пользователь создан.');

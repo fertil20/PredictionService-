@@ -178,9 +178,9 @@ export function deleteUser(deleteUserId) {
     });
 }
 
-export function newUser(newUserRequest) {
+export function newUser(newUserRequest, role) {
     return request({
-        url: API_BASE_URL + "/users/new",
+        url: API_BASE_URL + "/users/new?role=" + role,
         method: 'POST',
         body: JSON.stringify(newUserRequest)
     });
