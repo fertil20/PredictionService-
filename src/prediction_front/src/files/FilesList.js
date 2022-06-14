@@ -128,7 +128,7 @@ export default class FilesList extends Component {
                 })
                 .catch(error => {
                 });
-                }, 100)
+                }, 500)
         }
         else {
             loadFilesByUser("DATA_PAYMENTS")
