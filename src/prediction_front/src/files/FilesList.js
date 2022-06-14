@@ -16,7 +16,6 @@ export default class FilesList extends Component {
 
     constructor(props) {
         super(props);
-        this._isMounted = false;
         if (this.props.history.location.state !== undefined) {
             this.state ={
                 CurUser: JSON.parse(localStorage.getItem('app')),
@@ -61,14 +60,14 @@ export default class FilesList extends Component {
 
 
     componentDidMount() {
-        this.loadAllFiles()
         this._isMounted = true;
+        this._isMounted && this.loadAllFiles()
     }
 
     componentDidUpdate (prevProps, prevState, snapshot) {
         if (this.state.update) {
-            setTimeout({}, 100)
-            this.loadAllFiles()
+            setTimeout(null, 1000)
+            this.componentDidMount(FilesList);
             this.setState({update: false})
         }
     }
@@ -119,9 +118,9 @@ export default class FilesList extends Component {
     loadAllFiles(){
         loadFilesByUser("DATA_PAYMENTS")
             .then(response => {
-                this.setState({files: response})
+                this._isMounted && this.setState({files: response})
                 if(response){
-                    this.setState({isLoading:true})
+                    this._isMounted && this.setState({isLoading:true})
                 }
             })
             .catch(error => {
@@ -139,7 +138,7 @@ export default class FilesList extends Component {
     deleteThisFile(fileId){
         deleteFile(fileId)
             .then(response => {
-                this.setState({update: true})
+                this.componentDidMount(FilesList);
                 // alert('Файл успешно удалён')
             })
             .catch(error => {
@@ -155,7 +154,7 @@ export default class FilesList extends Component {
         editFile(fileId, name)
             .then(response => {
                 this.setState({ loading: false, visible: false });
-                this.setState({update: true})
+                this.componentDidMount(FilesList);
                 // alert('Файл успешно изменён')
             })
             .catch(error => {
@@ -308,8 +307,8 @@ export default class FilesList extends Component {
                         ]}
                     >
                         <Radio.Group style={{marginBottom: 20}} onChange={(e) => {this.setState({peak: e.target.value})}} value={this.state.peak}>
-                            <Radio value={1}>С пиками</Radio>
-                            <Radio value={2}>Без пиков</Radio>
+                            <Radio value={1}>Без пиков</Radio>
+                            <Radio value={2}>С пиками</Radio>
                         </Radio.Group>
                         <DatePicker.RangePicker
                             locale={locale}

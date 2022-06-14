@@ -11,7 +11,6 @@ export default class PredictionList extends Component {
 
     constructor(props) {
         super(props);
-        this._isMounted = false;
         this.state ={
             CurUser: JSON.parse(localStorage.getItem('app')),
             files: null,
@@ -19,8 +18,7 @@ export default class PredictionList extends Component {
             loading: false,
             visible: false,
             name: null,
-            id: null,
-            update: false
+            id: null
         }
         this.loadAllFiles = this.loadAllFiles.bind(this)
         this.downloadThisFile = this.downloadThisFile.bind(this)
@@ -32,21 +30,13 @@ export default class PredictionList extends Component {
 
 
     componentDidMount() {
-        this.loadAllFiles()
         this._isMounted = true;
+        this._isMounted && this.loadAllFiles();
     }
 
 
     componentWillUnmount() {
         this._isMounted = false;
-    }
-
-    componentDidUpdate (prevProps, prevState, snapshot) {
-        if (this.state.update) {
-            setTimeout({}, 100)
-            this.loadAllFiles()
-            this.setState({update: false})
-        }
     }
 
     showModal = (id, name) => {
@@ -69,9 +59,9 @@ export default class PredictionList extends Component {
     loadAllFiles(){
         loadFilesByUser("PREDICTION_PAYMENTS")
             .then(response => {
-                this.setState({files: response})
+                this._isMounted && this.setState({files: response})
                 if(response){
-                    this.setState({isLoading:true})
+                    this._isMounted && this.setState({isLoading:true})
                 }
             })
             .catch(error => {
@@ -89,7 +79,7 @@ export default class PredictionList extends Component {
     deleteThisFile(fileId){
         deleteFile(fileId)
             .then(response => {
-                this.setState({update: true})
+                this.componentDidMount(PredictionList);
                 // alert('Файл успешно удалён')
             })
             .catch(error => {
@@ -111,7 +101,7 @@ export default class PredictionList extends Component {
         editFile(fileId, name)
             .then(response => {
                 this.setState({ loading: false, visible: false });
-                this.setState({update: true})
+                this.componentDidMount(PredictionList);
                 // alert('Файл успешно изменён')
             })
             .catch(error => {
