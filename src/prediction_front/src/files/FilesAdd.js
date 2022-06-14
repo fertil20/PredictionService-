@@ -80,8 +80,9 @@ export default class FilesAdd extends Component {
                     <div>
                         <Link to={`/files/${this.state.CurUser.currentUser.username}`}><Button size='sm' color='danger' className='files-cancel'>Отменить</Button></Link>
                         <Button size='sm' className='files-publish' onClick={()=>{
+                            this.props.history.push({pathname:`/files/${this.state.CurUser.currentUser.username}`}, {update: true})
                             this.addNewFile();
-                            this.props.history.push({pathname:`/files/${this.state.CurUser.currentUser.username}`}, {update: true})}}>Подтвердить</Button>
+                        }}>Подтвердить</Button>
                     </div>
                 </Col>
             </Row>

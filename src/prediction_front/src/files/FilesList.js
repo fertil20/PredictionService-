@@ -64,13 +64,13 @@ export default class FilesList extends Component {
         this._isMounted && this.loadAllFiles()
     }
 
-    componentDidUpdate (prevProps, prevState, snapshot) {
+/*    componentDidUpdate (prevProps, prevState, snapshot) {
         if (this.state.update) {
             setTimeout(null, 1000)
             this.componentDidMount(FilesList);
             this.setState({update: false})
         }
-    }
+    }*/
 
     componentWillUnmount() {
         this._isMounted = false;
@@ -116,15 +116,31 @@ export default class FilesList extends Component {
     };
 
     loadAllFiles(){
-        loadFilesByUser("DATA_PAYMENTS")
-            .then(response => {
-                this._isMounted && this.setState({files: response})
-                if(response){
-                    this._isMounted && this.setState({isLoading:true})
-                }
-            })
-            .catch(error => {
-            });
+        if (this.state.update)
+        {
+            setTimeout(() => {
+                loadFilesByUser("DATA_PAYMENTS")
+                .then(response => {
+                    this._isMounted && this.setState({files: response})
+                    if(response){
+                        this._isMounted && this.setState({isLoading: true, update: false})
+                    }
+                })
+                .catch(error => {
+                });
+                }, 100)
+        }
+        else {
+            loadFilesByUser("DATA_PAYMENTS")
+                .then(response => {
+                    this._isMounted && this.setState({files: response})
+                    if (response) {
+                        this._isMounted && this.setState({isLoading: true})
+                    }
+                })
+                .catch(error => {
+                });
+        }
     }
 
     downloadThisFile(fileId){
